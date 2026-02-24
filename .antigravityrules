@@ -1,0 +1,59 @@
+# SkillGap - .antigravityrules
+
+This is the system prompt and global behavior guideline for AI agents working on this project. It sets strict boundaries for stack, architecture, quality, process, and security perfectly aligned with Agile and Scrum methodologies.
+
+## 1. Project Context & Tech Stack
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Zustand (state management). SPA architecture. Server-side rendering frameworks like Next.js are strictly forbidden. Axios is highly recommended for network requests, and Recharts or Custom SVG for the animated matching ring.
+- **Backend**: Python 3.11, FastAPI (fully asynchronous endpoints required), SQLAlchemy ORM, PostgreSQL. Use Pydantic for validation.
+- **AI Interface**: Anthropic Claude API (`claude-sonnet-4-20250514`).
+- **Infrastructure**: Local Docker Compose, GitHub Actions for CI/CD.
+- **Directory Structure & Architectural Patterns**:
+  - Full separation of frontend and backend, with a completely decoupled API.
+  - Do not pile all business logic into `main.py` or route handlers. Forcefully split the application into independent modules: e.g., `auth` (authentication), `profile` (user records), `extraction` (logic engine).
+
+## 2. Naming Conventions & Code Style
+- **Python**: Strictly adhere to the PEP 8 style guide. Use formatting tools like Prettier and ruff/flake8. All core algorithms must have high-quality Docstrings.
+- **TypeScript**: Strict Mode. The use of `any` type is absolutely forbidden. Prioritize Functional Components and React Hooks.
+- **UI & Styling**: Components must follow Tailwind utility class conventions.
+- **Linting**: Enable ESLint to ensure code consistency.
+
+## 3. PRD & Design References
+**Before implementation, you must refer to the product and design context:**
+- **Core Document Reference**:
+  - `SkillGap_PRD.md`: The Single Source of Truth.
+- **Interface Design & Mockup**:
+  - **Reference Images**: Please refer to `SkillGap wireframe hand draw-5.jpg` (hand-drawn sketch) and `SkillGap wireframe (ai generated based on handdraw).png` (AI generated wireframe design).
+  - **Layout**: Top navigation bar (including Logo, My Profile, History, Logout); Main view uses a two-column layout (Left: JD Input Area | Right: Match Results Area).
+  - **Key Components**: Top **Animated Ring Score**, Middle **Three-Column View: Have, Missing, Bonus**, and Bottom **AI-generated learning roadmap (Timeline/Card format)**.
+- **User Flows**: Users paste the Job Description (JD) into the input box -> The system fetches the saved skill graph for extraction and comparison -> Instantly displays the match score and skill gaps -> Calls the Claude API to generate a subsequent learning plan. Development must follow this mental model of the user.
+
+## 4. Testing Strategy
+- **Test-Driven Development (TDD)**: Core business functions (like the keyword-based skill extraction engine) must adopt a TDD process.
+- **Coverage Target**: Backend code requires a minimum of 80% test coverage, using `pytest`.
+- **Quality Assessment**: The logic for generating the AI roadmap requires batch testing against an "AI Assessment Test Suite," measuring Relevance, Specificity, and Completeness.
+
+## 5. Scrum & Workflow Instructions
+During development, strictly adhere to standard Scrum management processes:
+- **Branch Naming**: Must include the Issue ID. Format: `feature/42-description`, `bugfix/12-description`, `chore/5-setup`.
+- **Commit Messages**: Follow Conventional Commits and link the Issue in the commit. Example: `feat(#42): implement 3-column skill comparison view`.
+- **PR Workflow**:
+  - Pull Requests must link to the GitHub Issue in the description (e.g., `Closes #42`).
+  - PRs must pass code review and successfully run all GitHub Actions CI checks before being merged.
+- **Code References**: If code includes outstanding logic or known defects, use comments to clearly point out the corresponding Issue (e.g., `// TODO(#15): Switch to semantic embeddings`).
+
+## 6. Security & Accessibility Requirements
+- **No Hardcoding of Sensitive Information**: It is absolutely forbidden to hardcode Secret Tokens (like Claude API Key), JWT keys, database connection strings, etc., in public files. Inject them using `.env`.
+- **Authentication & Data Encryption**: Protected routes must validate JWT Tokens; User passwords must be salted and hashed before entering the database.
+- **Accessibility/a11y**:
+  - The frontend interface must implement responsive design (mobile-friendly).
+  - While waiting for slow API calls (e.g., Claude API), a friendly Loading Skeleton UI must be configured.
+  - Proper Error Boundaries must be added.
+
+## 7. Do's and Don'ts
+- Do s:
+  - Stick to the truth (act within the reality of existing library versions), consulting official documentation (especially the Anthropic SDK).
+  - Fast iterations with frequent commits: commit every time a small component is finished to ease version rollback.
+- Dont s:
+  - Do not mask TypeScript errors, like `// @ts-ignore`; resolve them at the source.
+  - Do not blindly overwrite conflicting code; first understand the original business logic.
+  - Do not modify code across boundaries: if you receive a frontend task, absolutely do not modify backend routes (unless as a necessary part of integration).
