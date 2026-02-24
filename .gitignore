@@ -69,3 +69,4 @@ postgress-data/
 htmlcov/
 .mypy_cache/
 .ruff_cache/
+/notes
