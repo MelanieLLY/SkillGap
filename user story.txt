@@ -1,0 +1,17 @@
+Project Name: Tech Stack Skill Gap Analyzer
+Members: @Jing Ng @Liuyi
+
+Description:
+Tech Stack Skill Gap Analyzer is a web application that helps job seekers identify which skills they are missing before applying to a job. Users paste a job description, and the app compares it with their saved skill profile to generate a match score, identify skills they have, skills they are missing, and bonus skills they bring.
+The app also generates a personalized AI-powered learning roadmap with recommended resources to help users close their skill gaps. User profiles and past analyses are saved, allowing users to track their progress over time and see how their match scores improve as they learn new skills.
+
+User Personas:
+Graduate students preparing for technical interviews, career changers learning new skills, and active job seekers who want a quick and honest assessment of their qualifications.
+
+Core User Stories
+
+As a new user, I want to save my skill profile so I do not need to re-enter it each time.
+As a job seeker, I want to paste a job description and see a match score and skill gap analysis.
+As a job seeker, I want to receive an AI-generated learning roadmap for missing skills.
+As a returning user, I want my past analyses saved so I can track my progress.
+As a learning user, I want to update my skill profile and re-analyze jobs to see my improvement.
