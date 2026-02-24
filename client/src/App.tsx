@@ -4,12 +4,7 @@ import Navbar from './components/Navbar'
 import JDInput from './components/JDInput'
 import SkillMatchResults from './components/SkillMatchResults'
 import LearningRoadmap from './components/LearningRoadmap'
-
-// TODO(#2): Replace with real user profile skills from the database
-const MOCK_USER_SKILLS = [
-    'python', 'react', 'typescript', 'javascript', 'html', 'css',
-    'tailwind', 'git', 'sql', 'node.js'
-];
+import UserSkillsInput from './components/UserSkillsInput'
 
 interface SkillResults {
     have: string[];
@@ -18,6 +13,9 @@ interface SkillResults {
 }
 
 function App() {
+    const [userSkills, setUserSkills] = useState<string[]>([
+        'python', 'react', 'typescript', 'javascript', 'html', 'css'
+    ]);
     const [results, setResults] = useState<SkillResults | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -31,7 +29,7 @@ function App() {
                 'http://localhost:8000/api/extract',
                 {
                     job_description: jobDescription,
-                    user_skills: MOCK_USER_SKILLS,
+                    user_skills: userSkills,
                 }
             );
             setResults(response.data);
@@ -60,8 +58,11 @@ function App() {
 
                 {/* Two-Column Dashboard Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
-                    {/* Left Column — JD Input */}
-                    <JDInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+                    {/* Left Column — User Skills + JD Input */}
+                    <div className="flex flex-col gap-6">
+                        <UserSkillsInput skills={userSkills} onSkillsChange={setUserSkills} />
+                        <JDInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+                    </div>
 
                     {/* Right Column — Results + Roadmap */}
                     <div className="flex flex-col gap-6">
