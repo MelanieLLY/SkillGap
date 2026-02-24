@@ -1,0 +1,1 @@
+Python, React, SQL, Git, REST API, GraphQL

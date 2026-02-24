@@ -1,1 +1,6 @@
 /notes
+/frontend/node_modules
+/node_modules
+/venv
+/backend/__pycache__
+/backend/services/__pycache__
