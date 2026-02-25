@@ -4,3 +4,4 @@
 /venv
 /backend/__pycache__
 /backend/services/__pycache__
+/client/node_modules
