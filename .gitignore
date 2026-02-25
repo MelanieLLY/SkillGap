@@ -1,1 +1,46 @@
+# Dependencies
+node_modules/
+/venv/
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.cache/
+
+# Python items
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+.nox/
+.tox/
+.hypothesis/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.settings/
+.classpath
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project specific
 /notes
+/temp
+/tmp
