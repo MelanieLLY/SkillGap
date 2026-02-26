@@ -143,21 +143,34 @@ Overall: Without rules wrote cleaner structured code but with fewer skills. With
 **Design Intent:**
 ### Without Rule UI
 <img width="1135" height="725" alt="without_rule_screenshot_v1" src="https://github.com/user-attachments/assets/7eabd305-9c9d-4296-b98c-711857e863b9" />
+
 - Plain white form with no design system
+  
 - No navbar, no layout structure
+  
 - Single centered column — nothing like the wireframe
+  
 - Skills entered as plain comma-separated text
+  
 - No ring score, no three-column view
+  
 - Looks like a basic HTML form
 
 ### With Rule UI
 <img width="1786" height="947" alt="with_rule_screenshot" src="https://github.com/user-attachments/assets/95a406fb-fe97-48ad-93a5-043ca02b46b1" />
+
 - Looks like the wireframe
+  
 - Dark mode dashboard matching the PRD wireframe
+  
 - Navbar with logo, Dashboard, Settings, user avatar
+  
 - Two-column layout as specified in the rules file
+  
 - Skills displayed as interactive chips with ✕ buttons
+  
 - Animated ring score area (Existing / Missing / Bonus)
+  
 - Learning Roadmap section with numbered steps
 
 **Naming & Architecture:**
