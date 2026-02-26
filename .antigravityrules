@@ -31,6 +31,14 @@ This is the system prompt and global behavior guideline for AI agents working on
 - **Test-Driven Development (TDD)**: Core business functions (like the keyword-based skill extraction engine) must adopt a TDD process.
 - **Coverage Target**: Backend code requires a minimum of 80% test coverage, using `pytest`.
 - **Quality Assessment**: The logic for generating the AI roadmap requires batch testing against an "AI Assessment Test Suite," measuring Relevance, Specificity, and Completeness.
+- **Test File Required**: Every new function or module must have a 
+  corresponding test file. Do not consider any task complete without 
+  a test file. For example, if you create `engine.py`, you must also 
+  create `test_engine.py`.
+- **Write Tests First**: Before writing any implementation code, write 
+  the test first. This is not optional.
+- **Test File Location**: All test files go in the `server/tests/` 
+  folder and must be named `test_<module_name>.py`.
 
 ## 5. Scrum & Workflow Instructions
 During development, strictly adhere to standard Scrum management processes:
