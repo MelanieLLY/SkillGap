@@ -50,9 +50,6 @@ This is a gap to fix in Sprint 2
 
 ---
 
-### Summary 
-
-
 ## Part 4: Reflection
 
 ### How the Rules File Bridges PRD to Implementation
@@ -90,10 +87,33 @@ the AI suggests a branch name like feature/4-skill-extraction-engine,
 it connects directly back to the issue, so anyone looking at the repo 
 can understand what that branch is for.
 
+### What Worked and What We Changed:
+
+The rules file worked well for UI and architecture. 
+What did not work was test enforcement, the AI ignored 
+it in both sessions. We updated the rules file by adding 
+stricter test instructions.
+
+What we want to add in rules file:
+```
+- **Test File Required**: Every new function or module must have a 
+  corresponding test file. Do not consider any task complete without 
+  a test file. For example, if you create `engine.py`, you must also 
+  create `test_engine.py`.
+- **Write Tests First**: Before writing any implementation code, write 
+  the test first. This is not optional.
+- **Test File Location**: All test files go in the `server/tests/` 
+  folder and must be named `test_<module_name>.py`.
+```
 
 ### What We Would Change for Sprint 2
 1. We will enforce tests. Both versions skipped tests even though the 
 rules file required TDD. For Sprint 2 we will add a stronger instruction 
 like "always generate pytest test file alongside every new function" so 
 the AI cannot skip it.
+
+2. We will add the Claude API response format. The rules file mentions 
+the Claude API but does not describe what the response should look like. 
+We will add the expected JSON format for the learning roadmap before 
+Sprint 2 starts so the AI knows exactly what to build.
  
