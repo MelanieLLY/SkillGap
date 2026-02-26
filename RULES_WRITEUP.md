@@ -117,4 +117,22 @@ the AI cannot skip it.
 the Claude API but does not describe what the response should look like. 
 We will add the expected JSON format for the learning roadmap before 
 Sprint 2 starts so the AI knows exactly what to build.
+
+### Key Takeaway
+The biggest thing we learned is that a rules file is not a one-time 
+setup. Before this assignment, we thought you just write the rules 
+once and the AI follows them. But the comparison showed that even with 
+a detailed rules file, the AI still missed things, like writing tests.
+
+This taught us that context engineering is an ongoing process. You 
+write the rules, test them, find the gaps, and improve them. The rules 
+file is basically a contract between your team and the AI. The more 
+specific and strict the contract is, the better the AI performs.
+
+For our project, the rules file made the biggest difference in UI and 
+architecture. But it failed on test enforcement because the instruction 
+was too vague. Now we know, if you want the AI to do something, you 
+have to be very explicit about it. Saying "follow TDD" is not enough. 
+You have to say "always create a test file, write tests before code, 
+and do not consider the task done without tests."
  
