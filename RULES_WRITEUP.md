@@ -138,8 +138,24 @@ def match_skills(job_description: str, user_skills: List[str]) -> Dict[str, List
         "bonus": sorted(bonus)
     }
 ```
-Overall: Without rules wrote cleaner structured code but with fewer skills. With rules wrote more complete and robust code but packed everything into one function. Neither version generated tests, which the rules file required. The biggest difference is not in the backend code, it is in the UI, where with rules produced a professional dashboard matching the wireframe, while without rules produced a plain basic form.
+Overall:
 
+Without rules wrote cleaner structured code but with fewer skills. With rules wrote more complete and robust code but packed everything into one function. Neither version generated tests, which the rules file required. The biggest difference is not in the backend code, it is in the UI, where with rules produced a professional dashboard matching the wireframe, while without rules produced a plain basic form.
+
+Measurable Differences:
+
+- Skill list: 35 skills (without rules) vs 60+ skills (with rules)
+
+- UI components: 1 plain form (without rules) vs 6 components 
+  matching wireframe (with rules): navbar, two-column layout, 
+  skill chips, ring score, three columns, roadmap
+  
+- Setup errors: 1 extra debug session needed (without rules) 
+  vs 0 errors (with rules)
+  
+- Tests: 0 in both sessions
+
+  
 **Design Intent:**
 ### Without Rule UI
 <img width="1135" height="725" alt="without_rule_screenshot_v1" src="https://github.com/user-attachments/assets/7eabd305-9c9d-4296-b98c-711857e863b9" />
@@ -234,6 +250,8 @@ it in both sessions. We updated the rules file by adding
 stricter test instructions.
 
 What we want to add in rules file:
+We made the folowing change to .antigravityrules on after finding the AI skipped tests in 
+with rule session.
 ```
 - **Test File Required**: Every new function or module must have a 
   corresponding test file. Do not consider any task complete without 
