@@ -9,7 +9,7 @@ Issue #4 Develop Keyword Skill Extraction Engine
 ### With Rules:
 The with-rules code combines everything into one function, which is slightly harder to read. But it has a much larger skill list (60+ skills, organized into categories like Languages, Databases, Frameworks, DevOps). It also has better input validation at the top (if not job_description) and a smarter regex pattern that correctly handles special skills like C++ and Node.js without accidentally matching partial words. The skill list is also typed explicitly as Set[str] which is more precise.
 
-### Code snippet
+#### Code snippet
 ```
 import re
 from typing import List, Dict, Set
@@ -86,7 +86,7 @@ def extract_skills(job_description: str, user_skills: List[str]) -> Dict[str, Li
 ### Without Rules:
 The without rule code has cleaner, simpler code. It splits the logic into two separate functions: one to find skills in the job description, and another to compare them against the user's skills. This makes the code easier to read and test. However, the skill list is smaller (about 35 skills) and the regex is basic, using simple word boundaries (\b). There is also no input validation, meaning if someone passes in an empty string it could cause issues.
 
-### Code snippet
+#### Code snippet
 ```
 import re
 from typing import List, Dict
