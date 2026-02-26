@@ -214,7 +214,7 @@ looked like and just built a plain white form with a text box.
 The GitHub Issues and Project board help in two ways.
 
 First, they give the AI a clear scope. When we tell the AI to work
-which issue, it knows exactly what to build and what not to touch. Our 
+specific issue, it knows exactly what to build and what not to touch. Our 
 rules file says do not modify code outside your current task, and the 
 issue number makes that boundary clear. Without issues, the AI might 
 try to build everything at once and make a mess.
