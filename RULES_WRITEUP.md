@@ -23,7 +23,8 @@ Overall: Without rules wrote cleaner structured code but with fewer skills. With
 - Skills entered as plain comma-separated text
 - No ring score, no three-column view
 - Looks like a basic HTML form
-- 
+
+
 ### With Rule UI
 <img width="1786" height="947" alt="with_rule_screenshot" src="https://github.com/user-attachments/assets/95a406fb-fe97-48ad-93a5-043ca02b46b1" />
 - Looks like the wireframe
