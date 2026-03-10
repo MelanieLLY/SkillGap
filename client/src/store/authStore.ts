@@ -1,5 +1,12 @@
 import { create } from 'zustand';
 
+export interface User {
+    id: number;
+    email: string;
+    is_active: boolean;
+    skills: string[];
+}
+
 interface AuthState {
     token: string | null;
     setToken: (token: string | null) => void;

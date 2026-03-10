@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel, EmailStr
 
 class UserCreate(BaseModel):
@@ -8,6 +9,7 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     is_active: bool
+    skills: List[str] = []
 
     model_config = {"from_attributes": True}
 

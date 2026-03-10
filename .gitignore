@@ -1,90 +1,59 @@
-<<<<<<< HEAD
 # Dependencies
 node_modules/
 /venv/
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables
 .env
 .env.*
 !.env.example
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
 
 # Build outputs
 dist/
+dist-ssr/
 build/
 .next/
 out/
 .cache/
-
-# Python items
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyo
-*.pyd
-.Python
-.pytest_cache/
-.coverage
-htmlcov/
-.nox/
-.tox/
-.hypothesis/
-
-# IDEs and Editors
-=======
-# Node.js
-node_modules/
-dist/
-dist-ssr/
 *.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
 
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyo
+*.pyd
 .Python
-build/
-develop-eggs/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# Virtual Environments
-.venv/
-venv/
-ENV/
-env/
-env.bak/
-venv.bak/
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.nox/
+.tox/
+.hypothesis/
 
-# Environment variables (Crucial for PRD rule 6)
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.*.local
-
-# IDEs
->>>>>>> feature/1-jwt-auth
+# IDEs and Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 .project
-<<<<<<< HEAD
+.pydevproject
 .settings/
 .classpath
 
@@ -93,26 +62,17 @@ venv.bak/
 Thumbs.db
 desktop.ini
 
-# Project specific
-=======
-.pydevproject
-.settings/
-
-# OS
-.DS_Store
-Thumbs.db
-
 # Database
 *.sqlite3
 postgress-data/
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.mypy_cache/
-.ruff_cache/
->>>>>>> feature/1-jwt-auth
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Project specific
 /notes
 /temp
 /tmp
