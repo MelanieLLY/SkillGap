@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimatedMatchRing from './AnimatedMatchRing';
 
 export interface SkillMatchResultsProps {
   skills: {
@@ -18,20 +19,6 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
   const matchPercentage = totalRequired > 0
     ? Math.round((have.length / totalRequired) * 100)
     : 0;
-
-  // Ring geometry
-  const radius = 62;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (matchPercentage / 100) * circumference;
-
-  // Color based on score
-  const getRingColor = (score: number): string => {
-    if (score >= 70) return '#38e5b1';
-    if (score >= 40) return '#eab308';
-    return '#ef4444';
-  };
-  const ringColor = hasResults ? getRingColor(matchPercentage) : '#38e5b1';
-  const displayPercent = hasResults ? matchPercentage : 0;
 
   const SkillPill: React.FC<{ skill: string; variant: 'have' | 'missing' | 'bonus' }> = ({ skill, variant }) => {
     const styles = {
@@ -81,40 +68,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
       <div className="flex flex-col lg:flex-row gap-6 items-start">
         {/* Animated Ring */}
         <div className="flex-shrink-0 flex flex-col items-center justify-center">
-          <div className="relative w-40 h-40 flex items-center justify-center ring-glow">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 160 160">
-              {/* Background ring */}
-              <circle
-                cx="80" cy="80" r={radius}
-                stroke="#2a2f3e"
-                strokeWidth="10"
-                fill="transparent"
-              />
-              {/* Progress ring */}
-              <circle
-                cx="80" cy="80" r={radius}
-                stroke={ringColor}
-                strokeWidth="10"
-                fill="transparent"
-                strokeDasharray={circumference}
-                strokeDashoffset={hasResults ? offset : circumference}
-                strokeLinecap="round"
-                className="transition-all duration-1000 ease-out"
-                style={{
-                  '--ring-circumference': circumference,
-                  '--ring-offset': offset,
-                } as React.CSSProperties}
-              />
-            </svg>
-            <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-4xl font-extrabold text-white">
-                {hasResults ? displayPercent : '—'}
-              </span>
-              <span className="text-xs font-medium tracking-widest uppercase" style={{ color: ringColor }}>
-                {hasResults ? 'Match' : 'Waiting'}
-              </span>
-            </div>
-          </div>
+          <AnimatedMatchRing matchScore={matchPercentage} isWaiting={!hasResults} />
         </div>
 
         {/* Three-Column Skill Grid */}
