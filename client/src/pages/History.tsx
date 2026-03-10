@@ -82,8 +82,8 @@ export default function History() {
                                         </p>
                                     </div>
                                     <div className={`shrink-0 flex items-center justify-center w-12 h-12 rounded-full border-2 ${record.match_score >= 70 ? 'border-green-500/50 text-green-400 bg-green-500/10' :
-                                            record.match_score >= 40 ? 'border-yellow-500/50 text-yellow-400 bg-yellow-500/10' :
-                                                'border-red-500/50 text-red-400 bg-red-500/10'
+                                        record.match_score >= 40 ? 'border-yellow-500/50 text-yellow-400 bg-yellow-500/10' :
+                                            'border-red-500/50 text-red-400 bg-red-500/10'
                                         }`}>
                                         <span className="text-sm font-bold">{Math.round(record.match_score)}%</span>
                                     </div>
@@ -97,17 +97,23 @@ export default function History() {
                                 </div>
 
                                 <div className="mt-auto space-y-3 border-t border-white/5 pt-4">
-                                    <div className="flex justify-between text-sm">
+                                    <div className="flex flex-col gap-1 text-sm">
                                         <span className="text-[#9aa0ac]">Existing</span>
-                                        <span className="text-white font-medium">{record.have_skills.length}</span>
+                                        <span className="text-white text-xs leading-relaxed">
+                                            {record.have_skills.length > 0 ? record.have_skills.join(', ') : 'None'}
+                                        </span>
                                     </div>
-                                    <div className="flex justify-between text-sm">
+                                    <div className="flex flex-col gap-1 text-sm">
                                         <span className="text-[#9aa0ac]">Missing</span>
-                                        <span className="text-white font-medium">{record.missing_skills.length}</span>
+                                        <span className="text-white text-xs leading-relaxed">
+                                            {record.missing_skills.length > 0 ? record.missing_skills.join(', ') : 'None'}
+                                        </span>
                                     </div>
-                                    <div className="flex justify-between text-sm">
+                                    <div className="flex flex-col gap-1 text-sm">
                                         <span className="text-[#9aa0ac]">Bonus</span>
-                                        <span className="text-white font-medium">{record.bonus_skills.length}</span>
+                                        <span className="text-white text-xs leading-relaxed">
+                                            {record.bonus_skills.length > 0 ? record.bonus_skills.join(', ') : 'None'}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
