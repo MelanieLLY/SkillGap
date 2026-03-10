@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 /venv/
@@ -27,11 +28,63 @@ htmlcov/
 .hypothesis/
 
 # IDEs and Editors
+=======
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment variables (Crucial for PRD rule 6)
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# IDEs
+>>>>>>> feature/1-jwt-auth
 .vscode/
 .idea/
 *.swp
 *.swo
 .project
+<<<<<<< HEAD
 .settings/
 .classpath
 
@@ -41,6 +94,25 @@ Thumbs.db
 desktop.ini
 
 # Project specific
+=======
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.sqlite3
+postgress-data/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+>>>>>>> feature/1-jwt-auth
 /notes
 /temp
 /tmp

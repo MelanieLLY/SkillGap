@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Dark theme palette */
+  --bg-primary: #0f1117;
+  --bg-secondary: #161a25;
+  --bg-card: #1a1f2e;
+  --bg-card-hover: #1f2538;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(56, 229, 177, 0.15);
+
+  /* Text */
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0ac;
+  --text-muted: #5f6573;
+
+  /* Accent colors */
+  --accent-teal: #38e5b1;
+  --accent-teal-dim: rgba(56, 229, 177, 0.15);
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --accent-purple: #a78bfa;
+  --accent-blue: #60a5fa;
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+.glass-card-accent {
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+/* Glow button */
+.btn-glow {
+  background: linear-gradient(135deg, #22c55e 0%, #38e5b1 50%, #22c55e 100%);
+  background-size: 200% 200%;
+  color: #0f1117;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(56, 229, 177, 0.2);
+}
+
+.btn-glow:hover {
+  background-position: 100% 0;
+  box-shadow: 0 0 30px rgba(56, 229, 177, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-glow:active {
+  transform: translateY(0);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Smooth animation for ring */
+@keyframes ring-fill {
+  from {
+    stroke-dashoffset: var(--ring-circumference);
+  }
+
+  to {
+    stroke-dashoffset: var(--ring-offset);
+  }
+}
+
+.ring-animated {
+  animation: ring-fill 1.2s ease-out forwards;
+}
+
+/* Ring glow */
+@keyframes ring-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(56, 229, 177, 0.3));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px rgba(56, 229, 177, 0.5));
+  }
+}
+
+.ring-glow {
+  animation: ring-glow 3s ease-in-out infinite;
+}
+
+/* Textarea styling */
+.jd-textarea {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  color: var(--text-primary);
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.jd-textarea:focus {
+  outline: none;
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 3px var(--accent-teal-dim);
+}
+
+.jd-textarea::placeholder {
+  color: var(--text-muted);
+}

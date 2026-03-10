@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # SkillGap - .antigravityrules
 
 This is the system prompt and global behavior guideline for AI agents working on this project. It sets strict boundaries for stack, architecture, quality, process, and security perfectly aligned with Agile and Scrum methodologies.
@@ -22,26 +26,16 @@ This is the system prompt and global behavior guideline for AI agents working on
 - **Core Document Reference**:
   - `SkillGap_PRD.md`: The Single Source of Truth.
 - **Interface Design & Mockup**:
-  - **Authentication Pages**:
-    - `SkillGap_login_mockup.png`: Login page mockup — email/password fields, login button, link to register
-    - `SkillGap_register_mockup.png`: Register page mockup — email/password/confirm password fields, register button, link to login
-  - **Dashboard**: Please refer to `SkillGap wireframe hand draw-5.jpg` (hand-drawn sketch) and `SkillGap wireframe (ai generated based on handdraw).png` (AI generated wireframe design).
+  - **Reference Images**: Please refer to `SkillGap wireframe hand draw-5.jpg` (hand-drawn sketch) and `SkillGap wireframe (ai generated based on handdraw).png` (AI generated wireframe design).
   - **Layout**: Top navigation bar (including Logo, My Profile, History, Logout); Main view uses a two-column layout (Left: JD Input Area | Right: Match Results Area).
   - **Key Components**: Top **Animated Ring Score**, Middle **Three-Column View: Have, Missing, Bonus**, and Bottom **AI-generated learning roadmap (Timeline/Card format)**.
 - **User Flows**: Users paste the Job Description (JD) into the input box -> The system fetches the saved skill graph for extraction and comparison -> Instantly displays the match score and skill gaps -> Calls the Claude API to generate a subsequent learning plan. Development must follow this mental model of the user.
+
 ## 4. Testing Strategy
 - **Test-Driven Development (TDD)**: Core business functions (like the keyword-based skill extraction engine) must adopt a TDD process.
 - **Coverage Target**: Backend code requires a minimum of 80% test coverage, using `pytest`.
 - **Quality Assessment**: The logic for generating the AI roadmap requires batch testing against an "AI Assessment Test Suite," measuring Relevance, Specificity, and Completeness.
-- **Test File Required**: Every new function or module must have a 
-  corresponding test file. Do not consider any task complete without 
-  a test file. For example, if you create `engine.py`, you must also 
-  create `test_engine.py`.
-- **Write Tests First**: Before writing any implementation code, write 
-  the test first. This is not optional.
-- **Test File Location**: All test files go in the `server/tests/` 
-  folder and must be named `test_<module_name>.py`.
-  
+
 ## 5. Scrum & Workflow Instructions
 During development, strictly adhere to standard Scrum management processes:
 - **Branch Naming**: Must include the Issue ID. Format: `feature/42-description`, `bugfix/12-description`, `chore/5-setup`.
