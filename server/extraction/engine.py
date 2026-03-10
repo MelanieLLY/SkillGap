@@ -14,8 +14,9 @@ CURATED_SKILLS: Set[str] = {
     
     # Frameworks & Libraries
     "react", "vue", "angular", "next.js", "nuxt", "svelte", "fastapi", "flask", "django", 
-    "express", "spring boot", "laravel", "rails", "tailwind", "bootstrap", "sass", 
-    "redux", "zustand", "pytorch", "tensorflow", "pandas", "numpy",
+    "express", "spring boot", "spring", "laravel", "rails", "tailwind", "bootstrap", "sass", 
+    "redux", "zustand", "pytorch", "tensorflow", "pandas", "numpy", "scikit-learn", "langchain",
+    "uiautomator",
     
     # DevOps & Infrastructure
     "docker", "kubernetes", "aws", "azure", "gcp", "google cloud", "terraform", "ansible", 
