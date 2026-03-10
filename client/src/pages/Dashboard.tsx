@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useProfileStore } from '../store/profileStore';
+import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/Navbar';
 import JDInput from '../components/JDInput';
 import SkillMatchResults from '../components/SkillMatchResults';
@@ -13,9 +15,35 @@ interface SkillResults {
 }
 
 export default function Dashboard() {
-    const [userSkills, setUserSkills] = useState<string[]>([
-        'python', 'react', 'typescript', 'javascript', 'html', 'css'
-    ]);
+    const user = useAuthStore((state) => state.user);
+    const {
+        skills: userSkills,
+        isLoading: isLoadingSkills,
+        loadSkills,
+        addSkill,
+        removeSkill
+    } = useProfileStore();
+
+    useEffect(() => {
+        if (user) {
+            loadSkills();
+        }
+    }, [user, loadSkills]);
+
+    const handleSkillsChange = async (newSkills: string[]) => {
+        // Find added skill
+        const added = newSkills.find(s => !userSkills.includes(s));
+        if (added) {
+            await addSkill(added);
+        }
+
+        // Find removed skill
+        const removed = userSkills.find(s => !newSkills.includes(s));
+        if (removed) {
+            await removeSkill(removed);
+        }
+    };
+
     const [results, setResults] = useState<SkillResults | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -60,8 +88,11 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
                     {/* Left Column — User Skills + JD Input */}
                     <div className="flex flex-col gap-6">
-                        <UserSkillsInput skills={userSkills} onSkillsChange={setUserSkills} />
-                        <JDInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+                        <UserSkillsInput
+                            skills={userSkills}
+                            onSkillsChange={handleSkillsChange}
+                        />
+                        <JDInput onAnalyze={handleAnalyze} isLoading={isLoading || isLoadingSkills} />
                     </div>
 
                     {/* Right Column — Results + Roadmap */}

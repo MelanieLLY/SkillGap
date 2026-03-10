@@ -1,23 +1,30 @@
-import api from './axios';
+import axios from 'axios';
 
-export const profileApi = {
-    getSkills: async () => {
-        const response = await api.get<string[]>('/profile/skills');
-        return response.data;
-    },
+const API_URL = 'http://127.0.0.1:8000/api';
 
-    addSkill: async (skill: string) => {
-        const response = await api.post<string[]>('/profile/skills', { skill });
-        return response.data;
-    },
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+};
 
-    removeSkill: async (skill: string) => {
-        const response = await api.delete<string[]>(`/profile/skills/${encodeURIComponent(skill)}`);
-        return response.data;
-    },
+export const getSkills = async (): Promise<string[]> => {
+    const response = await axios.get(`${API_URL}/profile/skills`, getAuthHeaders());
+    return response.data;
+};
 
-    extractFromResume: async (resumeText: string) => {
-        const response = await api.post<string[]>('/profile/extract-resume', { resume_text: resumeText });
-        return response.data;
-    },
+export const addSkill = async (skill: string): Promise<string[]> => {
+    const response = await axios.post(`${API_URL}/profile/skills`, { skill }, getAuthHeaders());
+    return response.data;
+};
+
+export const removeSkill = async (skillName: string): Promise<string[]> => {
+    const response = await axios.delete(`${API_URL}/profile/skills/${encodeURIComponent(skillName)}`, getAuthHeaders());
+    return response.data;
+};
+
+export const extractFromResume = async (resumeText: string): Promise<string[]> => {
+    const response = await axios.post(`${API_URL}/profile/extract-resume`, { resume_text: resumeText }, getAuthHeaders());
+    return response.data;
 };

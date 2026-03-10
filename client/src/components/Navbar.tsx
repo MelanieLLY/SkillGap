@@ -1,8 +1,14 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useProfileStore } from '../store/profileStore';
 
 const Navbar: React.FC = () => {
     const logout = useAuthStore((state) => state.logout);
+    const skills = useProfileStore((state) => state.skills);
+    const location = useLocation();
+
+    const isDashboard = location.pathname === '/dashboard';
 
     return (
         <nav className="w-full px-6 py-4 flex items-center justify-between border-b border-white/5 bg-[#161a25]">
@@ -20,12 +26,15 @@ const Navbar: React.FC = () => {
 
             {/* Navigation Links */}
             <div className="flex items-center gap-8">
-                <a
-                    href="#"
-                    className="text-sm font-medium text-white border-b-2 border-[#38e5b1] pb-1 transition-colors"
+                <Link
+                    to="/dashboard"
+                    className={`text-sm font-medium pb-1 transition-colors ${isDashboard
+                        ? 'text-white border-b-2 border-[#38e5b1]'
+                        : 'text-[#9aa0ac] hover:text-white border-b-2 border-transparent'
+                        }`}
                 >
                     Dashboard
-                </a>
+                </Link>
                 <a
                     href="#"
                     className="text-sm font-medium text-[#9aa0ac] hover:text-white transition-colors"
@@ -34,13 +43,18 @@ const Navbar: React.FC = () => {
                 </a>
             </div>
 
-            {/* Profile Avatar Placeholder & Actions */}
+            {/* Profile Avatar & Actions */}
             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#a78bfa] to-[#60a5fa] flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-[#38e5b1]/40 transition-all">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                </div>
+                <Link to="/profile" className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-gradient-to-br from-[#1e2433] to-[#161a25] border border-white/10 hover:border-[#38e5b1]/50 transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#a78bfa] to-[#60a5fa] flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span className="text-sm font-medium text-white">
+                        {skills.length} Skills
+                    </span>
+                </Link>
                 <button
                     onClick={logout}
                     className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors"

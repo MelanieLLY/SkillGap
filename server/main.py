@@ -3,21 +3,20 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from contextlib import asynccontextmanager
+from sqlalchemy import text
 from server.extraction.router import router as extraction_router
 from server.auth.router import router as auth_router
+from server.profile.router import router as profile_router
 from server.database import engine
 from server.auth import models
-
-from sqlalchemy import text
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     models.Base.metadata.create_all(bind=engine)
-    try:
-        with engine.begin() as conn:
-            conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] SERVER DEFAULT '{}';"))
-    except Exception as e:
-        print(f"Auto-migration skipped: {e}")
+    # Fallback to add skills column explicitly since we don't use alembic for existing DBs
+    with engine.connect() as conn:
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] DEFAULT '{}'"))
+        conn.commit()
     yield
 
 app = FastAPI(title="SkillGap API", lifespan=lifespan)
@@ -30,8 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-from server.profile.router import router as profile_router
 
 # Register routers
 app.include_router(extraction_router, prefix="/api")

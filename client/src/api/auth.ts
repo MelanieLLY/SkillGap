@@ -34,6 +34,7 @@ export interface UserOut {
     id: number;
     email: string;
     is_active: boolean;
+    skills: string[];
 }
 
 export const authApi = {

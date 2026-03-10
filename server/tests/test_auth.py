@@ -1,5 +1,10 @@
-import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.dialects.sqlite.base import SQLiteTypeCompiler
+
+def visit_ARRAY(self, type_, **kw):
+    return "TEXT"
+SQLiteTypeCompiler.visit_ARRAY = visit_ARRAY
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker

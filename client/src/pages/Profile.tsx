@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import { useAuthStore } from '../store/authStore';
 import { useProfileStore } from '../store/profileStore';
 
 const Profile: React.FC = () => {
-    const { logout } = useAuthStore();
-    const { skills, isLoading, error, fetchSkills, addSkill, removeSkill, extractFromResume } = useProfileStore();
-    const navigate = useNavigate();
+    const user = useAuthStore((state) => state.user);
+    const {
+        skills,
+        isLoading,
+        error,
+        loadSkills,
+        addSkill,
+        removeSkill,
+        extractFromResume
+    } = useProfileStore();
 
-    const [newSkill, setNewSkill] = useState('');
+    const [skillInput, setSkillInput] = useState('');
     const [resumeText, setResumeText] = useState('');
 
     useEffect(() => {
-        fetchSkills();
-    }, [fetchSkills]);
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
+        if (user) {
+            loadSkills();
+        }
+    }, [user, loadSkills]);
 
     const handleAddSkill = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (newSkill.trim()) {
-            await addSkill(newSkill.trim());
-            setNewSkill('');
+        if (skillInput.trim()) {
+            await addSkill(skillInput.trim());
+            setSkillInput('');
         }
     };
 
-    const handleExtractResume = async () => {
+    const handleExtract = async () => {
         if (resumeText.trim()) {
             await extractFromResume(resumeText.trim());
             setResumeText('');
@@ -36,133 +40,116 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-            {/* Navigation Bar */}
-            <nav className="bg-white shadow-sm border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16 items-center">
-                        <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => navigate('/')}>
-                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                                SkillGap
-                            </span>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={() => navigate('/profile')}
-                                className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                                disabled={isLoading}
-                            >
-                                My Profile
-                            </button>
-                            <button
-                                onClick={handleLogout}
-                                className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                                title="Logout"
-                                disabled={isLoading}
-                            >
-                                Logout
-                            </button>
-                        </div>
-                    </div>
+        <div className="min-h-screen bg-[#0f1117] flex flex-col font-sans">
+            <Navbar />
+            <main className="flex-1 w-full max-w-6xl mx-auto p-6 md:p-8 flex flex-col gap-8">
+                {/* Header */}
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-3xl font-bold text-white tracking-tight">
+                        Skill Profile Setup
+                    </h1>
+                    <p className="text-[#9aa0ac] text-lg max-w-2xl text-balance">
+                        Define your expertise. Add your skills manually or paste your resume and let our engine extract them for you.
+                    </p>
                 </div>
-            </nav>
 
-            {/* Main Content */}
-            <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="bg-white shadow rounded-lg p-6 sm:p-8">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-6">My Skills Profile</h1>
+                {error && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3">
+                        <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p className="text-sm text-red-400 font-medium">{error}</p>
+                    </div>
+                )}
 
-                    {error && (
-                        <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <span className="block sm:inline">{error}</span>
-                        </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Left Column: Input Methods */}
-                        <div className="space-y-6">
-                            {/* Manual Entry */}
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <h2 className="text-lg font-semibold text-gray-800 mb-3">Add Skill Manually</h2>
-                                <form onSubmit={handleAddSkill} className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={newSkill}
-                                        onChange={(e) => setNewSkill(e.target.value)}
-                                        placeholder="e.g. React, Python"
-                                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2 border"
-                                        disabled={isLoading}
-                                    />
-                                    <button
-                                        type="submit"
-                                        disabled={isLoading || !newSkill.trim()}
-                                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                                    >
-                                        Add
-                                    </button>
-                                </form>
-                            </div>
-
-                            {/* Resume Extraction */}
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <h2 className="text-lg font-semibold text-gray-800 mb-3">Extract from Resume</h2>
-                                <textarea
-                                    value={resumeText}
-                                    onChange={(e) => setResumeText(e.target.value)}
-                                    placeholder="Paste your resume text here to automatically extract your skills..."
-                                    rows={6}
-                                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 border mb-3 resize-none"
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Left Column: Manual Add + Current Skills */}
+                    <div className="flex flex-col gap-6">
+                        <div className="p-6 rounded-2xl bg-[#161a25] border border-white/5 flex flex-col gap-5">
+                            <h2 className="text-xl font-semibold text-white">Your Skills</h2>
+                            <form onSubmit={handleAddSkill} className="flex gap-3">
+                                <input
+                                    type="text"
+                                    value={skillInput}
+                                    onChange={(e) => setSkillInput(e.target.value)}
+                                    placeholder="e.g. React, Python, AWS..."
+                                    className="flex-1 bg-[#1c2130] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#38e5b1] focus:border-transparent transition-all"
                                     disabled={isLoading}
                                 />
                                 <button
-                                    onClick={handleExtractResume}
-                                    disabled={isLoading || !resumeText.trim()}
-                                    className="w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                                    type="submit"
+                                    disabled={isLoading || !skillInput}
+                                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#38e5b1] to-[#22c55e] text-[#0f1117] font-semibold hover:shadow-lg hover:shadow-[#38e5b1]/20 transition-all active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#38e5b1] disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {isLoading ? 'Extracting...' : 'Extract Skills'}
+                                    Add
                                 </button>
-                            </div>
-                        </div>
+                            </form>
 
-                        {/* Right Column: Display Skills */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col h-full">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-between">
-                                <span>Your Saved Skills</span>
-                                <span className="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{skills.length} Total</span>
-                            </h2>
-
-                            <div className="flex-1 bg-gray-50 border border-gray-100 rounded p-4 min-h-[300px]">
+                            <div className="flex flex-wrap gap-2 mt-2">
                                 {isLoading && skills.length === 0 ? (
-                                    <div className="flex items-center justify-center h-full text-gray-400">Loading skills...</div>
+                                    <div className="text-[#9aa0ac] text-sm flex items-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Loading skills...
+                                    </div>
                                 ) : skills.length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center h-full text-gray-500 text-center">
-                                        <p>No skills added yet.</p>
-                                        <p className="text-sm mt-1">Add them manually or extract from your resume.</p>
-                                    </div>
+                                    <p className="text-[#9aa0ac] text-sm">No skills added yet. Add some to get started!</p>
                                 ) : (
-                                    <div className="flex flex-wrap gap-2">
-                                        {skills.map((skill, index) => (
-                                            <span
-                                                key={index}
-                                                className="inline-flex items-center py-1.5 px-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 shadow-sm transition-transform hover:scale-105 group"
+                                    skills.map((skill, i) => (
+                                        <div
+                                            key={`${skill}-${i}`}
+                                            className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1c2130] border border-white/10 text-white text-sm hover:border-white/20 transition-colors"
+                                        >
+                                            <span>{skill}</span>
+                                            <button
+                                                onClick={() => removeSkill(skill)}
+                                                className="text-[#6b7280] hover:text-red-400 transition-colors focus:outline-none"
+                                                disabled={isLoading}
+                                                aria-label={`Remove ${skill}`}
                                             >
-                                                {skill}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeSkill(skill)}
-                                                    className="ml-2 flex-shrink-0 inline-flex items-center justify-center h-4 w-4 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-900 focus:outline-none focus:bg-blue-500 focus:text-white transition-colors"
-                                                    aria-label={`Remove ${skill}`}
-                                                    disabled={isLoading}
-                                                >
-                                                    <svg className="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                                                        <path strokeLinecap="round" strokeWidth="1.5" d="M1 1l6 6m0-6L1 7" />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    ))
                                 )}
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column: Resume Pasting */}
+                    <div className="flex flex-col gap-6">
+                        <div className="p-6 rounded-2xl bg-[#161a25] border border-white/5 flex flex-col gap-5 h-full">
+                            <h2 className="text-xl font-semibold text-white">Auto-Extract from Resume</h2>
+                            <p className="text-[#9aa0ac] text-sm">
+                                Paste the text from your resume or LinkedIn profile, and we'll automatically detect your technical skills.
+                            </p>
+                            <textarea
+                                value={resumeText}
+                                onChange={(e) => setResumeText(e.target.value)}
+                                placeholder="Paste your resume text here..."
+                                className="flex-1 min-h-[200px] bg-[#1c2130] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#38e5b1] focus:border-transparent transition-all resize-none"
+                                disabled={isLoading}
+                            />
+                            <button
+                                onClick={handleExtract}
+                                disabled={isLoading || !resumeText}
+                                className="w-full py-3 rounded-xl bg-[#1c2130] hover:bg-[#252a3b] border border-white/10 hover:border-white/20 text-white font-medium transition-all active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#38e5b1] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Extracting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg className="w-5 h-5 text-[#38e5b1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                        </svg>
+                                        Extract Skills
+                                    </>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>

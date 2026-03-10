@@ -1,5 +1,5 @@
 import pytest
-from extraction.engine import extract_skills
+from server.extraction.engine import extract_skills
 
 def test_extract_skills_empty():
     assert extract_skills("", []) == {"have": [], "missing": [], "bonus": []}
