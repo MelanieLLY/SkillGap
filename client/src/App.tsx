@@ -1,78 +1,26 @@
-import { useState } from 'react'
-import axios from 'axios'
-import Navbar from './components/Navbar'
-import JDInput from './components/JDInput'
-import SkillMatchResults from './components/SkillMatchResults'
-import LearningRoadmap from './components/LearningRoadmap'
-import UserSkillsInput from './components/UserSkillsInput'
-
-interface SkillResults {
-    have: string[];
-    missing: string[];
-    bonus: string[];
-}
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-    const [userSkills, setUserSkills] = useState<string[]>([
-        'python', 'react', 'typescript', 'javascript', 'html', 'css'
-    ]);
-    const [results, setResults] = useState<SkillResults | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const handleAnalyze = async (jobDescription: string) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const response = await axios.post<SkillResults>(
-                'http://localhost:8000/api/extract',
-                {
-                    job_description: jobDescription,
-                    user_skills: userSkills,
-                }
-            );
-            setResults(response.data);
-        } catch (err) {
-            console.error('Extraction failed:', err);
-            setError('Failed to analyze the job description. Please ensure the backend server is running.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     return (
-        <div className="min-h-screen flex flex-col bg-[#0f1117]">
-            <Navbar />
+        <BrowserRouter>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-            <main className="flex-grow p-6 max-w-[1440px] mx-auto w-full">
-                {/* Error Banner */}
-                {error && (
-                    <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-2">
-                        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {error}
-                    </div>
-                )}
+                {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
 
-                {/* Two-Column Dashboard Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
-                    {/* Left Column — User Skills + JD Input */}
-                    <div className="flex flex-col gap-6">
-                        <UserSkillsInput skills={userSkills} onSkillsChange={setUserSkills} />
-                        <JDInput onAnalyze={handleAnalyze} isLoading={isLoading} />
-                    </div>
-
-                    {/* Right Column — Results + Roadmap */}
-                    <div className="flex flex-col gap-6">
-                        <SkillMatchResults skills={results} />
-                        <LearningRoadmap />
-                    </div>
-                </div>
-            </main>
-        </div>
-    )
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
-export default App
+export default App;
