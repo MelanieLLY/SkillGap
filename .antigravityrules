@@ -41,7 +41,7 @@ This is the system prompt and global behavior guideline for AI agents working on
   the test first. This is not optional.
 - **Test File Location**: All test files go in the `server/tests/` 
   folder and must be named `test_<module_name>.py`.
-  
+
 ## 5. Scrum & Workflow Instructions
 During development, strictly adhere to standard Scrum management processes:
 - **Branch Naming**: Must include the Issue ID. Format: `feature/42-description`, `bugfix/12-description`, `chore/5-setup`.
