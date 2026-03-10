@@ -9,6 +9,7 @@ const Navbar: React.FC = () => {
     const location = useLocation();
 
     const isDashboard = location.pathname === '/dashboard';
+    const isHistory = location.pathname === '/history';
 
     return (
         <nav className="w-full px-6 py-4 flex items-center justify-between border-b border-white/5 bg-[#161a25]">
@@ -34,6 +35,15 @@ const Navbar: React.FC = () => {
                         }`}
                 >
                     Dashboard
+                </Link>
+                <Link
+                    to="/history"
+                    className={`text-sm font-medium pb-1 transition-colors ${isHistory
+                        ? 'text-white border-b-2 border-[#38e5b1]'
+                        : 'text-[#9aa0ac] hover:text-white border-b-2 border-transparent'
+                        }`}
+                >
+                    History
                 </Link>
                 <a
                     href="#"

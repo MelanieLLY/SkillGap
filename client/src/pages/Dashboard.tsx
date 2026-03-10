@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { historyApi } from '../api/history';
 import { useProfileStore } from '../store/profileStore';
 import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/Navbar';
@@ -12,6 +13,8 @@ interface SkillResults {
     have: string[];
     missing: string[];
     bonus: string[];
+    company_name?: string | null;
+    position_name?: string | null;
 }
 
 export default function Dashboard() {
@@ -47,10 +50,13 @@ export default function Dashboard() {
     const [results, setResults] = useState<SkillResults | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [historyId, setHistoryId] = useState<number | null>(null);
+    const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleAnalyze = async (jobDescription: string) => {
         setIsLoading(true);
         setError(null);
+        setHistoryId(null);
 
         try {
             const response = await axios.post<SkillResults>(
@@ -61,11 +67,55 @@ export default function Dashboard() {
                 }
             );
             setResults(response.data);
+
+            // Auto-save history
+            const have = response.data.have || [];
+            const missing = response.data.missing || [];
+            const totalRequired = have.length + missing.length;
+            const matchScore = totalRequired > 0 ? (have.length / totalRequired) * 100 : 0;
+
+            try {
+                const historyRecord = await historyApi.createHistory({
+                    company_name: response.data.company_name,
+                    position_name: response.data.position_name,
+                    match_score: matchScore,
+                    have_skills: response.data.have,
+                    missing_skills: response.data.missing,
+                    bonus_skills: response.data.bonus,
+                });
+                setHistoryId(historyRecord.id);
+            } catch (historyErr) {
+                console.error("Failed to auto-save history:", historyErr);
+                // We don't block the UI for a failed save right now
+            }
         } catch (err) {
             console.error('Extraction failed:', err);
             setError('Failed to analyze the job description. Please ensure the backend server is running.');
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleUpdateHistory = (updates: Partial<SkillResults>) => {
+        if (!results) return;
+
+        // Optimistic UI update
+        const updatedResults = { ...results, ...updates };
+        setResults(updatedResults);
+
+        // Debounce actual save
+        if (historyId) {
+            if (saveTimeout.current) clearTimeout(saveTimeout.current);
+            saveTimeout.current = setTimeout(async () => {
+                try {
+                    await historyApi.updateHistory(historyId, {
+                        company_name: updatedResults.company_name,
+                        position_name: updatedResults.position_name,
+                    });
+                } catch (err) {
+                    console.error("Failed to update history record", err);
+                }
+            }, 1000);
         }
     };
 
@@ -97,7 +147,11 @@ export default function Dashboard() {
 
                     {/* Right Column — Results + Roadmap */}
                     <div className="flex flex-col gap-6">
-                        <SkillMatchResults skills={results} />
+                        <SkillMatchResults
+                            skills={results}
+                            onCompanyChange={(val) => handleUpdateHistory({ company_name: val })}
+                            onPositionChange={(val) => handleUpdateHistory({ position_name: val })}
+                        />
                         <LearningRoadmap />
                     </div>
                 </div>

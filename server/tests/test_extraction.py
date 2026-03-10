@@ -1,5 +1,5 @@
 import pytest
-from server.extraction.engine import extract_skills, calculate_match_score
+from server.extraction.engine import extract_skills, calculate_match_score, extract_company_and_position
 
 def test_extract_skills_empty():
     assert extract_skills("", []) == {"have": [], "missing": [], "bonus": []}
@@ -71,3 +71,19 @@ def test_calculate_match_score_rounding():
     missing = ["django"]
     # 2 / 3 = 66.666...
     assert calculate_match_score(have, missing) == 66.67
+
+def test_extract_company_and_position():
+    jd1 = "Welcome to TechLogix. Company: TechLogix Inc.\nRole: Senior Developer"
+    res1 = extract_company_and_position(jd1)
+    assert res1["company_name"] == "TechLogix Inc."
+    assert res1["position_name"] == "Senior Developer"
+    
+    jd2 = "We are hiring! Position: Software Engineer"
+    res2 = extract_company_and_position(jd2)
+    assert res2["company_name"] is None
+    assert res2["position_name"] == "Software Engineer"
+    
+    jd3 = "No obvious fields here."
+    res3 = extract_company_and_position(jd3)
+    assert res3["company_name"] is None
+    assert res3["position_name"] is None

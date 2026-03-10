@@ -1,5 +1,5 @@
 import re
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 
 # A predefined curated list of tech skills (simplified mapping for the MVP)
 # In production, this would be loaded from a database or a more exhaustive config.
@@ -87,3 +87,26 @@ def calculate_match_score(have: List[str], missing: List[str]) -> float:
         
     score = (len(have) / total_required) * 100
     return round(score, 2)
+
+def extract_company_and_position(job_description: str) -> Dict[str, Optional[str]]:
+    """
+    Attempts to extract company name and position name from a job description using basic heuristics.
+    """
+    company_name = None
+    position_name = None
+    
+    # Simple heuristic to find company name: "Company: Acme Corp"
+    company_match = re.search(r'(?i)\bcompany\s*:\s*([^\n]+)', job_description)
+    if company_match:
+        company_name = company_match.group(1).strip()
+        
+    # Simple heuristic to find position name: "Role: Frontend Developer", "Title: ...", "Position: ..."
+    position_match = re.search(r'(?i)\b(?:role|title|position|job)\s*:\s*([^\n]+)', job_description)
+    if position_match:
+        position_name = position_match.group(1).strip()
+        
+    return {
+        "company_name": company_name,
+        "position_name": position_name
+    }
+

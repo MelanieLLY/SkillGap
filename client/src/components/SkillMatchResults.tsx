@@ -6,10 +6,18 @@ export interface SkillMatchResultsProps {
     have: string[];
     missing: string[];
     bonus: string[];
+    company_name?: string | null;
+    position_name?: string | null;
   } | null;
+  onCompanyChange?: (value: string) => void;
+  onPositionChange?: (value: string) => void;
 }
 
-const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
+const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({
+  skills,
+  onCompanyChange,
+  onPositionChange
+}) => {
   const have = skills?.have ?? [];
   const missing = skills?.missing ?? [];
   const bonus = skills?.bonus ?? [];
@@ -57,11 +65,31 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
   return (
     <div className="glass-card-accent p-6">
       {/* Section Header */}
-      <div className="flex items-center gap-2 mb-5">
-        <svg className="w-4 h-4 text-[#38e5b1]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-        </svg>
-        <h2 className="text-lg font-semibold text-white">Skill Match Score</h2>
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <svg className="w-4 h-4 text-[#38e5b1]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          <h2 className="text-lg font-semibold text-white">Skill Match Score</h2>
+        </div>
+        {hasResults && (
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              placeholder="Company Name"
+              value={skills.company_name || ''}
+              onChange={(e) => onCompanyChange?.(e.target.value)}
+              className="px-3 py-1.5 bg-[#0f1117] border border-white/10 rounded-lg text-sm text-white placeholder-[#5f6573] focus:outline-none focus:border-[#38e5b1]/50 w-36 transition-colors"
+            />
+            <input
+              type="text"
+              placeholder="Position/Role"
+              value={skills.position_name || ''}
+              onChange={(e) => onPositionChange?.(e.target.value)}
+              className="px-3 py-1.5 bg-[#0f1117] border border-white/10 rounded-lg text-sm text-white placeholder-[#5f6573] focus:outline-none focus:border-[#38e5b1]/50 w-40 transition-colors"
+            />
+          </div>
+        )}
       </div>
 
       {/* Ring + Three-Column Layout */}
