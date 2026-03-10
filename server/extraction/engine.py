@@ -69,3 +69,21 @@ def extract_skills(job_description: str, user_skills: List[str]) -> Dict[str, Li
         "missing": missing,
         "bonus": bonus
     }
+
+def calculate_match_score(have: List[str], missing: List[str]) -> float:
+    """
+    Calculates the percentage match score based on skills the user has versus total required skills.
+    
+    Args:
+        have (List[str]): List of matching skills.
+        missing (List[str]): List of missing required skills.
+        
+    Returns:
+        float: The match score as a percentage between 0.0 and 100.0.
+    """
+    total_required = len(have) + len(missing)
+    if total_required == 0:
+        return 0.0
+        
+    score = (len(have) / total_required) * 100
+    return round(score, 2)

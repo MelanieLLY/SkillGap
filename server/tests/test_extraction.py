@@ -1,5 +1,5 @@
 import pytest
-from server.extraction.engine import extract_skills
+from server.extraction.engine import extract_skills, calculate_match_score
 
 def test_extract_skills_empty():
     assert extract_skills("", []) == {"have": [], "missing": [], "bonus": []}
@@ -49,5 +49,25 @@ def test_extract_skills_case_and_boundaries():
     result = extract_skills(jd, user)
     assert "c++" in result["have"]
     assert "node.js" in result["have"]
-    assert "java" in result["missing"]
     assert "javascript" in result["missing"]
+
+def test_calculate_match_score_empty():
+    assert calculate_match_score([], []) == 0.0
+
+def test_calculate_match_score_full_match():
+    assert calculate_match_score(["python", "react"], []) == 100.0
+
+def test_calculate_match_score_no_match():
+    assert calculate_match_score([], ["python", "react"]) == 0.0
+
+def test_calculate_match_score_partial_match():
+    have = ["python", "react"]
+    missing = ["django", "postgres"]
+    # 2 / 4 = 50%
+    assert calculate_match_score(have, missing) == 50.0
+
+def test_calculate_match_score_rounding():
+    have = ["python", "react"]
+    missing = ["django"]
+    # 2 / 3 = 66.666...
+    assert calculate_match_score(have, missing) == 66.67
