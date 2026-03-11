@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from typing import AsyncGenerator, Dict, Any
 
 from contextlib import asynccontextmanager
 from sqlalchemy import text
@@ -15,7 +16,16 @@ from server.auth import models
 from server.history import models as history_models
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """
+    Lifespan context manager for FastAPI application startup and shutdown events.
+
+    Args:
+        app (FastAPI): The FastAPI application instance.
+
+    Yields:
+        None
+    """
     models.Base.metadata.create_all(bind=engine)
     history_models.Base.metadata.create_all(bind=engine)
     # Fallback to add skills column explicitly since we don't use alembic for existing DBs
@@ -42,7 +52,20 @@ app.include_router(profile_router, prefix="/api")
 app.include_router(history_router, prefix="/api/history", tags=["history"])
 
 @app.exception_handler(SQLAlchemyError)
-async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
+async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError) -> JSONResponse:
+    """
+    Global exception handler for SQLAlchemyError.
+    
+    Catches database-related exceptions globally, preventing app crashes,
+    and returns a clean JSON response.
+
+    Args:
+        request (Request): The incoming FastAPI request.
+        exc (SQLAlchemyError): The caught exception instance.
+
+    Returns:
+        JSONResponse: An HTTP 500 JSON response containing an error summary.
+    """
     # Log the error here to console so we can debug it
     print(f"Global DB Error -> URL: {request.url} | Error: {str(exc)}")
     return JSONResponse(
@@ -52,12 +75,24 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
 
 
 @app.get("/")
-async def root():
+async def root() -> Dict[str, str]:
+    """
+    Root endpoint for the API.
+
+    Returns:
+        Dict[str, str]: A simple welcome message.
+    """
     return {"message": "Welcome to SkillGap API"}
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> Dict[str, str]:
+    """
+    Health check endpoint.
+
+    Returns:
+        Dict[str, str]: The health status of the application.
+    """
     return {"status": "healthy"}
 
 

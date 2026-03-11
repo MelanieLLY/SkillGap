@@ -90,7 +90,14 @@ def calculate_match_score(have: List[str], missing: List[str]) -> float:
 
 def extract_company_and_position(job_description: str) -> Dict[str, Optional[str]]:
     """
-    Attempts to extract company name and position name from a job description using basic heuristics.
+    Attempts to extract the company name and position name from a job description using heuristic patterns.
+
+    Args:
+        job_description (str): The raw text of the job description.
+
+    Returns:
+        Dict[str, Optional[str]]: A dictionary containing 'company_name' and 'position_name',
+                                  which may be strings or None if not found.
     """
     company_name = None
     position_name = None

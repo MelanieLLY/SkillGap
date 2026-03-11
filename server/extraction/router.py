@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 
 from .engine import extract_skills, extract_company_and_position
 
@@ -23,10 +23,17 @@ class ExtractResponse(BaseModel):
 
 
 @router.post("/extract", response_model=ExtractResponse)
-async def extract_endpoint(request: ExtractRequest) -> Dict[str, List[str]]:
+async def extract_endpoint(request: ExtractRequest) -> Dict[str, Any]:
     """
-    Accepts a job description and a list of user skills,
-    returns them categorized into 'have', 'missing', and 'bonus'.
+    Extract skills and categorize them into 'have', 'missing', and 'bonus'.
+    Also attempts to extract the company name and position name from the job description.
+
+    Args:
+        request (ExtractRequest): The request payload containing user skills and job description.
+
+    Returns:
+        Dict[str, Any]: A dictionary containing categorized skills along with extracted
+                        company name and position name, adhering to ExtractResponse.
     """
     result = extract_skills(
         job_description=request.job_description,

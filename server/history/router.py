@@ -15,9 +15,16 @@ router = APIRouter()
 def get_user_history(
     db: Session = Depends(get_db),
     current_user: auth_models.User = Depends(get_current_active_user)
-):
+) -> List[history_models.AnalysisHistory]:
     """
     Retrieve all analysis history records for the current authenticated user.
+
+    Args:
+        db (Session): The synchronous database session.
+        current_user (auth_models.User): The currently authenticated user instance.
+
+    Returns:
+        List[history_models.AnalysisHistory]: A list of analysis history records, ordered by descending date.
     """
     history_records = db.query(history_models.AnalysisHistory)\
         .filter(history_models.AnalysisHistory.user_id == current_user.id)\
@@ -30,9 +37,17 @@ def create_history(
     history_in: schemas.HistoryCreate,
     db: Session = Depends(get_db),
     current_user: auth_models.User = Depends(get_current_active_user)
-):
+) -> history_models.AnalysisHistory:
     """
     Create a new analysis history record for the current authenticated user.
+
+    Args:
+        history_in (schemas.HistoryCreate): The payload for the new history record.
+        db (Session): The synchronous database session.
+        current_user (auth_models.User): The currently authenticated user instance.
+
+    Returns:
+        history_models.AnalysisHistory: The newly created analysis history record.
     """
     match_score = calculate_match_score(history_in.have_skills, history_in.missing_skills)
 
@@ -52,10 +67,22 @@ def update_history(
     history_update: schemas.HistoryUpdate,
     db: Session = Depends(get_db),
     current_user: auth_models.User = Depends(get_current_active_user)
-):
+) -> history_models.AnalysisHistory:
     """
-    Update an existing history record (company name or position name).
+    Update an existing history record (such as company name or position name).
     Enforces that the record belongs to the authenticated user.
+
+    Args:
+        history_id (int): The ID of the primary key for the history record.
+        history_update (schemas.HistoryUpdate): The data fields to update.
+        db (Session): The synchronous database session.
+        current_user (auth_models.User): The currently authenticated user instance.
+
+    Returns:
+        history_models.AnalysisHistory: The updated analysis history record.
+
+    Raises:
+        HTTPException: If the record is not found or the user is not authorized to edit it.
     """
     db_history = db.query(history_models.AnalysisHistory).filter(history_models.AnalysisHistory.id == history_id).first()
     

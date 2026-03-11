@@ -12,8 +12,16 @@ import re
 router = APIRouter(prefix="/profile", tags=["profile"])
 
 @router.get("/skills", response_model=List[str])
-def get_skills(current_user: User = Depends(get_current_active_user)):
-    """Retrieve the current user's skills"""
+def get_skills(current_user: User = Depends(get_current_active_user)) -> List[str]:
+    """
+    Retrieve the current user's skills.
+
+    Args:
+        current_user (User): The currently authenticated user instance.
+
+    Returns:
+        List[str]: A list of skill strings associated with the user.
+    """
     return current_user.skills if current_user.skills else []
 
 @router.post("/skills", response_model=List[str])
@@ -21,8 +29,21 @@ def add_skill(
     request: SkillAddRequest, 
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
-):
-    """Add a single skill to the current user's profile"""
+) -> List[str]:
+    """
+    Add a single skill to the current user's profile.
+
+    Args:
+        request (SkillAddRequest): The request payload containing the skill to add.
+        current_user (User): The currently authenticated user instance.
+        db (Session): The synchronous database session.
+
+    Returns:
+        List[str]: The updated list of skills for the user.
+
+    Raises:
+        HTTPException: If the provided skill is empty string.
+    """
     skill = request.skill.strip()
     if not skill:
         raise HTTPException(status_code=400, detail="Skill cannot be empty")
@@ -43,8 +64,21 @@ def remove_skill(
     skill_name: str,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
-):
-    """Remove a skill from the user's profile"""
+) -> List[str]:
+    """
+    Remove a specific skill from the user's profile.
+
+    Args:
+        skill_name (str): The name of the skill to be removed.
+        current_user (User): The currently authenticated user instance.
+        db (Session): The synchronous database session.
+
+    Returns:
+        List[str]: The updated list of skills for the user after removal.
+
+    Raises:
+        HTTPException: If the skill is not found in the user's profile.
+    """
     current_skills = list(current_user.skills) if current_user.skills else []
     
     # Filter out exactly matching or case-insensitive matching
@@ -62,8 +96,18 @@ def extract_from_resume(
     request: ResumeExtractRequest,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
-):
-    """Extract skills from a resume text and save them to the user's profile."""
+) -> List[str]:
+    """
+    Extract skills from a provided resume text and save them to the user's profile.
+
+    Args:
+        request (ResumeExtractRequest): The request payload containing the resume text.
+        current_user (User): The currently authenticated user instance.
+        db (Session): The synchronous database session.
+
+    Returns:
+        List[str]: The updated list of skills for the user after extraction and saving.
+    """
     resume_text = request.resume_text.lower()
     
     current_skills = list(current_user.skills) if current_user.skills else []

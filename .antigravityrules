@@ -4,7 +4,7 @@ This is the system prompt and global behavior guideline for AI agents working on
 
 ## 1. Project Context & Tech Stack
 - **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Zustand (state management). SPA architecture. Server-side rendering frameworks like Next.js are strictly forbidden. Axios is highly recommended for network requests, and Recharts or Custom SVG for the animated matching ring.
-- **Backend**: Python 3.11, FastAPI (fully asynchronous endpoints required), SQLAlchemy ORM, PostgreSQL. Use Pydantic for validation.
+- **Backend**: Python 3.11, FastAPI, SQLAlchemy ORM, PostgreSQL. Use Pydantic for validation.
 - **AI Interface**: Anthropic Claude API (`claude-sonnet-4-20250514`).
 - **Infrastructure**: Local Docker Compose, GitHub Actions for CI/CD.
 - **Directory Structure & Architectural Patterns**:
