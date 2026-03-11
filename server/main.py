@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -38,6 +40,15 @@ app.include_router(extraction_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
 app.include_router(history_router, prefix="/api/history", tags=["history"])
+
+@app.exception_handler(SQLAlchemyError)
+async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
+    # Log the error here to console so we can debug it
+    print(f"Global DB Error -> URL: {request.url} | Error: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "A database error occurred while processing your request."},
+    )
 
 
 @app.get("/")
