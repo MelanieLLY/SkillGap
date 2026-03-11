@@ -12,3 +12,4 @@ alembic
 httpx
 email-validator
 bcrypt<4.0.0
+anthropic
