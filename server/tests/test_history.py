@@ -31,7 +31,6 @@ def test_create_history():
     response = client.post("/api/history/", json={
         "company_name": "ACME",
         "position_name": "Engineer",
-        "match_score": 85.5,
         "have_skills": ["python"],
         "missing_skills": ["aws"],
         "bonus_skills": []
@@ -40,7 +39,7 @@ def test_create_history():
     assert response.status_code == 200
     data = response.json()
     assert data["company_name"] == "ACME"
-    assert data["match_score"] == 85.5
+    assert data["match_score"] == 50.0
     assert len(mock_db.adds) == 1
 
 def test_get_history():
