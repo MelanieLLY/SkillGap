@@ -1,0 +1,226 @@
+# SkillGap CI Pipeline
+# Triggers on every push and pull_request to main / develop.
+# Jobs run in strict dependency order:
+#   job-1-lint  →  job-2-test  →  job-3-build
+#
+# Coverage gate: pytest fails (and the whole pipeline blocks) when
+# combined backend coverage drops below 80 %.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Global defaults
+# ─────────────────────────────────────────────────────────────────────────────
+env:
+  # ── Python ──────────────────────────────────────────────────────────────
+  PYTHON_VERSION: "3.11"
+  # ── Node ────────────────────────────────────────────────────────────────
+  NODE_VERSION: "20"
+  # ── Paths ───────────────────────────────────────────────────────────────
+  SERVER_DIR: server
+  CLIENT_DIR: client
+  # ── Coverage threshold (must match PRD rule §4) ─────────────────────────
+  COVERAGE_THRESHOLD: "80"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 1 · LINT  (ESLint + Prettier for frontend; ruff + black for backend)
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  lint:
+    name: "Job 1 · Lint (ESLint / Prettier / ruff)"
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Node setup + cache ────────────────────────────────────────────
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npm ci
+
+      # ── ESLint ────────────────────────────────────────────────────────
+      - name: ESLint (TypeScript / React)
+        working-directory: ${{ env.CLIENT_DIR }}
+        # --max-warnings 0 means any warning is treated as an error
+        run: npx eslint . --ext .ts,.tsx --max-warnings 0
+
+      # ── Prettier ──────────────────────────────────────────────────────
+      - name: Prettier format check
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npx prettier --check "src/**/*.{ts,tsx,css}"
+
+      # ── Python setup + cache ──────────────────────────────────────────
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: ${{ env.SERVER_DIR }}/requirements.txt
+
+      - name: Install Python linting tools
+        run: pip install ruff black
+
+      # ── ruff (PEP 8 + import order + type hints) ──────────────────────
+      - name: ruff lint
+        working-directory: ${{ env.SERVER_DIR }}
+        run: ruff check . --output-format=github
+
+      # ── black (formatting check only) ────────────────────────────────
+      - name: black format check
+        working-directory: ${{ env.SERVER_DIR }}
+        run: black --check .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 2 · TEST  (backend pytest + coverage; frontend type-check)
+# ─────────────────────────────────────────────────────────────────────────────
+  test:
+    name: "Job 2 · Test (pytest + coverage ≥ 80 %)"
+    runs-on: ubuntu-latest
+    needs: lint   # must pass lint before running tests
+
+    # ── Fake service secrets so FastAPI config doesn't crash on import ──
+    env:
+      DATABASE_URL: "sqlite:///./test.db"
+      SECRET_KEY: "ci-test-secret-key-not-used-in-production"
+      ALGORITHM: "HS256"
+      ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+      ANTHROPIC_API_KEY: "sk-ant-placeholder-for-ci"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Python ────────────────────────────────────────────────────────
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: ${{ env.SERVER_DIR }}/requirements.txt
+
+      - name: Install backend dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r ${{ env.SERVER_DIR }}/requirements.txt
+          pip install pytest pytest-cov pytest-asyncio httpx
+
+      # ── Backend tests + coverage gate ─────────────────────────────────
+      - name: Run pytest with coverage
+        working-directory: ${{ env.SERVER_DIR }}
+        run: |
+          pytest tests/ \
+            --cov=. \
+            --cov-report=xml:coverage.xml \
+            --cov-report=term-missing \
+            --cov-fail-under=${{ env.COVERAGE_THRESHOLD }} \
+            -v
+        # pytest exits with code 2 when --cov-fail-under is not met,
+        # which causes this step (and the job) to fail → PR is blocked.
+
+      # ── Upload coverage artifact (used by Job 3 for the summary) ──────
+      - name: Upload coverage XML
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: ${{ env.SERVER_DIR }}/coverage.xml
+
+      # ── Frontend TypeScript type-check (no runtime tests yet) ─────────
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npm ci
+
+      - name: TypeScript type-check
+        working-directory: ${{ env.CLIENT_DIR }}
+        # tsc --noEmit checks all types without producing output files
+        run: npx tsc --noEmit
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 3 · BUILD & COVERAGE REPORT  (Vite prod build + GHA Job Summary)
+# ─────────────────────────────────────────────────────────────────────────────
+  build:
+    name: "Job 3 · Build & Coverage Report"
+    runs-on: ubuntu-latest
+    needs: test   # must pass tests before building
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Download the coverage XML produced in Job 2 ───────────────────
+      - name: Download coverage XML
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-coverage
+          path: coverage-report/
+
+      # ── Parse coverage % and write to GitHub Job Summary ──────────────
+      - name: Generate coverage summary
+        run: |
+          # Extract the overall line-rate from coverage.xml (value 0–1)
+          LINE_RATE=$(grep -oP '(?<=line-rate=")[0-9.]+' \
+                       coverage-report/coverage.xml | head -1)
+          COVERAGE_PCT=$(echo "$LINE_RATE * 100" | bc -l | xargs printf "%.1f")
+
+          # Write a rich Markdown summary visible in the GitHub UI
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
+          ## 📊 SkillGap Backend Coverage Report
+
+          | Metric | Value |
+          |--------|-------|
+          | **Overall line coverage** | ${COVERAGE_PCT}% |
+          | **Threshold** | ${{ env.COVERAGE_THRESHOLD }}% |
+          | **Status** | $([ $(echo "$COVERAGE_PCT >= ${{ env.COVERAGE_THRESHOLD }}" | bc -l) -eq 1 ] && echo "✅ PASS" || echo "❌ FAIL – below threshold") |
+
+          > Coverage enforced by \`--cov-fail-under=${{ env.COVERAGE_THRESHOLD }}\` in Job 2.
+          > If this job runs, coverage already passed the gate ✅
+          EOF
+
+      # ── Node + Vite production build ──────────────────────────────────
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npm ci
+
+      - name: Vite production build
+        working-directory: ${{ env.CLIENT_DIR }}
+        env:
+          # Inject the API base URL; override via GitHub repo secret in prod
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || 'http://localhost:8000' }}
+        run: npm run build
+
+      # ── Upload the built dist/ as a deployable artifact ───────────────
+      - name: Upload frontend build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: ${{ env.CLIENT_DIR }}/dist/
+          # Retain for 7 days for inspection / manual deployment
+          retention-days: 7
