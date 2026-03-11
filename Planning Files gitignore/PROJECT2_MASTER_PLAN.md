@@ -75,11 +75,11 @@
 
 按照项目要求的 80%+ Test Coverage，你必须现在就开始写测试。TDD (测试驱动开发) 要求你先让 AI 帮你写好 Test Case，然后再写/跑代码。
 
-- [ ] **Step 1.1 设定 Multi-Stage CI/CD Pipeline 与 Coverage Reporting**
+- [x] **Step 1.1 设定 Multi-Stage CI/CD Pipeline 与 Coverage Reporting**
   - **Prompt (发给 Claude Web)**: *"I need an advanced GitHub Actions workflow `.yml` file for my full-stack project (React/Vite frontend, FastAPI/Python backend). The pipeline needs to be MULTI-STAGE: Job 1: Linting (ESLint, Prettier). Job 2: Testing (Frontend UI tests if any, and Backend `pytest` with coverage). Job 3: Build & Coverage Reporting (Output coverage to summary). Fail the PR if coverage is below 80%. Please write the detailed `.github/workflows/ci.yml`."*
   - **Action**: 将生成的 `ci.yml` 放入仓库底下的 `.github/workflows/ci.yml`（没有文件夹就新建）。然后在 GitHub Actions 页面查看它分阶段打绿勾的过程。这时候挂掉完全没关系，继续往下走去写测试。
   *(注：这里的截图等 Step 1.2 你的覆盖率真的合格后，或者第二阶段所有功能写完后，最后回来截一次最新跑绿的 CI。不用第一天强行去截。)*
-- [ ] **Step 1.2 Setup Pytest & 覆盖率 (Issue #14)**
+- [x] **Step 1.2 Setup Pytest & 覆盖率 (Issue #14)**
   - **Prompt (发给 Antigravity)**: *"We need to achieve >80% backend test coverage using `pytest`. Based on the current FastAPI routes and SQLAlchemy models, please create `conftest.py` with database fixtures (using SQLite in-memory for testing) and write unit tests for the Authorization and Keyword Extraction endpoints. We are using TDD, so generate the comprehensive test suite first."*
   - **Action**: 运行 `pytest --cov=app --cov-report=term-missing` (或类似命令)。**每次做完一个新功能，立刻跑这个命令看 coverage 是否掉下 80%。**
   - 📸 **视频素材收集 (Video Artifact):** 用屏幕录制软件 (Cmd+Shift+5) 录制一次你敲下 `pytest --cov` 并看到整排变绿、Coverage 超过 80% 的动画过程 (3-5秒素材，为 10 分钟 Demo Video 的 DevOps 环节积攒震撼力)。

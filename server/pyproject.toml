@@ -1,0 +1,60 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SkillGap – Python project configuration
+# Used by: ruff (linting), black (formatting), pytest (testing), coverage
+# ─────────────────────────────────────────────────────────────────────────────
+
+[tool.ruff]
+# Target Python 3.11 as mandated by PRD §1
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+# E / W = pycodestyle, F = pyflakes, I = isort, N = pep8-naming,
+# UP = pyupgrade, ANN = type annotations nudges, B = bugbear
+select = ["E", "W", "F", "I", "N", "UP", "B"]
+ignore = [
+    "E501",   # line-length is handled by black
+    "ANN101", # missing type for 'self' – noisy in FastAPI route classes
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test files don't need public docstrings
+"tests/**/*.py" = ["D", "ANN"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.black]
+target-version = ["py311"]
+line-length = 88
+
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+# Tell pytest where to look for tests
+testpaths = ["tests"]
+# Human-readable output + short summary for all failures
+# -m 'not integration' excludes live-API tests from the normal CI run.
+# To run integration tests locally: pytest -m integration
+addopts = "-v --tb=short -q -m 'not integration'"
+asyncio_mode = "auto"
+
+# Register custom markers to avoid PytestUnknownMarkWarning
+markers = [
+    "integration: marks tests that call external services (excluded from CI)",
+]
+
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.coverage.run]
+# Measure coverage for the server package itself, not tests or venv
+source = ["."]
+omit = [
+    "tests/*",
+    "venv/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+    "*/alembic/*",
+]
+
+[tool.coverage.report]
+# Matching the 80 % PRD requirement (§4)
+fail_under = 80
+show_missing = true
+skip_covered = false
