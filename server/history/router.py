@@ -7,6 +7,7 @@ from . import models as history_models
 from server.database import get_db
 from server.auth.deps import get_current_active_user
 from server.auth import models as auth_models
+from server.extraction.engine import calculate_match_score
 
 router = APIRouter()
 
@@ -33,8 +34,11 @@ def create_history(
     """
     Create a new analysis history record for the current authenticated user.
     """
+    match_score = calculate_match_score(history_in.have_skills, history_in.missing_skills)
+
     db_history = history_models.AnalysisHistory(
         user_id=current_user.id,
+        match_score=match_score,
         **history_in.model_dump()
     )
     db.add(db_history)
