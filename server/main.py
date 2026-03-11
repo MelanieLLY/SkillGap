@@ -43,7 +43,8 @@ app.include_router(history_router, prefix="/api/history", tags=["history"])
 
 @app.exception_handler(SQLAlchemyError)
 async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
-    # Log the error here if needed
+    # Log the error here to console so we can debug it
+    print(f"Global DB Error -> URL: {request.url} | Error: {str(exc)}")
     return JSONResponse(
         status_code=500,
         content={"detail": "A database error occurred while processing your request."},
