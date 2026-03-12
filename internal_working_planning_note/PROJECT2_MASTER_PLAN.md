@@ -120,8 +120,8 @@
   - **Prompt (发给 Antigravity)**: *"Write an automated AI Assessment script `ai_eval.py`. It should take 5 sample Job Descriptions, run them through our Claude roadmap generator, and then use another LLM call as a 'Judge' to score the generated roadmap based on: 1. Relevance, 2. Specificity, and 3. Completeness (1-5 scale). Output results to `docs/ai_eval_results.md`."*
 - [x] **Step 4.3 代码质量与安全扫描 (Part C)**
   - **Action**: 运行 `ruff check .` (代码质量), `bandit -r server/` (安全), `npm audit` (前端安全)。记录结果。
-- [ ] **Step 4.4 整合并生成最终 Eval Dashboard PDF**
-  - **Action**: 将以上数据（Pytest 总结、AI 质量评分、安全报告）汇总成一份 PDF。这才是老师要的 **Eval Dashboard**。
+- [x] **Step 4.4 整合并生成最终 Eval Dashboard PDF**
+  - **Action**: 将以上数据（Pytest 总结、AI 质量评分、安全报告）汇总成一份 PDF。这才是老师要的 **Eval Dashboard**。---我写成了html:skillgap-eval-dashboard.html
 
 ---
 
