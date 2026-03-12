@@ -1,0 +1,10 @@
+# Bandit configuration file
+# Exclude test files from security scanning as they contain many assertions and mock passwords
+exclude_dirs:
+  - 'server/tests'
+  - 'venv'
+  - '.venv'
+  - 'node_modules'
+
+# Specifically allow assert statements in these files if they were scanned
+skips: ['B101']
