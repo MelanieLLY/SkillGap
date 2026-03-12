@@ -324,7 +324,9 @@ class TestRoadmapGenerateEndpoint:
         )
         assert response.status_code == 422
 
-    def test_missing_field_returns_422(self, client: TestClient, auth_headers: dict) -> None:
+    def test_missing_field_returns_422(
+        self, client: TestClient, auth_headers: dict
+    ) -> None:
         """Omitting the required missing_skills field must return 422."""
         response = client.post(
             "/api/roadmap/generate",
@@ -333,7 +335,9 @@ class TestRoadmapGenerateEndpoint:
         )
         assert response.status_code == 422
 
-    def test_wrong_type_returns_422(self, client: TestClient, auth_headers: dict) -> None:
+    def test_wrong_type_returns_422(
+        self, client: TestClient, auth_headers: dict
+    ) -> None:
         """Sending a non-list for missing_skills must return 422."""
         response = client.post(
             "/api/roadmap/generate",

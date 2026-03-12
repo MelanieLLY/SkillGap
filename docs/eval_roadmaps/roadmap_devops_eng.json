@@ -1,0 +1,406 @@
+{
+  "roadmap": {
+    "generated_for": null,
+    "generated_at": null,
+    "missing_skills": [
+      "aws",
+      "kubernetes",
+      "terraform",
+      "github",
+      "github_actions",
+      "docker",
+      "ansible",
+      "jenkins"
+    ],
+    "total_estimated_duration_weeks": 16,
+    "timeline": [
+      {
+        "phase": 1,
+        "title": "Foundation: Version Control and AWS Basics",
+        "duration_weeks": 3,
+        "start_week": 1,
+        "end_week": 3,
+        "focus_skills": [
+          "github",
+          "aws"
+        ],
+        "weekly_commitment_hours": 15,
+        "milestones": [
+          "Master Git workflows and GitHub collaboration",
+          "Understand AWS core services (EC2, S3, IAM)",
+          "Complete AWS fundamentals certification"
+        ]
+      },
+      {
+        "phase": 2,
+        "title": "Containerization and Infrastructure as Code",
+        "duration_weeks": 4,
+        "start_week": 4,
+        "end_week": 7,
+        "focus_skills": [
+          "docker",
+          "terraform"
+        ],
+        "weekly_commitment_hours": 18,
+        "milestones": [
+          "Build and deploy Docker containers",
+          "Create AWS infrastructure with Terraform",
+          "Implement Terraform state management",
+          "Deploy multi-tier application infrastructure"
+        ]
+      },
+      {
+        "phase": 3,
+        "title": "Container Orchestration and Configuration Management",
+        "duration_weeks": 4,
+        "start_week": 8,
+        "end_week": 11,
+        "focus_skills": [
+          "kubernetes",
+          "ansible"
+        ],
+        "weekly_commitment_hours": 20,
+        "milestones": [
+          "Deploy applications to Kubernetes",
+          "Implement Kubernetes services and ingress",
+          "Automate server configuration with Ansible",
+          "Create Ansible playbooks for application deployment"
+        ]
+      },
+      {
+        "phase": 4,
+        "title": "CI/CD Automation",
+        "duration_weeks": 3,
+        "start_week": 12,
+        "end_week": 14,
+        "focus_skills": [
+          "github_actions",
+          "jenkins"
+        ],
+        "weekly_commitment_hours": 16,
+        "milestones": [
+          "Build CI/CD pipelines with GitHub Actions",
+          "Deploy Jenkins on Kubernetes",
+          "Create automated deployment workflows",
+          "Implement testing and security scanning in pipelines"
+        ]
+      },
+      {
+        "phase": 5,
+        "title": "Capstone Integration Project",
+        "duration_weeks": 2,
+        "start_week": 15,
+        "end_week": 16,
+        "focus_skills": [
+          "aws",
+          "kubernetes",
+          "terraform",
+          "github_actions",
+          "docker",
+          "ansible"
+        ],
+        "weekly_commitment_hours": 25,
+        "milestones": [
+          "Deploy complete microservices application",
+          "Implement full infrastructure automation",
+          "Create comprehensive CI/CD pipeline",
+          "Document and present solution"
+        ]
+      }
+    ],
+    "course_recommendations": [
+      {
+        "skill": "aws",
+        "courses": [
+          {
+            "title": "AWS Certified Solutions Architect Associate",
+            "platform": "A Cloud Guru",
+            "instructor": "Ryan Kroonenburg",
+            "level": "beginner",
+            "duration_hours": 40,
+            "url": "https://acloudguru.com/course/aws-certified-solutions-architect-associate-saa-c03",
+            "priority": "primary"
+          },
+          {
+            "title": "Ultimate AWS Certified Solutions Architect Associate",
+            "platform": "Udemy",
+            "instructor": "Stephane Maarek",
+            "level": "intermediate",
+            "duration_hours": 27,
+            "url": "https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "kubernetes",
+        "courses": [
+          {
+            "title": "Kubernetes for the Absolute Beginners",
+            "platform": "Udemy",
+            "instructor": "Mumshad Mannambeth",
+            "level": "beginner",
+            "duration_hours": 6,
+            "url": "https://www.udemy.com/course/learn-kubernetes/",
+            "priority": "primary"
+          },
+          {
+            "title": "Kubernetes Certified Application Developer (CKAD)",
+            "platform": "Udemy",
+            "instructor": "Mumshad Mannambeth",
+            "level": "intermediate",
+            "duration_hours": 16,
+            "url": "https://www.udemy.com/course/certified-kubernetes-application-developer/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "terraform",
+        "courses": [
+          {
+            "title": "HashiCorp Certified: Terraform Associate",
+            "platform": "A Cloud Guru",
+            "instructor": "Derek Morgan",
+            "level": "beginner",
+            "duration_hours": 20,
+            "url": "https://acloudguru.com/course/hashicorp-certified-terraform-associate-003",
+            "priority": "primary"
+          },
+          {
+            "title": "Terraform for AWS: Beginner to Expert",
+            "platform": "Udemy",
+            "instructor": "Zeal Vora",
+            "level": "intermediate",
+            "duration_hours": 14,
+            "url": "https://www.udemy.com/course/terraform-for-aws/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "github",
+        "courses": [
+          {
+            "title": "Git Complete: The definitive, step-by-step guide to Git",
+            "platform": "Udemy",
+            "instructor": "Jason Taylor",
+            "level": "beginner",
+            "duration_hours": 6,
+            "url": "https://www.udemy.com/course/git-complete/",
+            "priority": "primary"
+          },
+          {
+            "title": "GitHub Ultimate: Master Git and GitHub",
+            "platform": "Udemy",
+            "instructor": "Jason Taylor",
+            "level": "intermediate",
+            "duration_hours": 8,
+            "url": "https://www.udemy.com/course/github-ultimate/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "github_actions",
+        "courses": [
+          {
+            "title": "GitHub Actions - The Complete Guide",
+            "platform": "Udemy",
+            "instructor": "Maximilian Schwarzmüller",
+            "level": "beginner",
+            "duration_hours": 8,
+            "url": "https://www.udemy.com/course/github-actions-the-complete-guide/",
+            "priority": "primary"
+          },
+          {
+            "title": "GitHub Actions for CI/CD",
+            "platform": "Pluralsight",
+            "instructor": "Kevin Jones",
+            "level": "intermediate",
+            "duration_hours": 4,
+            "url": "https://www.pluralsight.com/courses/github-actions-ci-cd",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "docker",
+        "courses": [
+          {
+            "title": "Docker Mastery: with Kubernetes + Swarm",
+            "platform": "Udemy",
+            "instructor": "Bret Fisher",
+            "level": "beginner",
+            "duration_hours": 19,
+            "url": "https://www.udemy.com/course/docker-mastery/",
+            "priority": "primary"
+          },
+          {
+            "title": "Docker Deep Dive",
+            "platform": "A Cloud Guru",
+            "instructor": "Nigel Poulton",
+            "level": "intermediate",
+            "duration_hours": 12,
+            "url": "https://acloudguru.com/course/docker-deep-dive",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "ansible",
+        "courses": [
+          {
+            "title": "Ansible for the Absolute Beginner",
+            "platform": "Udemy",
+            "instructor": "Mumshad Mannambeth",
+            "level": "beginner",
+            "duration_hours": 4,
+            "url": "https://www.udemy.com/course/learn-ansible/",
+            "priority": "primary"
+          },
+          {
+            "title": "Mastering Ansible",
+            "platform": "Udemy",
+            "instructor": "James Spurin",
+            "level": "intermediate",
+            "duration_hours": 10,
+            "url": "https://www.udemy.com/course/mastering-ansible/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "jenkins",
+        "courses": [
+          {
+            "title": "Jenkins, From Zero To Hero",
+            "platform": "Udemy",
+            "instructor": "Ricardo Andre Gonzalez Gomez",
+            "level": "beginner",
+            "duration_hours": 5,
+            "url": "https://www.udemy.com/course/jenkins-from-zero-to-hero/",
+            "priority": "primary"
+          },
+          {
+            "title": "Jenkins Bootcamp: Fully Automate Builds to Deployment",
+            "platform": "Udemy",
+            "instructor": "Jason Taylor",
+            "level": "intermediate",
+            "duration_hours": 8,
+            "url": "https://www.udemy.com/course/jenkins-continuous-integration-bootcamp/",
+            "priority": "supplementary"
+          }
+        ]
+      }
+    ],
+    "project_ideas": [
+      {
+        "id": "proj_001",
+        "title": "Personal Portfolio with AWS S3 and CloudFront",
+        "description": "Create a static website hosted on S3 with CloudFront CDN and version controlled with Git",
+        "skills_practiced": [
+          "github",
+          "aws"
+        ],
+        "difficulty": "beginner",
+        "estimated_hours": 8,
+        "phase": 1,
+        "deliverables": [
+          "Static website",
+          "S3 bucket configuration",
+          "CloudFront distribution",
+          "GitHub repository"
+        ]
+      },
+      {
+        "id": "proj_002",
+        "title": "Containerized Web Application with Terraform",
+        "description": "Deploy a multi-container web application on AWS ECS using Terraform for infrastructure provisioning",
+        "skills_practiced": [
+          "docker",
+          "terraform",
+          "aws"
+        ],
+        "difficulty": "intermediate",
+        "estimated_hours": 20,
+        "phase": 2,
+        "deliverables": [
+          "Dockerized application",
+          "Terraform modules",
+          "ECS cluster",
+          "Load balancer configuration"
+        ]
+      },
+      {
+        "id": "proj_003",
+        "title": "Kubernetes Cluster with Ansible Configuration",
+        "description": "Deploy a web application to EKS and use Ansible to configure worker nodes and deploy applications",
+        "skills_practiced": [
+          "kubernetes",
+          "ansible",
+          "aws"
+        ],
+        "difficulty": "intermediate",
+        "estimated_hours": 25,
+        "phase": 3,
+        "deliverables": [
+          "EKS cluster",
+          "Kubernetes manifests",
+          "Ansible playbooks",
+          "Application deployment"
+        ]
+      },
+      {
+        "id": "proj_004",
+        "title": "CI/CD Pipeline with GitHub Actions and Jenkins",
+        "description": "Create automated build, test, and deployment pipelines using both GitHub Actions and Jenkins",
+        "skills_practiced": [
+          "github_actions",
+          "jenkins",
+          "docker",
+          "kubernetes"
+        ],
+        "difficulty": "advanced",
+        "estimated_hours": 18,
+        "phase": 4,
+        "deliverables": [
+          "GitHub Actions workflows",
+          "Jenkins pipeline",
+          "Automated testing",
+          "Deployment automation"
+        ]
+      },
+      {
+        "id": "proj_005",
+        "title": "End-to-End DevOps Platform",
+        "description": "Build a complete microservices platform with infrastructure automation, container orchestration, and full CI/CD",
+        "skills_practiced": [
+          "aws",
+          "kubernetes",
+          "terraform",
+          "github_actions",
+          "docker",
+          "ansible"
+        ],
+        "difficulty": "expert",
+        "estimated_hours": 50,
+        "phase": 5,
+        "deliverables": [
+          "Microservices architecture",
+          "Complete infrastructure code",
+          "CI/CD pipelines",
+          "Monitoring and logging",
+          "Documentation"
+        ]
+      }
+    ],
+    "summary": {
+      "total_courses": 16,
+      "total_projects": 5,
+      "total_learning_hours": 295,
+      "recommended_weekly_pace": "15-25 hours per week with focused practical application",
+      "completion_target": "2024-05-15"
+    }
+  }
+}

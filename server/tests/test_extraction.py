@@ -202,9 +202,9 @@ class TestExtractCompanyAndPosition:
         for keyword in ("Title", "Position", "Job"):
             jd = f"{keyword}: Software Engineer"
             result = extract_company_and_position(jd)
-            assert result["position_name"] == "Software Engineer", (
-                f"Failed for keyword: {keyword}"
-            )
+            assert (
+                result["position_name"] == "Software Engineer"
+            ), f"Failed for keyword: {keyword}"
 
     def test_only_position_found(self) -> None:
         jd = "We are hiring! Position: Software Engineer"

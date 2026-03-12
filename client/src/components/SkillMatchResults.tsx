@@ -25,9 +25,9 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants: Variants = {
@@ -38,9 +38,9 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
       transition: {
         type: "spring" as const,
         stiffness: 100,
-        damping: 12
-      }
-    }
+        damping: 12,
+      },
+    },
   };
 
   const SkillPill: React.FC<{ skill: string; variant: "have" | "missing" | "bonus" }> = ({
@@ -50,7 +50,8 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
     const styles = {
       have: "bg-green-500/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.05)]",
       missing: "bg-red-500/10 text-red-400 border-red-500/20",
-      bonus: "bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.05)]",
+      bonus:
+        "bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.05)]",
     };
     const dotColors = {
       have: "bg-green-400",
@@ -91,18 +92,20 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
     return (
       <motion.div
         variants={itemVariants}
-        whileHover={{ 
-          scale: 1.02, 
+        whileHover={{
+          scale: 1.02,
           y: -2,
           backgroundColor: "rgba(255, 255, 255, 0.05)",
-          borderColor: "rgba(255, 255, 255, 0.2)"
+          borderColor: "rgba(255, 255, 255, 0.2)",
         }}
         className={cn(
           "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-colors duration-200",
-          styles[variant]
+          styles[variant],
         )}
       >
-        <span className={cn("w-2 h-2 rounded-full flex-shrink-0 animate-pulse", dotColors[variant])} />
+        <span
+          className={cn("w-2 h-2 rounded-full flex-shrink-0 animate-pulse", dotColors[variant])}
+        />
         <span className="truncate">{skill}</span>
         {icons[variant]}
       </motion.div>
@@ -136,7 +139,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
         </div>
 
         {/* Three-Column Skill Grid */}
-        <motion.div 
+        <motion.div
           className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-6 w-full"
           variants={containerVariants}
           initial="hidden"
@@ -156,9 +159,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
                   <p className="text-xs text-[#5f6573] italic py-4">None found</p>
                 )
               ) : (
-                <p className="text-xs text-[#5f6573] italic py-4">
-                  Paste a JD to begin
-                </p>
+                <p className="text-xs text-[#5f6573] italic py-4">Paste a JD to begin</p>
               )}
             </div>
           </div>
@@ -174,9 +175,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
                 missing.length > 0 ? (
                   missing.map((skill) => <SkillPill key={skill} skill={skill} variant="missing" />)
                 ) : (
-                  <p className="text-xs text-[#5f6573] italic py-4">
-                    Perfect match! 🎉
-                  </p>
+                  <p className="text-xs text-[#5f6573] italic py-4">Perfect match! 🎉</p>
                 )
               ) : (
                 <p className="text-xs text-[#5f6573] italic py-4">—</p>

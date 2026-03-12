@@ -71,11 +71,7 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
   };
 
   return (
-    <div
-      className="glass-card-accent p-6"
-      aria-busy={isLoading}
-      aria-live="polite"
-    >
+    <div className="glass-card-accent p-6" aria-busy={isLoading} aria-live="polite">
       {/* ── Section Header ── */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
@@ -315,7 +311,10 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
                                 </h4>
                                 <ul className="space-y-1.5">
                                   {phase.milestones.map((m, i) => (
-                                    <li key={i} className="flex items-start gap-2 text-sm text-[#e8eaed]">
+                                    <li
+                                      key={i}
+                                      className="flex items-start gap-2 text-sm text-[#e8eaed]"
+                                    >
                                       <span className="w-1.5 h-1.5 rounded-full bg-[#38e5b1] mt-1.5 flex-shrink-0" />
                                       {m}
                                     </li>
@@ -387,7 +386,9 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
                                     <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
                                       🛠 Project — {project.title}
                                     </h4>
-                                    <p className="text-sm text-[#e8eaed] mb-2">{project.description}</p>
+                                    <p className="text-sm text-[#e8eaed] mb-2">
+                                      {project.description}
+                                    </p>
                                     <div className="flex flex-wrap gap-2 mb-2">
                                       <span
                                         className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${

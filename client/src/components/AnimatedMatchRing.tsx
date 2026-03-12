@@ -12,8 +12,8 @@ const AnimatedMatchRing: React.FC<AnimatedMatchRingProps> = ({ matchScore, isWai
   // 优化后的物理参数：更平滑的阻尼，更少的抖动
   const springScore = useSpring(0, {
     stiffness: 45, // 降低刚度，减慢初始冲力
-    damping: 20,   // 提高阻尼，减少余震
-    restDelta: 0.01
+    damping: 20, // 提高阻尼，减少余震
+    restDelta: 0.01,
   });
 
   // 监听 spring 变化并同步更新数字，确保数字与圆环物理同步
@@ -35,13 +35,9 @@ const AnimatedMatchRing: React.FC<AnimatedMatchRingProps> = ({ matchScore, isWai
   // 环形几何：确保计算精准
   const radius = 62;
   const circumference = 2 * Math.PI * radius;
-  
+
   // 映射逻辑：0 -> 全偏移（空环），100 -> 无偏移（满环）
-  const dashOffset = useTransform(
-    springScore,
-    [0, 100],
-    [circumference, 0]
-  );
+  const dashOffset = useTransform(springScore, [0, 100], [circumference, 0]);
 
   const getRingColor = (score: number, waiting: boolean): string => {
     if (waiting) return "#38e5b1";
@@ -55,15 +51,15 @@ const AnimatedMatchRing: React.FC<AnimatedMatchRingProps> = ({ matchScore, isWai
   return (
     <div className="relative w-40 h-40 flex items-center justify-center">
       {/* 优化后的背景光晕：更柔和，减少视觉干扰 */}
-      <motion.div 
+      <motion.div
         animate={{
           scale: [1, 1.02, 1], // 极微小的缩放
-          opacity: [0.15, 0.22, 0.15]
+          opacity: [0.15, 0.22, 0.15],
         }}
         transition={{
           duration: 5,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
         className="absolute inset-0 rounded-full blur-3xl"
         style={{ backgroundColor: ringColor }}
@@ -71,14 +67,7 @@ const AnimatedMatchRing: React.FC<AnimatedMatchRingProps> = ({ matchScore, isWai
 
       <svg className="w-full h-full transform -rotate-90 z-10" viewBox="0 0 160 160">
         {/* 背景底环 */}
-        <circle 
-          cx="80" 
-          cy="80" 
-          r={radius} 
-          stroke="#1e2330" 
-          strokeWidth="10" 
-          fill="transparent" 
-        />
+        <circle cx="80" cy="80" r={radius} stroke="#1e2330" strokeWidth="10" fill="transparent" />
         {/* 进度环 */}
         <motion.circle
           cx="80"
@@ -88,9 +77,9 @@ const AnimatedMatchRing: React.FC<AnimatedMatchRingProps> = ({ matchScore, isWai
           strokeWidth="10"
           fill="transparent"
           strokeDasharray={`${circumference} ${circumference}`}
-          style={{ 
+          style={{
             strokeDashoffset: dashOffset,
-            filter: `drop-shadow(0 0 8px ${ringColor}44)` 
+            filter: `drop-shadow(0 0 8px ${ringColor}44)`,
           }}
           strokeLinecap="round"
           initial={{ strokeDashoffset: circumference }}

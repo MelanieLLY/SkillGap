@@ -54,15 +54,11 @@ describe("AnimatedMatchRing", () => {
 
   describe("Score boundary cases", () => {
     it("renders without crashing at score=0", () => {
-      expect(() =>
-        render(<AnimatedMatchRing matchScore={0} />)
-      ).not.toThrow();
+      expect(() => render(<AnimatedMatchRing matchScore={0} />)).not.toThrow();
     });
 
     it("renders without crashing at score=100", () => {
-      expect(() =>
-        render(<AnimatedMatchRing matchScore={100} />)
-      ).not.toThrow();
+      expect(() => render(<AnimatedMatchRing matchScore={100} />)).not.toThrow();
     });
 
     it("uses default isWaiting=false when omitted", () => {

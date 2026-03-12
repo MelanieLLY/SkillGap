@@ -3,11 +3,7 @@ import Skeleton from "./Skeleton";
 
 const RoadmapSkeleton: React.FC = () => {
   return (
-    <div 
-      className="space-y-6" 
-      aria-busy="true" 
-      aria-label="Loading learning roadmap"
-    >
+    <div className="space-y-6" aria-busy="true" aria-label="Loading learning roadmap">
       {/* Summary bar skeleton */}
       <div className="flex flex-wrap gap-3">
         {[1, 2, 3, 4, 5].map((i) => (
@@ -25,7 +21,7 @@ const RoadmapSkeleton: React.FC = () => {
             <div key={i} className="flex items-center gap-4">
               {/* Number circle skeleton */}
               <Skeleton className="w-9 h-9 rounded-full flex-shrink-0" />
-              
+
               {/* Phase card skeleton */}
               <div className="flex-grow flex items-center justify-between bg-[#1a1f2e]/50 border border-white/5 rounded-xl px-5 py-4">
                 <div className="space-y-2 w-full">

@@ -1,0 +1,303 @@
+{
+  "roadmap": {
+    "generated_for": null,
+    "generated_at": null,
+    "missing_skills": [
+      "react",
+      "tailwind",
+      "typescript",
+      "zustand"
+    ],
+    "total_estimated_duration_weeks": 12,
+    "timeline": [
+      {
+        "phase": 1,
+        "title": "TypeScript and React Fundamentals",
+        "duration_weeks": 4,
+        "start_week": 1,
+        "end_week": 4,
+        "focus_skills": [
+          "typescript",
+          "react"
+        ],
+        "weekly_commitment_hours": 15,
+        "milestones": [
+          "Complete TypeScript basics",
+          "Build first React components",
+          "Understand hooks and state",
+          "Create simple React app with TypeScript"
+        ]
+      },
+      {
+        "phase": 2,
+        "title": "Styling with Tailwind CSS",
+        "duration_weeks": 2,
+        "start_week": 5,
+        "end_week": 6,
+        "focus_skills": [
+          "tailwind"
+        ],
+        "weekly_commitment_hours": 12,
+        "milestones": [
+          "Master Tailwind utility classes",
+          "Implement responsive designs",
+          "Create custom components with Tailwind",
+          "Build styled React components"
+        ]
+      },
+      {
+        "phase": 3,
+        "title": "State Management with Zustand",
+        "duration_weeks": 2,
+        "start_week": 7,
+        "end_week": 8,
+        "focus_skills": [
+          "zustand"
+        ],
+        "weekly_commitment_hours": 10,
+        "milestones": [
+          "Understand Zustand concepts",
+          "Create global state stores",
+          "Implement state persistence",
+          "Connect Zustand to React components"
+        ]
+      },
+      {
+        "phase": 4,
+        "title": "Advanced Integration and React 18",
+        "duration_weeks": 2,
+        "start_week": 9,
+        "end_week": 10,
+        "focus_skills": [
+          "react",
+          "typescript",
+          "tailwind",
+          "zustand"
+        ],
+        "weekly_commitment_hours": 12,
+        "milestones": [
+          "Learn React 18 features",
+          "Master concurrent rendering",
+          "Implement advanced patterns",
+          "Optimize performance"
+        ]
+      },
+      {
+        "phase": 5,
+        "title": "Capstone Project and Portfolio",
+        "duration_weeks": 2,
+        "start_week": 11,
+        "end_week": 12,
+        "focus_skills": [
+          "react",
+          "tailwind",
+          "typescript",
+          "zustand"
+        ],
+        "weekly_commitment_hours": 20,
+        "milestones": [
+          "Complete full-stack application",
+          "Deploy to production",
+          "Document code and architecture",
+          "Prepare for interviews"
+        ]
+      }
+    ],
+    "course_recommendations": [
+      {
+        "skill": "react",
+        "courses": [
+          {
+            "title": "React - The Complete Guide 2024",
+            "platform": "Udemy",
+            "instructor": "Maximilian Schwarzmüller",
+            "level": "beginner-advanced",
+            "duration_hours": 48,
+            "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+            "priority": "primary"
+          },
+          {
+            "title": "React 18 for Beginners",
+            "platform": "Scrimba",
+            "instructor": "Bob Ziroll",
+            "level": "beginner",
+            "duration_hours": 12,
+            "url": "https://scrimba.com/learn/learnreact",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "typescript",
+        "courses": [
+          {
+            "title": "Understanding TypeScript",
+            "platform": "Udemy",
+            "instructor": "Maximilian Schwarzmüller",
+            "level": "beginner-advanced",
+            "duration_hours": 31,
+            "url": "https://www.udemy.com/course/understanding-typescript/",
+            "priority": "primary"
+          },
+          {
+            "title": "TypeScript Fundamentals",
+            "platform": "Frontend Masters",
+            "instructor": "Mike North",
+            "level": "beginner",
+            "duration_hours": 8,
+            "url": "https://frontendmasters.com/courses/typescript-v3/",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "tailwind",
+        "courses": [
+          {
+            "title": "Tailwind CSS From Scratch",
+            "platform": "Udemy",
+            "instructor": "Brad Traversy",
+            "level": "beginner-intermediate",
+            "duration_hours": 12,
+            "url": "https://www.udemy.com/course/tailwind-from-scratch/",
+            "priority": "primary"
+          },
+          {
+            "title": "Tailwind CSS Tutorial",
+            "platform": "YouTube",
+            "instructor": "Net Ninja",
+            "level": "beginner",
+            "duration_hours": 6,
+            "url": "https://www.youtube.com/playlist?list=PL4cUxeGkcC9gpXORlEHjc5bgnIi5HEGhw",
+            "priority": "supplementary"
+          }
+        ]
+      },
+      {
+        "skill": "zustand",
+        "courses": [
+          {
+            "title": "Zustand State Management Tutorial",
+            "platform": "YouTube",
+            "instructor": "Jack Herrington",
+            "level": "intermediate",
+            "duration_hours": 3,
+            "url": "https://www.youtube.com/watch?v=KCr-UNsM3vA",
+            "priority": "primary"
+          },
+          {
+            "title": "React State Management with Zustand",
+            "platform": "Egghead",
+            "instructor": "Daishi Kato",
+            "level": "intermediate",
+            "duration_hours": 4,
+            "url": "https://egghead.io/courses/react-state-management-with-zustand",
+            "priority": "supplementary"
+          }
+        ]
+      }
+    ],
+    "project_ideas": [
+      {
+        "id": "todo-app-ts",
+        "title": "TypeScript Todo Application",
+        "description": "Build a todo app with React and TypeScript to practice component creation and type safety",
+        "skills_practiced": [
+          "react",
+          "typescript"
+        ],
+        "difficulty": "beginner",
+        "estimated_hours": 15,
+        "phase": 1,
+        "deliverables": [
+          "Functional todo app",
+          "Type definitions",
+          "Component documentation"
+        ]
+      },
+      {
+        "id": "portfolio-tailwind",
+        "title": "Personal Portfolio with Tailwind",
+        "description": "Create a responsive portfolio website using React, TypeScript, and Tailwind CSS",
+        "skills_practiced": [
+          "react",
+          "typescript",
+          "tailwind"
+        ],
+        "difficulty": "intermediate",
+        "estimated_hours": 20,
+        "phase": 2,
+        "deliverables": [
+          "Responsive portfolio site",
+          "Mobile-first design",
+          "Component library"
+        ]
+      },
+      {
+        "id": "shopping-cart",
+        "title": "E-commerce Shopping Cart",
+        "description": "Build a shopping cart application with global state management using Zustand",
+        "skills_practiced": [
+          "react",
+          "typescript",
+          "tailwind",
+          "zustand"
+        ],
+        "difficulty": "intermediate",
+        "estimated_hours": 25,
+        "phase": 3,
+        "deliverables": [
+          "Shopping cart functionality",
+          "State persistence",
+          "Product catalog"
+        ]
+      },
+      {
+        "id": "dashboard-app",
+        "title": "Analytics Dashboard",
+        "description": "Create a data visualization dashboard using React 18 features and all learned technologies",
+        "skills_practiced": [
+          "react",
+          "typescript",
+          "tailwind",
+          "zustand"
+        ],
+        "difficulty": "advanced",
+        "estimated_hours": 35,
+        "phase": 4,
+        "deliverables": [
+          "Interactive dashboard",
+          "Real-time updates",
+          "Performance optimizations"
+        ]
+      },
+      {
+        "id": "capstone-project",
+        "title": "Full-Featured Web Application",
+        "description": "Build a comprehensive web application that showcases all skills for WebFlow Solutions role",
+        "skills_practiced": [
+          "react",
+          "typescript",
+          "tailwind",
+          "zustand"
+        ],
+        "difficulty": "advanced",
+        "estimated_hours": 40,
+        "phase": 5,
+        "deliverables": [
+          "Production-ready app",
+          "Complete documentation",
+          "Deployment setup",
+          "Test coverage"
+        ]
+      }
+    ],
+    "summary": {
+      "total_courses": 8,
+      "total_projects": 5,
+      "total_learning_hours": 259,
+      "recommended_weekly_pace": "12-15 hours per week",
+      "completion_target": "2024-06-15"
+    }
+  }
+}
