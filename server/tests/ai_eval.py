@@ -4,17 +4,18 @@ import os
 import sys
 from typing import Any, Dict, List, cast
 
-# Ensure server module is discoverable
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+# Ensure server modules are discoverable when running this file directly.
+SERVER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(SERVER_DIR)
 
-from anthropic import AsyncAnthropic
-from server.core.config import settings
-from server.roadmap.services import generate_roadmap_with_claude
-from server.extraction.engine import extract_skills
+from anthropic import AsyncAnthropic  # noqa: E402
+from core.config import settings  # noqa: E402
+from extraction.engine import extract_skills  # noqa: E402
+from roadmap.services import generate_roadmap_with_claude  # noqa: E402
 
 # ── Configuration & Paths ────────────────────────────────────────────────────
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-DOCS_DIR = os.path.join(BASE_DIR, "docs")
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+DOCS_DIR = os.path.join(REPO_ROOT, "docs")
 ROADMAPS_DIR = os.path.join(DOCS_DIR, "eval_roadmaps")
 RESULTS_FILE = os.path.join(DOCS_DIR, "ai_eval_results.md")
 

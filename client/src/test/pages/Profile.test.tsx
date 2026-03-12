@@ -10,17 +10,17 @@ import { useProfileStore } from "../../store/profileStore";
 vi.mock("../../components/Navbar", () => ({ default: () => <div data-testid="navbar" /> }));
 
 describe("Profile Page", () => {
-  const mockUser = { 
-    id: 1, 
-    email: "test@example.com", 
-    is_active: true, 
+  const mockUser = {
+    id: 1,
+    email: "test@example.com",
+    is_active: true,
     skills: ["React"],
-    roadmap: null 
+    roadmap: null,
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Set up store state directly
     useAuthStore.setState({ user: mockUser });
     useProfileStore.setState({
@@ -30,14 +30,14 @@ describe("Profile Page", () => {
     });
 
     // Mock loadSkills to prevent it from resetting isLoading to true on mount
-    vi.spyOn(useProfileStore.getState(), 'loadSkills').mockImplementation(() => Promise.resolve());
+    vi.spyOn(useProfileStore.getState(), "loadSkills").mockImplementation(() => Promise.resolve());
   });
 
   it("renders profile page correctly", () => {
     render(
       <BrowserRouter>
         <Profile />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Skill Profile Setup")).toBeDefined();
@@ -46,12 +46,14 @@ describe("Profile Page", () => {
   });
 
   it("handles adding a skill manually", async () => {
-    const spy = vi.spyOn(useProfileStore.getState(), 'addSkill').mockImplementation(() => Promise.resolve());
-    
+    const spy = vi
+      .spyOn(useProfileStore.getState(), "addSkill")
+      .mockImplementation(() => Promise.resolve());
+
     render(
       <BrowserRouter>
         <Profile />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const input = screen.getByPlaceholderText(/e.g. React/i);
@@ -64,12 +66,14 @@ describe("Profile Page", () => {
   });
 
   it("handles removing a skill", async () => {
-    const spy = vi.spyOn(useProfileStore.getState(), 'removeSkill').mockImplementation(() => Promise.resolve());
-    
+    const spy = vi
+      .spyOn(useProfileStore.getState(), "removeSkill")
+      .mockImplementation(() => Promise.resolve());
+
     render(
       <BrowserRouter>
         <Profile />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const removeButtons = screen.getAllByLabelText(/remove React/i);
@@ -79,12 +83,14 @@ describe("Profile Page", () => {
   });
 
   it("handles resume extraction", async () => {
-    const spy = vi.spyOn(useProfileStore.getState(), 'extractFromResume').mockImplementation(() => Promise.resolve());
-    
+    const spy = vi
+      .spyOn(useProfileStore.getState(), "extractFromResume")
+      .mockImplementation(() => Promise.resolve());
+
     render(
       <BrowserRouter>
         <Profile />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const textarea = screen.getByPlaceholderText(/paste your resume text/i);
@@ -106,7 +112,7 @@ describe("Profile Page", () => {
     render(
       <BrowserRouter>
         <Profile />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Loading skills...")).toBeDefined();

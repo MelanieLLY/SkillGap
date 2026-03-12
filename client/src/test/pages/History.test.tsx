@@ -24,7 +24,7 @@ describe("History Page", () => {
     render(
       <BrowserRouter>
         <History />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText("Analysis History")).toBeDefined();
     // Check for spinner - it's a div with animate-spin
@@ -38,7 +38,7 @@ describe("History Page", () => {
     render(
       <BrowserRouter>
         <History />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -64,7 +64,7 @@ describe("History Page", () => {
     render(
       <BrowserRouter>
         <History />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -83,7 +83,7 @@ describe("History Page", () => {
     render(
       <BrowserRouter>
         <History />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {

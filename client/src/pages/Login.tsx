@@ -51,7 +51,9 @@ export default function Login() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <div className="mt-1">
                 <input
                   id="email"
@@ -68,7 +70,9 @@ export default function Login() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <div className="mt-1">
                 <input
                   id="password"
@@ -94,11 +98,6 @@ export default function Login() {
               </button>
             </div>
 
-            <div className="mt-4 text-sm text-gray-600">
-              <a href="#" className="underline hover:text-gray-900 transition-colors">
-                Forgot password?
-              </a>
-            </div>
           </form>
 
           <div className="mt-6">

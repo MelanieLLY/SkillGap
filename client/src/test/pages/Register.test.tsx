@@ -31,7 +31,7 @@ describe("Register Page", () => {
     render(
       <BrowserRouter>
         <Register />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Create an account")).toBeDefined();
@@ -45,7 +45,7 @@ describe("Register Page", () => {
     render(
       <BrowserRouter>
         <Register />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: "test@example.com" } });
@@ -66,12 +66,14 @@ describe("Register Page", () => {
     render(
       <BrowserRouter>
         <Register />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: "test@example.com" } });
     fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: "password123" } });
-    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: "password123" } });
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: "password123" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /register/i }));
 
     await waitFor(() => {
@@ -97,12 +99,16 @@ describe("Register Page", () => {
     render(
       <BrowserRouter>
         <Register />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: "existing@example.com" } });
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "existing@example.com" },
+    });
     fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: "password123" } });
-    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: "password123" } });
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: "password123" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /register/i }));
 
     await waitFor(() => {

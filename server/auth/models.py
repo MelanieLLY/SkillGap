@@ -1,4 +1,4 @@
-from server.database import Base
+from database import Base
 from sqlalchemy import JSON, Boolean, Column, Integer, String
 from sqlalchemy.dialects.postgresql import ARRAY
 

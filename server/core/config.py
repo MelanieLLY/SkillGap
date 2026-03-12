@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+SERVER_DIR = Path(__file__).resolve().parents[1]
 
 
 class Settings(BaseSettings):
@@ -11,7 +15,7 @@ class Settings(BaseSettings):
     port: int = 8000
 
     model_config = SettingsConfigDict(
-        env_file="server/.env", env_file_encoding="utf-8", extra="ignore"
+        env_file=SERVER_DIR / ".env", env_file_encoding="utf-8", extra="ignore"
     )
 
 

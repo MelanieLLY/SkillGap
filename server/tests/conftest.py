@@ -30,6 +30,8 @@ ready ``JsonEncodedList()`` instance.
 from __future__ import annotations
 
 import json
+import os
+import sys
 from collections.abc import Generator
 
 import pytest
@@ -97,11 +99,19 @@ def _array_factory(*args: object, **kwargs: object) -> JsonEncodedList:
 # Monkey-patch the dialect so importing models doesn't blow up with SQLite.
 pg_dialect.ARRAY = _array_factory  # type: ignore[attr-defined]
 
+# Ensure the server directory is importable even when pytest is invoked elsewhere.
+SERVER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if SERVER_DIR not in sys.path:
+    sys.path.insert(0, SERVER_DIR)
+
+# Force test runs onto SQLite before application settings are imported.
+os.environ["DATABASE_URL"] = "sqlite://"
+
 # ─── Now it is safe to import application modules ─────────────────────────────
-from server.auth import models as auth_models  # noqa: E402
-from server.database import get_db  # noqa: E402
-from server.history import models as history_models  # noqa: E402
-from server.main import app  # noqa: E402
+from auth import models as auth_models  # noqa: E402
+from database import get_db  # noqa: E402
+from history import models as history_models  # noqa: E402
+from main import app  # noqa: E402
 
 # ─── SQLite in-memory engine ──────────────────────────────────────────────────
 SQLALCHEMY_TEST_DATABASE_URL = "sqlite://"

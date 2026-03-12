@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from server.auth import models as auth_models
-from server.auth.deps import get_current_active_user
-from server.database import get_db
-from server.extraction.engine import calculate_match_score
 from sqlalchemy.orm import Session
+
+from auth import models as auth_models
+from auth.deps import get_current_active_user
+from database import get_db
+from extraction.engine import calculate_match_score
 
 from . import models as history_models
 from . import schemas

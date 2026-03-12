@@ -13,7 +13,7 @@ vi.mock("../../api/profile", () => ({
 describe("useProfileStore", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Restricting zustand state between tests usually requires some setup, 
+    // Restricting zustand state between tests usually requires some setup,
     // but here we can just reset to initial values if needed.
     useProfileStore.setState({ skills: [], isLoading: false, error: null });
   });
@@ -30,7 +30,7 @@ describe("useProfileStore", () => {
 
   it("loadSkills handles error", async () => {
     (profileApi.getSkills as any).mockRejectedValueOnce({
-      response: { data: { detail: "Load failed" } }
+      response: { data: { detail: "Load failed" } },
     });
 
     await useProfileStore.getState().loadSkills();

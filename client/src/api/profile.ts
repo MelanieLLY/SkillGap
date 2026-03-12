@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = "http://127.0.0.1:8000/api";
+import api from "./auth";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -10,26 +8,26 @@ const getAuthHeaders = () => {
 };
 
 export const getSkills = async (): Promise<string[]> => {
-  const response = await axios.get(`${API_URL}/profile/skills`, getAuthHeaders());
+  const response = await api.get("/profile/skills", getAuthHeaders());
   return response.data;
 };
 
 export const addSkill = async (skill: string): Promise<string[]> => {
-  const response = await axios.post(`${API_URL}/profile/skills`, { skill }, getAuthHeaders());
+  const response = await api.post("/profile/skills", { skill }, getAuthHeaders());
   return response.data;
 };
 
 export const removeSkill = async (skillName: string): Promise<string[]> => {
-  const response = await axios.delete(
-    `${API_URL}/profile/skills/${encodeURIComponent(skillName)}`,
+  const response = await api.delete(
+    `/profile/skills/${encodeURIComponent(skillName)}`,
     getAuthHeaders(),
   );
   return response.data;
 };
 
 export const extractFromResume = async (resumeText: string): Promise<string[]> => {
-  const response = await axios.post(
-    `${API_URL}/profile/extract-resume`,
+  const response = await api.post(
+    "/profile/extract-resume",
     { resume_text: resumeText },
     getAuthHeaders(),
   );
