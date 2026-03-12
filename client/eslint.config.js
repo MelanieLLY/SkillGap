@@ -67,4 +67,44 @@ export default [
       "no-var": "error",
     },
   },
+  // ── Test files ──────────────────────────────────────────────────────────────
+  {
+    files: ["src/**/*.{test,spec}.{ts,tsx}", "src/test/**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+        project: "./tsconfig.json",
+      },
+      globals: {
+        // Vitest globals (injected via globals: true in vitest.config.ts)
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        vi: "readonly",
+        // Browser globals needed by jsdom
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+      "react-hooks": reactHooksPlugin,
+    },
+    rules: {
+      ...tsPlugin.configs["recommended"].rules,
+      "@typescript-eslint/no-explicit-any": "off", // mocks legitimately need any
+      "@typescript-eslint/no-var-requires": "off", // require() needed in vi.mock factories
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-console": "off",
+    },
+  },
 ];
