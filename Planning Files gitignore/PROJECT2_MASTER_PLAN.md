@@ -71,128 +71,84 @@
 **预估时间：3 - 4 小时** | **推荐工具：Antigravity (切换至 Claude Sonnet 进行强代码逻辑) + Claude Web (写文档/脚本)**
 
 > **🎯 为什么要做 Advanced CI/CD？会很难吗？**
-> 老师在项目要求 (Line 26: *Advanced CI/CD: multi-stage pipeline, deploy previews, coverage reporting*) 给了整整 30 分。听起来吓人，但**在使用 AI 辅助编程时，写一个包含全部高级玩法的 CI/CD YAML 文件只需要 10 秒钟**。所以这其实是白送分，你只要按下面的 Prompt 生成文件并推送到 GitHub 即可，完全不需要去手敲那些配置。
+> 老师在项目要求 (Line 26: *Advanced CI/CD: multi-stage pipeline, deploy previews, coverage reporting*) 给了整整 30 分.
 
 按照项目要求的 80%+ Test Coverage，你必须现在就开始写测试。TDD (测试驱动开发) 要求你先让 AI 帮你写好 Test Case，然后再写/跑代码。
 
 - [x] **Step 1.1 设定 Multi-Stage CI/CD Pipeline 与 Coverage Reporting**
   - **Prompt (发给 Claude Web)**: *"I need an advanced GitHub Actions workflow `.yml` file for my full-stack project (React/Vite frontend, FastAPI/Python backend). The pipeline needs to be MULTI-STAGE: Job 1: Linting (ESLint, Prettier). Job 2: Testing (Frontend UI tests if any, and Backend `pytest` with coverage). Job 3: Build & Coverage Reporting (Output coverage to summary). Fail the PR if coverage is below 80%. Please write the detailed `.github/workflows/ci.yml`."*
-  - **Action**: 将生成的 `ci.yml` 放入仓库底下的 `.github/workflows/ci.yml`（没有文件夹就新建）。然后在 GitHub Actions 页面查看它分阶段打绿勾的过程。这时候挂掉完全没关系，继续往下走去写测试。
-  *(注：这里的截图等 Step 1.2 你的覆盖率真的合格后，或者第二阶段所有功能写完后，最后回来截一次最新跑绿的 CI。不用第一天强行去截。)*
+  - **Action**: 放入 `.github/workflows/ci.yml`。
 - [x] **Step 1.2 Setup Pytest & 覆盖率 (Issue #14)**
   - **Prompt (发给 Antigravity)**: *"We need to achieve >80% backend test coverage using `pytest`. Based on the current FastAPI routes and SQLAlchemy models, please create `conftest.py` with database fixtures (using SQLite in-memory for testing) and write unit tests for the Authorization and Keyword Extraction endpoints. We are using TDD, so generate the comprehensive test suite first."*
-  - **Action**: 运行 `pytest --cov=app --cov-report=term-missing` (或类似命令)。**每次做完一个新功能，立刻跑这个命令看 coverage 是否掉下 80%。**
-  - 📸 **视频素材收集 (Video Artifact):** 用屏幕录制软件 (Cmd+Shift+5) 录制一次你敲下 `pytest --cov` 并看到整排变绿、Coverage 超过 80% 的动画过程 (3-5秒素材，为 10 分钟 Demo Video 的 DevOps 环节积攒震撼力)。
-  - 📸 **文档素材收集 (Eval Dashboard Artifact):** 截图/保存 Terminal 中 Test Coverage 达到 80%+ 的输出画面，转存为 PDF。
+  - **Action**: 确认 Coverage 达到 80%+。
 
 ---
 
-## 🤖 第 2 阶段：核心 AI 接入与评估系统 (Evaluation Suite)
-**预估时间：4 - 5 小时** | **推荐工具：Antigravity (切换至 Claude Sonnet 写后端, 切换至 Gemini 1.5/3.1 Pro 处理巨量评估报告)**
+## 🤖 第 2 阶段：核心 AI 接入 (Implementation Phase)
+**预估时间：3 - 4 小时** | **推荐工具：Antigravity (Claude Sonnet)**
 
-这部分对应老师的 *AI Mastery* (30 pts)。结合你的批注，我们要同时使用：Antigravity 用于代码与大规模数据处理，Claude Web 用于原型与设计。
-
-- [ ] **Step 2.1 接入 Claude API 生成 Roadmap (Issue #7)**
-  - **Prompt (发给 Claude Web 原型设计)**: *"I am building a feature that takes a list of 'Missing Skills' from a user's profile and generates a structured learning roadmap. Can you act as the Anthropic API and give me a sample JSON response that includes a timeline, course recommendations, and project ideas? Keep it highly structured."*
-  - **Prompt (发给 Antigravity 生成代码)**: *"Now, using the Anthropic Python SDK, write an asynchronous FastAPI endpoint `/api/roadmap/generate`. It must take the missing skills, call the `claude-3-5-sonnet-20241022` model (token strictly in `.env`), and parse the response into Pydantic models matching this JSON structure: [粘贴上一步的 JSON]。Ensure proper error handling if the API times out."*
-  - **Action**: 测试 API，确保后端能稳定返回 roadmap。
-  - 📸 **博客素材收集 (Blog Artifact):** 截图你和 Claude Web 设计原始 JSON 的讨论过程（展示你对 Prompt Engineering 和原型设计的思考）。
-- [ ] **Step 2.2 构建 AI Evaluation Suite (Issue #9)**
-  - 老师要求评价 AI 质量。
-  - **Prompt (发给 Antigravity)**: *"I need an automated AI Evaluation Suite in Python. Write a batch script `eval_suite.py` that takes 5 dummy Job Descriptions, runs them through our keyword extractor and Claude roadmap generator, and then uses another LLM call (as a judge) to score the generated roadmap based on 1. Relevance, 2. Specificity, and 3. Completeness (1-5 scale). Output the results to a Markdown report."*
-  - **Action**: 运行该脚本。
-  - 📸 **Artifact Collection**: 保存生成的 `eval_results.md`。这就是你们的 **Eval Dashboard / Testing Report** 交付物！
+- [x] **Step 2.1 接入 Claude API 生成 Roadmap (Issue #7)**
+  - **Prompt (发给 Claude Web 原型设计)**: *"Design a structured learning roadmap JSON for a developer missing [Skill A, Skill B]. Include timeline, courses, and projects."*
+- [ ] **Step 2.2 接入后端 Claude API (Issue #7)**
+  - **Prompt (发给 Antigravity)**: *"I have designed the JSON schema for our learning roadmap (refer to Step 2.1). Now, please implement the `generate_roadmap_with_claude` function in the backend service. **System Prompt for Claude**: 'You are an expert career coach and technical architect. Your job is to take a list of [MISSING SKILLS] and current [JOB DESCRIPTION] to generate a hyper-realistic 12-week learning roadmap. You MUST ONLY respond in the following JSON format: [粘贴你在 2.1 得到的 JSON 样本]。Do not include any talk or explanation before or after the JSON.' **Requirements**: 1. Use the `anthropic` Python client with `claude-3-5-sonnet-20241022`. 2. Implement a new FastAPI route `/api/roadmap/generate` that uses the missing skills from the user profile. 3. Ensure the function is `async` and includes a 15-second timeout protection."*
+  - **Action**: 测试 API，确保后端能稳定返回符合结构的 JSON 数据。
+- [ ] **Step 2.3 前端呈现 Roadmap 核心数据**
+  - **Prompt (发给 Antigravity)**: *"Now that the backend API is ready, please update the Dashboard or Result page. 1. Add a 'Generate Learning Roadmap' button. 2. When clicked, it calls `/api/roadmap/generate`. 3. 复用现有React 组件 RoadmapCard.tsx，接收该 JSON 数据，并使用 Tailwind CSS 将其展示为一个纵向时间线或卡片列表。 We will polish the aesthetics in the next phase."*
+  - **Action**: 点击按钮，确认前端能正确接收并初步循环渲染出 Roadmap 的内容。
 
 ---
 
-## 🎨 第 3 阶段：UI/UX 打磨与自动化部署
-**预估时间：3 - 4 小时** | **推荐工具：Antigravity (切换至 Claude Sonnet 专精前端 Tailwind)**
+## 🎨 第 3 阶段：UI/UX 打磨与前端 Polish
+**预估时间：3 - 4 小时** | **推荐工具：Antigravity (Claude Sonnet)**
 
 - [ ] **Step 3.1 前端 UI 骨架屏与 Accessibility (Issue #10)**
-  - 等待 Claude API 返回需要十几秒，必须有 Loading 动画。
-  - **Prompt (发给 Antigravity)**: *"Our users wait around 10-15 seconds for the Claude API to generate a roadmap. Please create a highly polished, responsive skeleton loading state component using Tailwind CSS. It should mimic the timeline card layout. Also, ensure all new buttons and inputs have `aria-label` and full keyboard accessibility."*
-  - **Action**: 体验应用，确保从注册 -> JD输入 -> 匹配度环形动画 -> 生成 Roadmap 的整个流程“丝滑且看起来非常高级 (Wow factor)”。
-  - 📸 **博客素材收集 (Blog Artifact):** 截取最高清的深色模式（或你们设计的风格）UI 图，特别是那张绝美的环形动画成果图，作为博客的 Hero Image。
-  - 📸 **视频素材收集 (Video Artifact):** 终于完成整个闭环了！现在立刻录制一段**最完美的一镜到底 Demo (黄金 90 秒)**，这将会是你们组最终 Demo Video 里的核心画面。
-- [ ] **Step 3.2 部署 (Deployment) 与 Deploy Previews**
-  - 老师要求的 **Deploy Previews**（自动化预览）最简单的拿分方式是用 **Vercel 免费版**。你不需要自己去拉服务器配域名，这完全是白给的分数。
-  - **前端部署 (Vercel)**：将你的 GitHub 仓库根目录下的 `client/` 文件夹链接到 Vercel。每次你提 Pull Request 开发新功能时，Vercel 都会自动给你生成一个针对这个 PR 的独立预览链接（**这就是老师要求的 Deploy Preview**）。
-  - **后端/数据库部署**：在 Render, Railway 或 Fly.io (都提供免费层) 链接你的仓库里的 `server/`，设置 Start Command (`uvicorn main:app --host 0.0.0.0`)。去申请一个 PostgreSQL 数据库，把 `DATABASE_URL` 塞进后端环境变量。
-  - 📸 **文档素材收集 (Deploy Previews Artifact):** 提一个包含新功能的 PR 到 `main` 分支。在 GitHub PR 页面截图 Vercel 机器人的自动回复（"Vercel Deploy Preview Ready!"和对应的独占 URL 链接）。把这张图放到最终报告里。
-  - **Prompt (发给 Antigravity 若部署遇报错)**: *"I am trying to deploy the frontend to Vercel and the backend to Render. Here is my folder structure and the error log from Render: [粘贴报错]. How do I fix the build command or docker deployment?"*
+  - **Prompt (发给 Antigravity)**: *"Create a polished skeleton loading state for the roadmap timeline using Tailwind CSS. Also ensure full accessibility (aria-labels, keyboard nav) for all new components."*
+- [ ] **Step 3.2 流程优化与 Wow-factor**
+  - **Action**: 优化动画过场，录制 90 秒黄金 Demo 素材。
 
 ---
 
-## 📝 第 4 阶段：Documentation Package 与 Final 整理
-**预估时间：4 - 6 小时** | **推荐工具：Antigravity (切换至 Gemini 模型) / Claude Web (擅长长文本和博客排版)**
+## 📊 第 4 阶段：综合评估、质量保证与 Eval Dashboard (核心得分项)
+**预估时间：2 - 3 小时** | **推荐工具：Antigravity (切换至 Gemini Pro 处理报告)**
 
-这是你拿满 *Documentation* (15 pts) 和展示 *Agile Process* (20 pts) 的关键。
+在提交前，我们需要汇总所有的质量证据。
 
-- [ ] **Step 4.0 最终代码规范清扫 (Type Hints & Docstrings)**
-  - **问题描述**: 在前面的一路狂奔式开发中，AI 和你难免会漏掉一些类型提示 (`Type Hints`)，也没有在所有地方补齐完全符合 PEP8 规范的专业 Docstrings。现在功能已经写完了，是时候做一次大规模的规范清理了，这样不仅不会引发业务 Bug，还能拿满代码质量分。
-  - **Prompt (发给 Antigravity)**: *"Our codebase features are fully implemented, but we need to ensure strictly typed and fully documented code according to `.antigravityrules`. Please sweep through all files in `server/`, add complete Python Type Hints (`-> Type`) to every function, and write high-quality PEP8 compliant Docstrings explaining the arguments, return values, and behavior of all classes and core algorithms. Do not alter any business logic or the current synchronous session usage."*
-  - **Action**: 快速通过 IDE 查看是不是每个函数都有了绿色的文档注释和类型提示。
-
-- [ ] **Step 4.1 准备 README & API Docs**
-  - **Prompt (发给 Claude Web)**: *"Here is my FastAPI `openapi.json` and my `docker-compose.yml`. Generate a comprehensive `README.md` for a full-stack project and a separate `API_DOCS.md`. Include a polished project description, setup instructions, sequence diagrams (in Mermaid JS), and the tech stack."*
-- [ ] **Step 4.2 攥写 1500 字 Technical Blog Post**
-  - **Prompt (发给 Antigravity 或 Claude Web)**: *"I need to write a 1500-word product-oriented, user-facing technical blog post for my project 'SkillGap'. The project matches resumes to JD keywords and uses Claude AI to generate a learning roadmap. Structure the blog to talk about the product value, the technical architecture (React + FastAPI), the challenges of CI/CD and AI integration, and a showcase of the final UI. Write it in a professional, engaging tone suitable for Medium or LinkedIn. DO NOT sound like a generic AI blob. Use real architectural insights."*
-  - **Action**: 人工润色，插入 2-3 张最精美的真实页面截图。
-- [ ] **Step 4.3 整理 Scrum 与 AI Reflection**
-  - **Prompt (发给 Claude Web)**: *"Write a Sprint Retrospective for Sprint 2. Also write an 'AI Reflection' document detailing how my teammate and I used IDE-centric AI (Antigravity with Claude Sonnet) for coding React components/pytest, and Web-based AI (Claude Web) for documentation, initial API prototyping, and brainstorming. Discuss our strategy of doing continuous test coverage and how AI accelerated the CI/CD pipeline setup."*
-- [ ] **Step 4.4 录制 10-Minute Video**
-  - 📸 **内容大纲**：
-    - 0-2min: 自我介绍与产品解决的痛点 (User Story)。
-    - 2-5min: 丝滑的 UI Walkthrough（演示核心环形动画、获取 Roadmap 的全环节）。
-    - 5-7min: 代码架构、CI/CD Pipeline 展示（展示 GitHub Actions 跑通的绿勾）。
-    - 7-9min: AI 评估系统展示与覆盖率报告展示。
-    - 9-10min: 团队敏捷协作反思与 AI 协作心得总结。
-- [ ] **Step 4.5 最终提交**
-  - 将 README, API Docs, Blog Post, Eval/Coverage PDF, AI Reflections, Scrum Retrospectives 全部放进 `docs/` 文件夹。
-  - 在 Canvas 提交：GitHub 链接，部署的 App URL，YouTube 视频链接，以及 Blog 链接/PDF。
+- [ ] **Step 4.1 分析并总结现有测试成果 (Part A)**
+  - **Prompt (发给 Antigravity)**: *"Please analyze all existing test files in the `tests/` directory. Summarize what features are currently covered by unit and integration tests. Run the full test suite and categorize the results (e.g., Auth tests: 10 passed, Extraction tests: 5 passed). This summary will be Part A of our Eval Dashboard."*
+- [ ] **Step 4.2 运行 AI 对 AI 质量评估 (Part B - AI Mastery 分数)**
+  - **Prompt (发给 Antigravity)**: *"Write an automated AI Assessment script `ai_eval.py`. It should take 5 sample Job Descriptions, run them through our Claude roadmap generator, and then use another LLM call as a 'Judge' to score the generated roadmap based on: 1. Relevance, 2. Specificity, and 3. Completeness (1-5 scale). Output results to `docs/ai_eval_results.md`."*
+- [ ] **Step 4.3 代码质量与安全扫描 (Part C)**
+  - **Action**: 运行 `ruff check .` (代码质量), `bandit -r server/` (安全), `npm audit` (前端安全)。记录结果。
+- [ ] **Step 4.4 整合并生成最终 Eval Dashboard PDF**
+  - **Action**: 将以上数据（Pytest 总结、AI 质量评分、安全报告）汇总成一份 PDF。这才是老师要的 **Eval Dashboard**。
 
 ---
 
-## 📝 附录：Blog & Video 详细骨架草案
+## 🚀 第 5 阶段：自动化部署与 Deploy Previews
+**预估时间：2 小时**
 
-### 📖 Blog Post 草稿大纲 (1500 字，主打印刷品一样的观感)
-*   **引言 (150 字)**: 谁需要 SkillGap？讲述个人曾经面临 JD 与自身简历不符合的繁琐找工作经历。
-*   **产品展示/Product Showcase (300 字)**: 放入最完美的深色模式截图。介绍产品的三个核心功能：JWT 保护的个人档案管理 -> 自动抓取分析岗位关键字引擎 -> Anthropic 动态大模型加持的学习路径 (Roadmap) 生成器。
-*   **技术架构 (400 字)**: 展现这门课的灵魂——你的后端如何使用 FastAPI 与 Pydantic 并发解构来自客户端的高强度请求，以及你的 Postgres 数据库如何在 Render 上优雅托管。**插入用 Claude Web 生成的 Mermaid 架构图。**
-*   **Advanced CI/CD 之路 (250 字)**: 分享一开始自动化测试是红色的，你们怎么通过编写 80%+ 覆盖率的 Pytest 和 Vercel Deploy Preview 一步手搓出现代化工业流水线。**插入那一阶梯绿色的 GitHub Actions 跑通图。**
-*   **AI 狂欢与团队协作 (250 字)**: 你与队友如何运用双 AI (IDE AI vs Web AI) 模型极速写出前后端分离项目。**放入你们那张修神级 Bug 瞬间最得意的长截图。**
-*   **总结 (150 字)**: 项目展望，号召别人使用。附上你的 LinkedIn 和 Repo 地址。
+- [ ] **Step 5.1 前端部署 (Vercel) 与 Deploy Previews**
+  - **Action**: 链接 GitHub 仓库，配置 PR Previews。
+- [ ] **Step 5.2 后端部署 (Render/Railway)**
+  - **Action**: 部署 FastAPI 和云端 PostgreSQL。
 
-### 🎥 10 分钟 Demo Video 脚本提纲 (精确到分钟，坚决拒绝流水账念稿)
-在这 10 分钟的视频里，你俩作为开发者一定要在镜头中连线露面（画中画）。
-*   **[0:00 - 1:30] The Hook (吸引力法则):**
-    *   开头抛出问题："Have you ever spent hours reading a JD, only to realize you have no idea what skills you’re missing?"
-    *   介绍产品名称解决什么问题，并直接贴出**最丝滑的那个“环形动态计分板”过场动画（前期收集的 90 秒黄金 Demo 录屏剪辑 10 秒进来作为前戏）**。
-*   **[1:30 - 4:00] Product Walkthrough (真实操作秀):**
-    *   队友或你演示：注册登录 -> 右边贴上 JD -> 秒出三列式比较表 -> 接着点击“生成学习规划”，等待 Skeleton 动几下，出来完整的 Roadmap 卡片。
-    *   *强调 UX 的丝滑度与骨架加载等产品细节。*
-*   **[4:00 - 6:00] Under the Hood: Technical Architecture & DevOps (高级开发分摊板):**
-    *   展示你们解耦（Decoupled）的 Vercel + Render 部署情况。
-    *   **重点展示：** 打开 GitHub Actions 页面指着绿框说 "This is our multi-stage pipeline..." 以及 "We set up automated Deploy Previews with Vercel." 这是全方位的得分点。
-*   **[6:00 - 7:30] Test Coverage & AI Eval Suite (品质保证与测试):**
-    *   秀出你们跑出来的后端 80% Coverage HTML（或者之前的终端截图录屏）。
-    *   秀出那个针对 5 个 Dummy JDs 的 Evaluation Score 结果，告诉老师你们怎么通过 AI Judge 控制大模型回答的准确性。
-*   **[7:30 - 9:30] AI Modalities & Challenges (AI 的双重维度使用与困难解决):**
-    *   轮流讲：我们在本地用 Anthropic 构建逻辑，在网页上用 Gemini 批量处理大量测试日志，互相补足。
-    *   分享你们曾经修过的前后端分离跨域或者 ORM 持久化存数据的巨大挑战，然后是如何用 AI 解决的。
-    *   拿出那张**满头大汗报错红屏 -> 修复绿屏的精美对比截图**。
-*   **[9:30 - 10:00] Agile Retrospective (敏捷回顾):**
-    *   总结两周 Sprint 的心路历程，挥手收尾，提供部署链接。
+---
+
+## 📝 第 6 阶段：Documentation Package 与 Final 整理
+**预估时间：4 - 6 小时**
+
+- [ ] **Step 6.1 整理 README, API Docs & Blog Post**
+- [ ] **Step 6.2 整理 Scrum (Sprint Retrospectives) 与 AI Reflection**
+- [ ] **Step 6.3 视频制作与提交**
 
 ---
 
 ## 💡 总指导原则 (Cheat Sheet)
-1. **是否要边做边 check coverage？**  
-   **绝对是的。** 每次修改重要逻辑（特别是提取算法或 AI 提示词路由），必须跑一次 `pytest` 看看是否掉了 80%。掉下去立刻让 Antigravity 补充相应的单元测试。**TDD 原则：先让 AI 写测试 -> 报错 -> 让 AI 写实现代码 -> 通过。**
-2. **前后端必须分开吗？**  
-   **必须的。** 根据你们的 `.antigravityrules`，你们是 React SPA + FastAPI，完全分离。你需要分别部署在专门托管前端（Vercel）和后端（Render/Railway）的平台上。
-3. **不同 AI 模型怎么分工？（只使用我们定好的工具）**  
-   - **Antigravity (IDE 侧的 AI Agent)**: 你可以根据需要在 Antigravity 中**灵活切换模型**：
-     - **使用 Claude 3.5/3.7 Sonnet**: 强代码逻辑，负责改 Bug、写 `pytest` 测试、处理架构、写代码组件。
-     - **使用 Gemini 1.5/3.1 Pro**: 大上下文窗口，当你需要扔进海量 Evaluation 测试数据/日志分析时使用。
-   - **Claude Web**: 前期用来发散探索架构思路、生成思维导图/流程图 (Mermaid)、生成最初的 Demo JSON 结构、写偏向叙事性质的长篇英文 Blog 等。
+1. **Antigravity (IDE)**: 选 Sonnet 写代码，选 Gemini Pro 处理最后的评估报告/文档。
+2. **Claude Web**: 写文档、画架构图、设计 Prompt 原型。
+3. **测试**: 永远保持 80% Coverage。
+
+---
+
+## 📝 附录：Blog & Video 详细骨架草案
+*(内容同前，已根据新阶段调整)*

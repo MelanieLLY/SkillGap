@@ -11,6 +11,7 @@ from server.extraction.router import router as extraction_router
 from server.auth.router import router as auth_router
 from server.profile.router import router as profile_router
 from server.history.router import router as history_router
+from server.roadmap.router import router as roadmap_router
 from server.database import engine
 from server.auth import models
 from server.history import models as history_models
@@ -50,6 +51,7 @@ app.include_router(extraction_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
 app.include_router(history_router, prefix="/api/history", tags=["history"])
+app.include_router(roadmap_router, prefix="/api/roadmap", tags=["roadmap"])
 
 @app.exception_handler(SQLAlchemyError)
 async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError) -> JSONResponse:

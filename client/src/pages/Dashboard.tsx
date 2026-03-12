@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { historyApi } from '../api/history';
 import { useProfileStore } from '../store/profileStore';
@@ -50,9 +50,14 @@ export default function Dashboard() {
     const [results, setResults] = useState<SkillResults | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Track the last analyzed JD text so we can pass it to the roadmap generator
+    const [lastJdText, setLastJdText] = useState<string>('');
+
     const handleAnalyze = async (jobDescription: string, companyName?: string, positionName?: string) => {
         setIsLoading(true);
         setError(null);
+        setLastJdText(jobDescription);
 
         try {
             const response = await axios.post<SkillResults>(
@@ -96,6 +101,9 @@ export default function Dashboard() {
         }
     };
 
+    // Derive missing skills from the latest extraction results
+    const missingSkills = results?.missing ?? [];
+
     return (
         <div className="min-h-screen flex flex-col bg-[#0f1117]">
             <Navbar />
@@ -125,7 +133,10 @@ export default function Dashboard() {
                     {/* Right Column — Results + Roadmap */}
                     <div className="flex flex-col gap-6">
                         <SkillMatchResults skills={results} />
-                        <LearningRoadmap />
+                        <LearningRoadmap
+                            missingSkills={missingSkills}
+                            jdText={lastJdText}
+                        />
                     </div>
                 </div>
             </main>

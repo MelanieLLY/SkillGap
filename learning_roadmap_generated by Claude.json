@@ -1,0 +1,251 @@
+{
+  "id": "msg_01XqLpR7aBcDeFgHiJkLmNoP",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-sonnet-4-20250514",
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 312,
+    "output_tokens": 890
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "Here is your personalized structured learning roadmap."
+    },
+    {
+      "type": "structured_data",
+      "data": {
+        "roadmap": {
+          "generated_for": "user_7842",
+          "generated_at": "2026-03-11T10:30:00Z",
+          "missing_skills": [
+            "TypeScript",
+            "Docker",
+            "System Design",
+            "GraphQL"
+          ],
+          "total_estimated_duration_weeks": 20,
+          "timeline": [
+            {
+              "phase": 1,
+              "title": "Foundation Phase",
+              "duration_weeks": 4,
+              "start_week": 1,
+              "end_week": 4,
+              "focus_skills": ["TypeScript"],
+              "weekly_commitment_hours": 8,
+              "milestones": [
+                "Understand TypeScript type system and interfaces",
+                "Migrate a small JavaScript project to TypeScript",
+                "Write and consume typed REST API responses"
+              ]
+            },
+            {
+              "phase": 2,
+              "title": "DevOps & Containerization",
+              "duration_weeks": 4,
+              "start_week": 5,
+              "end_week": 8,
+              "focus_skills": ["Docker"],
+              "weekly_commitment_hours": 6,
+              "milestones": [
+                "Build and run a custom Docker image",
+                "Set up a multi-container app with Docker Compose",
+                "Publish an image to Docker Hub"
+              ]
+            },
+            {
+              "phase": 3,
+              "title": "API Modernization",
+              "duration_weeks": 5,
+              "start_week": 9,
+              "end_week": 13,
+              "focus_skills": ["GraphQL"],
+              "weekly_commitment_hours": 8,
+              "milestones": [
+                "Understand schemas, queries, mutations, and resolvers",
+                "Build a GraphQL API with Apollo Server",
+                "Integrate GraphQL with an existing REST backend"
+              ]
+            },
+            {
+              "phase": 4,
+              "title": "Architecture & Capstone",
+              "duration_weeks": 7,
+              "start_week": 14,
+              "end_week": 20,
+              "focus_skills": ["System Design"],
+              "weekly_commitment_hours": 10,
+              "milestones": [
+                "Design scalable systems using CAP theorem principles",
+                "Create architecture diagrams for distributed systems",
+                "Complete a full-stack capstone project integrating all skills"
+              ]
+            }
+          ],
+          "course_recommendations": [
+            {
+              "skill": "TypeScript",
+              "courses": [
+                {
+                  "title": "TypeScript: The Complete Developer's Guide",
+                  "platform": "Udemy",
+                  "instructor": "Stephen Grider",
+                  "level": "Beginner to Intermediate",
+                  "duration_hours": 27,
+                  "url": "https://www.udemy.com/course/typescript-the-complete-developers-guide/",
+                  "priority": "primary"
+                },
+                {
+                  "title": "Official TypeScript Handbook",
+                  "platform": "TypeScript Docs",
+                  "instructor": "Microsoft",
+                  "level": "All Levels",
+                  "duration_hours": 5,
+                  "url": "https://www.typescriptlang.org/docs/handbook/",
+                  "priority": "supplementary"
+                }
+              ]
+            },
+            {
+              "skill": "Docker",
+              "courses": [
+                {
+                  "title": "Docker and Kubernetes: The Complete Guide",
+                  "platform": "Udemy",
+                  "instructor": "Stephen Grider",
+                  "level": "Beginner to Intermediate",
+                  "duration_hours": 22,
+                  "url": "https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/",
+                  "priority": "primary"
+                },
+                {
+                  "title": "Play with Docker Classroom",
+                  "platform": "Docker",
+                  "instructor": "Docker Team",
+                  "level": "Beginner",
+                  "duration_hours": 3,
+                  "url": "https://training.play-with-docker.com/",
+                  "priority": "supplementary"
+                }
+              ]
+            },
+            {
+              "skill": "GraphQL",
+              "courses": [
+                {
+                  "title": "The Modern GraphQL Bootcamp",
+                  "platform": "Udemy",
+                  "instructor": "Andrew Mead",
+                  "level": "Beginner to Advanced",
+                  "duration_hours": 35,
+                  "url": "https://www.udemy.com/course/graphql-bootcamp/",
+                  "priority": "primary"
+                },
+                {
+                  "title": "How to GraphQL",
+                  "platform": "howtographql.com",
+                  "instructor": "Prisma Team",
+                  "level": "Beginner",
+                  "duration_hours": 6,
+                  "url": "https://www.howtographql.com/",
+                  "priority": "supplementary"
+                }
+              ]
+            },
+            {
+              "skill": "System Design",
+              "courses": [
+                {
+                  "title": "Grokking the System Design Interview",
+                  "platform": "Educative.io",
+                  "instructor": "Design Gurus",
+                  "level": "Intermediate to Advanced",
+                  "duration_hours": 20,
+                  "url": "https://www.educative.io/courses/grokking-the-system-design-interview",
+                  "priority": "primary"
+                },
+                {
+                  "title": "System Design Primer",
+                  "platform": "GitHub",
+                  "instructor": "Donne Martin",
+                  "level": "Intermediate",
+                  "duration_hours": 10,
+                  "url": "https://github.com/donnemartin/system-design-primer",
+                  "priority": "supplementary"
+                }
+              ]
+            }
+          ],
+          "project_ideas": [
+            {
+              "id": "proj_001",
+              "title": "TypeScript Task Manager CLI",
+              "description": "Build a command-line task management app fully in TypeScript, using interfaces, enums, and generics to model tasks, priorities, and users.",
+              "skills_practiced": ["TypeScript"],
+              "difficulty": "Beginner",
+              "estimated_hours": 10,
+              "phase": 1,
+              "deliverables": [
+                "Typed data models for Task and User",
+                "CRUD operations via CLI prompts",
+                "Exported types as a reusable local package"
+              ]
+            },
+            {
+              "id": "proj_002",
+              "title": "Dockerized Full-Stack App",
+              "description": "Containerize an existing Node.js + PostgreSQL application using Docker, creating separate containers for the API, database, and a reverse-proxy with Nginx.",
+              "skills_practiced": ["Docker"],
+              "difficulty": "Intermediate",
+              "estimated_hours": 12,
+              "phase": 2,
+              "deliverables": [
+                "Dockerfile for the Node.js API",
+                "docker-compose.yml with 3 services",
+                "Working app accessible on localhost via Nginx"
+              ]
+            },
+            {
+              "id": "proj_003",
+              "title": "GraphQL Blog API",
+              "description": "Replace a REST blog API with a GraphQL layer using Apollo Server. Implement queries for posts/users and mutations for creating and updating content.",
+              "skills_practiced": ["GraphQL", "TypeScript"],
+              "difficulty": "Intermediate",
+              "estimated_hours": 15,
+              "phase": 3,
+              "deliverables": [
+                "Schema definition with types, queries, and mutations",
+                "Resolvers connected to a PostgreSQL database",
+                "Apollo Studio Explorer for testing"
+              ]
+            },
+            {
+              "id": "proj_004",
+              "title": "Scalable URL Shortener – Full System Design",
+              "description": "Design and partially implement a URL shortener service (like bit.ly) with a focus on scale. Write an architecture doc, build a prototype, and containerize it.",
+              "skills_practiced": ["System Design", "Docker", "TypeScript", "GraphQL"],
+              "difficulty": "Advanced",
+              "estimated_hours": 30,
+              "phase": 4,
+              "deliverables": [
+                "System design document with architecture diagram",
+                "TypeScript microservice for URL encoding/decoding",
+                "GraphQL API for URL management",
+                "Docker Compose deployment config"
+              ]
+            }
+          ],
+          "summary": {
+            "total_courses": 8,
+            "total_projects": 4,
+            "total_learning_hours": 128,
+            "recommended_weekly_pace": "8–10 hours/week",
+            "completion_target": "2026-08-05"
+          }
+        }
+      }
+    }
+  ]
+}
