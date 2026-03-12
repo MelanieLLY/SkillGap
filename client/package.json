@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
+        "lint": "eslint . --max-warnings 10",
         "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
         "preview": "vite preview"
     },

@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import AnimatedMatchRing from "./AnimatedMatchRing";
 import { cn } from "../lib/utils";
 
@@ -20,7 +20,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
   const totalRequired = have.length + missing.length;
   const matchPercentage = totalRequired > 0 ? Math.round((have.length / totalRequired) * 100) : 0;
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -30,13 +30,13 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 12
       }
@@ -151,7 +151,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
             <div className="space-y-2">
               {hasResults ? (
                 have.length > 0 ? (
-                  have.map((skill, i) => <SkillPill key={skill} skill={skill} variant="have" />)
+                  have.map((skill) => <SkillPill key={skill} skill={skill} variant="have" />)
                 ) : (
                   <p className="text-xs text-[#5f6573] italic py-4">None found</p>
                 )
@@ -172,7 +172,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
             <div className="space-y-2">
               {hasResults ? (
                 missing.length > 0 ? (
-                  missing.map((skill, i) => <SkillPill key={skill} skill={skill} variant="missing" />)
+                  missing.map((skill) => <SkillPill key={skill} skill={skill} variant="missing" />)
                 ) : (
                   <p className="text-xs text-[#5f6573] italic py-4">
                     Perfect match! 🎉
@@ -193,7 +193,7 @@ const SkillMatchResults: React.FC<SkillMatchResultsProps> = ({ skills }) => {
             <div className="space-y-2">
               {hasResults ? (
                 bonus.length > 0 ? (
-                  bonus.map((skill, i) => <SkillPill key={skill} skill={skill} variant="bonus" />)
+                  bonus.map((skill) => <SkillPill key={skill} skill={skill} variant="bonus" />)
                 ) : (
                   <p className="text-xs text-[#5f6573] italic py-4">—</p>
                 )

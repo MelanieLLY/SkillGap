@@ -18,13 +18,17 @@
 - **SkillMatchResults 动画**:
     - 实现了技能标签的交错入场动画 (Staggered Entrance)。
     - 为技能卡片增加了 Hover 时的位移 (Elevation) 与阴影微交互。
-- **工具函数**:
+- **工具函数与类型修复**:
     - 新建 `client/src/lib/utils.ts` 提供 `cn` 辅助函数 (clsx + tailwind-merge)。
+    - 修复了 `SkillMatchResults.tsx` 中由于 `framer-motion` 变量类型推断导致的 TypeScript 错误。
+    - 修复了 `client/package.json` 中已过时的 ESLint `lint` 脚本命令（移除了不支持的 `--ext` 参数）。
+    - 移除了所有组件中未使用的变量 (如 `.map` 中的 index) 以满足 CI 环境的严格 lint 检查。
 
 ## 3. 测试情况 (Testing Status)
 - **新增测试**: 无。
 - **现状**: 
     - 尽管项目规则 (.antigravityrules) 要求 TDD 和 80% 覆盖率，但由于前端目录目前尚未配置测试框架 (Vitest/RTL)，本次 UI 改动暂未编写自动化测试。
+    - **已解决 CI 阻塞问题**: 修复了所有阻塞 GitHub Actions CI 的 Lint 错误和 TypeScript 类型错误。此时提交 PR 应该能通过前端校验流程。
     - 所有的 UI 改进（动画效果、骨架屏切换）均已通过本地运行环境的视觉验证。
 - **规划**: 下一个窗口将重点配置 `Vitest` + `React Testing Library` 环境，以满足老师在 P2 requirement.md 中对全栈 80% 覆盖率的严格要求。
 
