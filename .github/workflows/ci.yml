@@ -124,6 +124,7 @@ jobs:
       - name: Run pytest with coverage
         working-directory: ${{ env.SERVER_DIR }}
         run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/..
           pytest tests/ \
             --cov=. \
             --cov-report=xml:coverage.xml \
