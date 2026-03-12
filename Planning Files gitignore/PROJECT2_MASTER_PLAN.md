@@ -144,9 +144,15 @@
 ---
 
 ## 💡 总指导原则 (Cheat Sheet)
-1. **Antigravity (IDE)**: 选 Sonnet 写代码，选 Gemini Pro 处理最后的评估报告/文档。
-2. **Claude Web**: 写文档、画架构图、设计 Prompt 原型。
-3. **测试**: 永远保持 80% Coverage。
+1. **是否要边做边 check coverage？**  
+   **绝对是的。** 每次修改重要逻辑（特别是提取算法或 AI 提示词路由），必须跑一次 `pytest` 看看是否掉了 80%。掉下去立刻让 Antigravity 补充相应的单元测试。**TDD 原则：先让 AI 写测试 -> 报错 -> 让 AI 写实现代码 -> 通过。**
+2. **前后端必须分开吗？**  
+   **必须的。** 根据你们的 `.antigravityrules`，你们是 React SPA + FastAPI，完全分离。你需要分别部署在专门托管前端（Vercel）和后端（Render/Railway）的平台上。
+3. **不同 AI 模型怎么分工？（只使用我们定好的工具）**  
+   - **Antigravity (IDE 侧的 AI Agent)**: 你可以根据需要在 Antigravity 中**灵活切换模型**：
+     - **使用 Claude 3.5/3.7 Sonnet**: 强代码逻辑，负责改 Bug、写 `pytest` 测试、处理架构、写代码组件。
+     - **使用 Gemini 1.5/3.1 Pro**: 大上下文窗口，当你需要扔进海量 Evaluation 测试数据/日志分析时使用。
+   - **Claude Web**: 前期用来发散探索架构思路、生成思维导图/流程图 (Mermaid)、生成最初的 Demo JSON 结构、写偏向叙事性质的长篇英文 Blog 等。
 
 ---
 

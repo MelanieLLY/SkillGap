@@ -47,10 +47,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install frontend dependencies
-        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       # ── ESLint ────────────────────────────────────────────────────────
@@ -145,10 +144,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install frontend dependencies
-        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       - name: TypeScript type-check
@@ -203,10 +201,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install frontend dependencies
-        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       - name: Vite production build
