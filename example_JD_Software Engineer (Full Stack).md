@@ -1,4 +1,13 @@
-# Software Engineer (Full Stack)
+# 1.short version
+
+### Software Engineer (Full Stack)
+
+We are hiring a Full Stack Software Engineer to build and maintain modern web applications. The role involves developing frontend interfaces using **React and TypeScript**, building backend services with **Node.js or Python (FastAPI)**, and working with **REST APIs, PostgreSQL, and cloud platforms such as AWS**. Experience with **Git, Docker, and CI/CD pipelines** is a plus.
+
+
+# 2. long version
+
+## Software Engineer (Full Stack)
 
 ## Location
 San Francisco, CA / Remote (U.S.)

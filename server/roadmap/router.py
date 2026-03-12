@@ -10,8 +10,12 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
+from server.auth import models
+from server.auth.deps import get_current_active_user
+from server.database import get_db
 from server.roadmap.schemas import RoadmapGenerateRequest, RoadmapGenerateResponse
 from server.roadmap.services import (
     ClaudeAPIError,
@@ -29,6 +33,8 @@ router = APIRouter()
 @router.post("/generate", response_model=RoadmapGenerateResponse)
 async def generate_roadmap(
     request: RoadmapGenerateRequest,
+    current_user: models.User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
 ) -> RoadmapGenerateResponse:
     """
     Generate a personalised learning roadmap using Claude AI.
@@ -82,5 +88,9 @@ async def generate_roadmap(
             status_code=502,
             detail=f"Failed to parse Claude's response: {exc}",
         ) from exc
+
+    # Persist the newly generated roadmap to the user's profile
+    current_user.roadmap = roadmap_response.roadmap.model_dump()
+    db.commit()
 
     return roadmap_response

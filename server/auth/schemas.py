@@ -11,6 +11,7 @@ class UserOut(BaseModel):
     email: EmailStr
     is_active: bool
     skills: list[str] = []
+    roadmap: dict | None = None
 
     model_config = {"from_attributes": True}
 

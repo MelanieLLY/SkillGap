@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface JDInputProps {
   onAnalyze: (text: string, company_name?: string, position_name?: string) => void;
   isLoading: boolean;
+  initialText?: string;
+  initialCompanyName?: string;
+  initialPositionName?: string;
 }
 
-const JDInput: React.FC<JDInputProps> = ({ onAnalyze, isLoading }) => {
-  const [text, setText] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [positionName, setPositionName] = useState("");
+const JDInput: React.FC<JDInputProps> = ({
+  onAnalyze,
+  isLoading,
+  initialText = "",
+  initialCompanyName = "",
+  initialPositionName = "",
+}) => {
+  const [text, setText] = React.useState(initialText);
+  const [companyName, setCompanyName] = React.useState(initialCompanyName);
+  const [positionName, setPositionName] = React.useState(initialPositionName);
+
+  React.useEffect(() => {
+    if (initialText) setText(initialText);
+    if (initialCompanyName) setCompanyName(initialCompanyName);
+    if (initialPositionName) setPositionName(initialPositionName);
+  }, [initialText, initialCompanyName, initialPositionName]);
 
   const handleSubmit = () => {
     if (

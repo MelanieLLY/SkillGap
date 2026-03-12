@@ -9,6 +9,7 @@ class HistoryBase(BaseModel):
     have_skills: list[str]
     missing_skills: list[str]
     bonus_skills: list[str]
+    jd_text: str | None = None
 
 
 class HistoryCreate(HistoryBase):

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { roadmapApi, Roadmap } from "../api/roadmap";
+import { roadmapApi } from "../api/roadmap";
+import { useAuthStore } from "../store/authStore";
 
 interface LearningRoadmapProps {
   /** Skills the user is missing — drives the "Generate" call. */
@@ -9,7 +10,9 @@ interface LearningRoadmapProps {
 }
 
 const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText }) => {
-  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+  const { user, setUser } = useAuthStore();
+  const roadmap = user?.roadmap || null;
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   /** Track which timeline phases are expanded */
@@ -21,14 +24,21 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
     if (!canGenerate) return;
     setIsLoading(true);
     setError(null);
-    setRoadmap(null);
 
     try {
       const response = await roadmapApi.generate({
         missing_skills: missingSkills,
         jd_text: jdText ?? null,
       });
-      setRoadmap(response.roadmap);
+
+      // Update global user state with the new roadmap
+      if (user) {
+        setUser({
+          ...user,
+          roadmap: response.roadmap,
+        });
+      }
+
       // Auto-expand the first phase
       setExpandedPhases(new Set([1]));
     } catch (err: unknown) {

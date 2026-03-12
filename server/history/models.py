@@ -20,5 +20,6 @@ class AnalysisHistory(Base):
     have_skills = Column(ARRAY(String), nullable=False)
     missing_skills = Column(ARRAY(String), nullable=False)
     bonus_skills = Column(ARRAY(String), nullable=False)
+    jd_text = Column(String, nullable=True)
 
     user = relationship("User", backref="analysis_history")

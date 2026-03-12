@@ -1,5 +1,5 @@
 from server.database import Base
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import JSON, Boolean, Column, Integer, String
 from sqlalchemy.dialects.postgresql import ARRAY
 
 
@@ -11,3 +11,4 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     skills = Column(ARRAY(String), server_default="{}")
+    roadmap = Column(JSON, nullable=True)

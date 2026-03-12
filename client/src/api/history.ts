@@ -10,6 +10,7 @@ export interface HistoryRecord {
   have_skills: string[];
   missing_skills: string[];
   bonus_skills: string[];
+  jd_text?: string | null;
 }
 
 export interface HistoryCreate {
@@ -19,6 +20,7 @@ export interface HistoryCreate {
   have_skills: string[];
   missing_skills: string[];
   bonus_skills: string[];
+  jd_text?: string | null;
 }
 
 export interface HistoryUpdate {

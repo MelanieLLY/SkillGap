@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { authApi } from "../api/auth";
+import { Roadmap } from "../api/roadmap";
 import { useProfileStore } from "./profileStore";
 
 export interface User {
@@ -7,6 +8,7 @@ export interface User {
   email: string;
   is_active: boolean;
   skills: string[];
+  roadmap?: Roadmap | null;
 }
 
 interface AuthState {
