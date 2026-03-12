@@ -1,4 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 /// <reference types="vitest/globals" />
+import React from "react";
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
@@ -7,6 +10,8 @@ import { vi } from "vitest";
 // We replace all animated components with plain HTML equivalents so tests
 // exercise rendering logic and props, not the animation engine itself.
 vi.mock("framer-motion", () => {
+  // Use React from the local scope if available or re-import it safely.
+  // In Vitest factories, you can use imports if they are mocked or hoisted.
   const React = require("react");
 
   type MotionProps = {
