@@ -14,13 +14,12 @@ Coverage targets
 from __future__ import annotations
 
 import pytest
-
 from server.extraction.services import generate_roadmap_with_claude
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Placeholder / unit tests (always run in CI)
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestGenerateRoadmapDummy:
     """Validate the placeholder roadmap function returns the expected structure."""
@@ -28,14 +27,18 @@ class TestGenerateRoadmapDummy:
     @pytest.mark.asyncio
     async def test_returns_dict_with_roadmap_key(self) -> None:
         """Result must be a dict containing a 'roadmap' list."""
-        result = await generate_roadmap_with_claude(missing_skills=["python"], jd_text="Need Python dev")
+        result = await generate_roadmap_with_claude(
+            missing_skills=["python"], jd_text="Need Python dev"
+        )
         assert isinstance(result, dict)
         assert "roadmap" in result
 
     @pytest.mark.asyncio
     async def test_returns_non_empty_roadmap_list(self) -> None:
         """The roadmap list must have at least one item."""
-        result = await generate_roadmap_with_claude(missing_skills=["python"], jd_text="Need Python dev")
+        result = await generate_roadmap_with_claude(
+            missing_skills=["python"], jd_text="Need Python dev"
+        )
         assert isinstance(result["roadmap"], list)
         assert len(result["roadmap"]) > 0
 
@@ -86,6 +89,7 @@ class TestGenerateRoadmapDummy:
 #   addopts = "-m 'not integration'"
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 @pytest.mark.integration
 @pytest.mark.asyncio
 async def test_anthropic_api_key_is_valid_live() -> None:
@@ -97,7 +101,6 @@ async def test_anthropic_api_key_is_valid_live() -> None:
         pytest -m integration server/tests/test_claude_integration.py
     """
     from anthropic import AsyncAnthropic, AuthenticationError
-
     from server.core.config import settings
 
     assert settings.anthropic_api_key, "ANTHROPIC_API_KEY is not configured"

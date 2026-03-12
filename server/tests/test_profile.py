@@ -13,12 +13,12 @@ All tests are fully isolated using the SQLite in-memory fixtures from conftest.p
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GET /api/profile/skills
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestGetSkills:
     """Tests that list a user's current skills."""
@@ -35,8 +35,12 @@ class TestGetSkills:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """After adding skills, GET should return them."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
-        client.post("/api/profile/skills", json={"skill": "react"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
+        client.post(
+            "/api/profile/skills", json={"skill": "react"}, headers=auth_headers
+        )
 
         r = client.get("/api/profile/skills", headers=auth_headers)
         assert r.status_code == 200
@@ -54,6 +58,7 @@ class TestGetSkills:
 # POST /api/profile/skills
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestAddSkill:
     """Tests for adding a single skill to the user profile."""
 
@@ -61,7 +66,9 @@ class TestAddSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Adding a valid new skill → 200 with the skill in the returned list."""
-        r = client.post("/api/profile/skills", json={"skill": "docker"}, headers=auth_headers)
+        r = client.post(
+            "/api/profile/skills", json={"skill": "docker"}, headers=auth_headers
+        )
         assert r.status_code == 200
         assert "docker" in r.json()
 
@@ -69,8 +76,12 @@ class TestAddSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Adding skills one by one should accumulate all of them."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
-        r = client.post("/api/profile/skills", json={"skill": "fastapi"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
+        r = client.post(
+            "/api/profile/skills", json={"skill": "fastapi"}, headers=auth_headers
+        )
         skills = r.json()
         assert "python" in skills
         assert "fastapi" in skills
@@ -79,8 +90,12 @@ class TestAddSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Adding the same skill twice should not create a duplicate entry."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
-        r = client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
+        r = client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
         assert r.status_code == 200
         skills = r.json()
         assert skills.count("python") == 1
@@ -89,8 +104,12 @@ class TestAddSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Adding 'Python' when 'python' already exists should not duplicate."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
-        r = client.post("/api/profile/skills", json={"skill": "Python"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
+        r = client.post(
+            "/api/profile/skills", json={"skill": "Python"}, headers=auth_headers
+        )
         assert r.status_code == 200
         # Should still be exactly one entry
         assert r.json().count("python") + r.json().count("Python") == 1
@@ -107,7 +126,9 @@ class TestAddSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Whitespace-only skill string → 400 (via .strip())."""
-        r = client.post("/api/profile/skills", json={"skill": "   "}, headers=auth_headers)
+        r = client.post(
+            "/api/profile/skills", json={"skill": "   "}, headers=auth_headers
+        )
         assert r.status_code == 400
 
     def test_add_skill_requires_authentication(self, client: TestClient) -> None:
@@ -120,6 +141,7 @@ class TestAddSkill:
 # DELETE /api/profile/skills/{skill_name}
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestRemoveSkill:
     """Tests for removing a specific skill from the user profile."""
 
@@ -127,8 +149,12 @@ class TestRemoveSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Add then remove a skill → skill no longer in the list."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
-        client.post("/api/profile/skills", json={"skill": "fastapi"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
+        client.post(
+            "/api/profile/skills", json={"skill": "fastapi"}, headers=auth_headers
+        )
 
         r = client.delete("/api/profile/skills/fastapi", headers=auth_headers)
         assert r.status_code == 200
@@ -139,7 +165,9 @@ class TestRemoveSkill:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Removing 'Python' when 'python' exists should succeed."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
         r = client.delete("/api/profile/skills/Python", headers=auth_headers)
         assert r.status_code == 200
         assert "python" not in r.json()
@@ -162,6 +190,7 @@ class TestRemoveSkill:
 # ══════════════════════════════════════════════════════════════════════════════
 # POST /api/profile/extract-resume
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestExtractResume:
     """Tests for the resume-based skill extraction endpoint."""
@@ -187,7 +216,9 @@ class TestExtractResume:
     ) -> None:
         """Skills already in the profile should not be duplicated."""
         # Add python first
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
 
         resume = "I have experience with Python, React, and Docker."
         r = client.post(
@@ -203,7 +234,9 @@ class TestExtractResume:
         self, client: TestClient, auth_headers: dict
     ) -> None:
         """Resume mentioning no curated skills returns existing skills unchanged."""
-        client.post("/api/profile/skills", json={"skill": "python"}, headers=auth_headers)
+        client.post(
+            "/api/profile/skills", json={"skill": "python"}, headers=auth_headers
+        )
 
         resume = "I enjoy hiking, cooking, and painting."
         r = client.post(

@@ -1,19 +1,22 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-from typing import AsyncGenerator, Dict, Any
-
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+
+import uvicorn
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
-from server.extraction.router import router as extraction_router
-from server.auth.router import router as auth_router
-from server.profile.router import router as profile_router
-from server.history.router import router as history_router
-from server.database import engine
+from sqlalchemy.exc import SQLAlchemyError
+
 from server.auth import models
+from server.auth.router import router as auth_router
+from server.database import engine
+from server.extraction.router import router as extraction_router
 from server.history import models as history_models
+from server.history.router import router as history_router
+from server.profile.router import router as profile_router
+from server.roadmap.router import router as roadmap_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
@@ -28,11 +31,23 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """
     models.Base.metadata.create_all(bind=engine)
     history_models.Base.metadata.create_all(bind=engine)
-    # Fallback to add skills column explicitly since we don't use alembic for existing DBs
-    with engine.connect() as conn:
-        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] DEFAULT '{}'"))
-        conn.commit()
+    # Fallback to add skills column explicitly since we don't use alembic for existing DBs.
+    # Only run on PostgreSQL — SQLite doesn't support IF NOT EXISTS in ALTER TABLE
+    # nor the VARCHAR[] array type.
+    if engine.dialect.name == "postgresql":
+        with engine.connect() as conn:
+            try:
+                conn.execute(
+                    text(
+                        "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
+                        "skills VARCHAR[] DEFAULT '{}'"
+                    )
+                )
+                conn.commit()
+            except SQLAlchemyError:
+                conn.rollback()
     yield
+
 
 app = FastAPI(title="SkillGap API", lifespan=lifespan)
 
@@ -50,12 +65,16 @@ app.include_router(extraction_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
 app.include_router(history_router, prefix="/api/history", tags=["history"])
+app.include_router(roadmap_router, prefix="/api/roadmap", tags=["roadmap"])
+
 
 @app.exception_handler(SQLAlchemyError)
-async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError) -> JSONResponse:
+async def sqlalchemy_exception_handler(
+    request: Request, exc: SQLAlchemyError
+) -> JSONResponse:
     """
     Global exception handler for SQLAlchemyError.
-    
+
     Catches database-related exceptions globally, preventing app crashes,
     and returns a clean JSON response.
 
@@ -75,7 +94,7 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError) -
 
 
 @app.get("/")
-async def root() -> Dict[str, str]:
+async def root() -> dict[str, str]:
     """
     Root endpoint for the API.
 
@@ -86,7 +105,7 @@ async def root() -> Dict[str, str]:
 
 
 @app.get("/health")
-async def health_check() -> Dict[str, str]:
+async def health_check() -> dict[str, str]:
     """
     Health check endpoint.
 

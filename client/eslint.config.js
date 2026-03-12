@@ -33,6 +33,10 @@ export default [
         fetch: "readonly",
         setTimeout: "readonly",
         clearTimeout: "readonly",
+        localStorage: "readonly",
+        sessionStorage: "readonly",
+        navigator: "readonly",
+        location: "readonly",
       },
     },
     plugins: {
@@ -45,8 +49,8 @@ export default [
       ...tsPlugin.configs["recommended"].rules,
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-      "@typescript-eslint/explicit-function-return-type": "warn",
-      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/consistent-type-imports": "off",
 
       // ── React Hooks ──────────────────────────────────────────────────────
       ...reactHooksPlugin.configs.recommended.rules,

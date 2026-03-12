@@ -13,7 +13,6 @@ All tests use the SQLite in-memory fixtures from conftest.py for full isolation.
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
 # ─── Helper payload ────────────────────────────────────────────────────────────
@@ -27,9 +26,13 @@ HISTORY_PAYLOAD = {
 }
 
 
-def _create_history(client: TestClient, auth_headers: dict, payload: dict | None = None) -> dict:
+def _create_history(
+    client: TestClient, auth_headers: dict, payload: dict | None = None
+) -> dict:
     """POST a history entry and return its JSON body."""
-    r = client.post("/api/history/", json=payload or HISTORY_PAYLOAD, headers=auth_headers)
+    r = client.post(
+        "/api/history/", json=payload or HISTORY_PAYLOAD, headers=auth_headers
+    )
     assert r.status_code == 200, r.text
     return r.json()
 
@@ -37,6 +40,7 @@ def _create_history(client: TestClient, auth_headers: dict, payload: dict | None
 # ══════════════════════════════════════════════════════════════════════════════
 # POST /api/history/
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestCreateHistory:
     """Tests for creating a new analysis history record."""
@@ -120,6 +124,7 @@ class TestCreateHistory:
 # GET /api/history/
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestGetHistory:
     """Tests for listing the current user's analysis history."""
 
@@ -176,12 +181,11 @@ class TestGetHistory:
 # PUT /api/history/{id}
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestUpdateHistory:
     """Tests for patching metadata fields of a history record."""
 
-    def test_update_company_name(
-        self, client: TestClient, auth_headers: dict
-    ) -> None:
+    def test_update_company_name(self, client: TestClient, auth_headers: dict) -> None:
         """Updating company_name must be reflected in the response."""
         record = _create_history(client, auth_headers)
         r = client.put(
@@ -192,9 +196,7 @@ class TestUpdateHistory:
         assert r.status_code == 200
         assert r.json()["company_name"] == "Updated Corp"
 
-    def test_update_position_name(
-        self, client: TestClient, auth_headers: dict
-    ) -> None:
+    def test_update_position_name(self, client: TestClient, auth_headers: dict) -> None:
         """Updating position_name must be reflected in the response."""
         record = _create_history(client, auth_headers)
         r = client.put(
@@ -205,9 +207,7 @@ class TestUpdateHistory:
         assert r.status_code == 200
         assert r.json()["position_name"] == "Staff Engineer"
 
-    def test_update_both_fields(
-        self, client: TestClient, auth_headers: dict
-    ) -> None:
+    def test_update_both_fields(self, client: TestClient, auth_headers: dict) -> None:
         """Both fields can be updated in one request."""
         record = _create_history(client, auth_headers)
         r = client.put(

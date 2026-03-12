@@ -1,20 +1,24 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
 
+from pydantic import BaseModel, Field
+
+
 class HistoryBase(BaseModel):
-    company_name: Optional[str] = None
-    position_name: Optional[str] = None
-    have_skills: List[str]
-    missing_skills: List[str]
-    bonus_skills: List[str]
+    company_name: str | None = None
+    position_name: str | None = None
+    have_skills: list[str]
+    missing_skills: list[str]
+    bonus_skills: list[str]
+
 
 class HistoryCreate(HistoryBase):
     pass
 
+
 class HistoryUpdate(BaseModel):
-    company_name: Optional[str] = None
-    position_name: Optional[str] = None
+    company_name: str | None = None
+    position_name: str | None = None
+
 
 class HistoryResponse(HistoryBase):
     id: int
