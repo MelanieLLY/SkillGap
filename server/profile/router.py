@@ -3,11 +3,11 @@ import re
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from server.auth.deps import get_current_active_user
-from server.auth.models import User
-from server.database import get_db
-from server.extraction.engine import CURATED_SKILLS
-from server.profile.schemas import ResumeExtractRequest, SkillAddRequest
+from auth.deps import get_current_active_user
+from auth.models import User
+from database import get_db
+from extraction.engine import CURATED_SKILLS
+from profile.schemas import ResumeExtractRequest, SkillAddRequest
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 

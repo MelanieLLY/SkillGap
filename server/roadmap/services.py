@@ -8,7 +8,7 @@ Responsibilities
 * Parse & validate the JSON response into Pydantic models.
 * Surface clear, typed exceptions so the router can return proper HTTP codes.
 
-The ``ANTHROPIC_API_KEY`` is read exclusively from ``server.core.config.settings``
+The ``ANTHROPIC_API_KEY`` is read exclusively from ``core.config.settings``
 which itself loads from ``.env`` — **never** hard-coded.
 """
 
@@ -26,8 +26,8 @@ from anthropic import (
 )
 from pydantic import ValidationError
 
-from server.core.config import settings
-from server.roadmap.schemas import RoadmapGenerateResponse
+from core.config import settings
+from roadmap.schemas import RoadmapGenerateResponse
 
 logger = logging.getLogger(__name__)
 

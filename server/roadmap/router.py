@@ -13,11 +13,11 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from server.auth import models
-from server.auth.deps import get_current_active_user
-from server.database import get_db
-from server.roadmap.schemas import RoadmapGenerateRequest, RoadmapGenerateResponse
-from server.roadmap.services import (
+from auth import models
+from auth.deps import get_current_active_user
+from database import get_db
+from roadmap.schemas import RoadmapGenerateRequest, RoadmapGenerateResponse
+from roadmap.services import (
     ClaudeAPIError,
     ClaudeAuthError,
     ClaudeParseError,

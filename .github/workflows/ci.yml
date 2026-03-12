@@ -47,9 +47,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       - name: ESLint (TypeScript / React)
@@ -123,10 +124,6 @@ jobs:
       # ── Backend tests + coverage gate ─────────────────────────────────
       - name: Run pytest with coverage
         working-directory: ${{ env.SERVER_DIR }}
-        env:
-          # server/ modules use absolute imports like `from server.auth import …`
-          # so the repo root (parent of server/) must be on PYTHONPATH.
-          PYTHONPATH: ${{ github.workspace }}
         run: |
           pytest tests/ \
             --cov=. \
@@ -150,9 +147,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       - name: TypeScript type-check
@@ -211,9 +209,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: ${{ env.CLIENT_DIR }}/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: ${{ env.CLIENT_DIR }}
         run: npm ci
 
       - name: Vite production build

@@ -8,14 +8,14 @@ import { useProfileStore } from "../../store/profileStore";
 
 describe("Navbar Component", () => {
   beforeEach(() => {
-    useAuthStore.setState({ 
-      user: { 
-        id: 1, 
-        email: "test@example.com", 
-        is_active: true, 
+    useAuthStore.setState({
+      user: {
+        id: 1,
+        email: "test@example.com",
+        is_active: true,
         skills: ["React"],
-        roadmap: null 
-      } 
+        roadmap: null,
+      },
     });
     useProfileStore.setState({ skills: ["React"] });
   });
@@ -24,7 +24,7 @@ describe("Navbar Component", () => {
     render(
       <BrowserRouter>
         <Navbar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("SkillGap")).toBeDefined();

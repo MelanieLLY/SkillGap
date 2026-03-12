@@ -56,12 +56,6 @@ const Navbar: React.FC = () => {
         >
           History
         </Link>
-        <a
-          href="#"
-          className="text-sm font-medium text-[#9aa0ac] hover:text-white transition-colors"
-        >
-          Settings
-        </a>
       </div>
 
       {/* Profile Avatar & Actions */}

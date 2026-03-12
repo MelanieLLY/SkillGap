@@ -18,40 +18,46 @@ vi.mock("../../api/history", () => ({
 // Mock child components to keep it simple and focused on Dashboard logic
 vi.mock("../../components/Navbar", () => ({ default: () => <div data-testid="navbar" /> }));
 vi.mock("../../components/JDInput", () => ({ default: () => <div data-testid="jd-input" /> }));
-vi.mock("../../components/SkillMatchResults", () => ({ default: () => <div data-testid="match-results" /> }));
-vi.mock("../../components/LearningRoadmap", () => ({ default: () => <div data-testid="roadmap" /> }));
-vi.mock("../../components/UserSkillsInput", () => ({ default: () => <div data-testid="user-skills" /> }));
+vi.mock("../../components/SkillMatchResults", () => ({
+  default: () => <div data-testid="match-results" />,
+}));
+vi.mock("../../components/LearningRoadmap", () => ({
+  default: () => <div data-testid="roadmap" />,
+}));
+vi.mock("../../components/UserSkillsInput", () => ({
+  default: () => <div data-testid="user-skills" />,
+}));
 
 describe("Dashboard Page", () => {
-  const mockUser = { 
-    id: 1, 
-    email: "test@example.com", 
-    is_active: true, 
+  const mockUser = {
+    id: 1,
+    email: "test@example.com",
+    is_active: true,
     skills: ["React"],
-    roadmap: null 
+    roadmap: null,
   };
-  
+
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Set up store state directly instead of mocking the module
     useAuthStore.setState({ user: mockUser });
     useProfileStore.setState({
       skills: ["React", "TypeScript"],
       isLoading: false,
     });
-    
+
     (historyApi.getHistory as any).mockResolvedValue([]);
-    
+
     // Mock loadSkills implementation
-    vi.spyOn(useProfileStore.getState(), 'loadSkills').mockImplementation(() => Promise.resolve());
+    vi.spyOn(useProfileStore.getState(), "loadSkills").mockImplementation(() => Promise.resolve());
   });
 
   it("renders the dashboard layout", async () => {
     render(
       <BrowserRouter>
         <Dashboard />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByTestId("navbar")).toBeDefined();
@@ -63,34 +69,36 @@ describe("Dashboard Page", () => {
 
   it("loads user skills on mount", async () => {
     // Spy on loadSkills instead of mocking the hook
-    const spy = vi.spyOn(useProfileStore.getState(), 'loadSkills');
-    
+    const spy = vi.spyOn(useProfileStore.getState(), "loadSkills");
+
     render(
       <BrowserRouter>
         <Dashboard />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(spy).toHaveBeenCalled();
   });
 
   it("fetches history on mount and populates initial values", async () => {
-    const mockHistory = [{
-      id: 1,
-      jd_text: "Job Description",
-      company_name: "Test Corp",
-      position_name: "Dev",
-      have_skills: ["React"],
-      missing_skills: ["Node"],
-      bonus_skills: ["Docker"],
-      match_score: 50
-    }];
+    const mockHistory = [
+      {
+        id: 1,
+        jd_text: "Job Description",
+        company_name: "Test Corp",
+        position_name: "Dev",
+        have_skills: ["React"],
+        missing_skills: ["Node"],
+        bonus_skills: ["Docker"],
+        match_score: 50,
+      },
+    ];
     (historyApi.getHistory as any).mockResolvedValueOnce(mockHistory);
 
     render(
       <BrowserRouter>
         <Dashboard />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {

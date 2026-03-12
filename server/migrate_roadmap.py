@@ -1,4 +1,4 @@
-from server.database import engine
+from database import engine
 from sqlalchemy import text
 
 

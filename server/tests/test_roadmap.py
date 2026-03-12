@@ -138,7 +138,7 @@ class TestRoadmapGenerateEndpoint:
 
     # ---------- happy path ----------
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_generate_returns_valid_roadmap(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -165,7 +165,7 @@ class TestRoadmapGenerateEndpoint:
         assert len(roadmap["project_ideas"]) == 1
         assert "summary" in roadmap
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_timeline_phase_structure(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -196,7 +196,7 @@ class TestRoadmapGenerateEndpoint:
         }
         assert required_keys.issubset(phase.keys())
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_course_recommendation_structure(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -229,7 +229,7 @@ class TestRoadmapGenerateEndpoint:
         ):
             assert key in course
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_project_ideas_structure(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -260,7 +260,7 @@ class TestRoadmapGenerateEndpoint:
         }
         assert required_keys.issubset(project.keys())
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_summary_statistics(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -288,7 +288,7 @@ class TestRoadmapGenerateEndpoint:
         ):
             assert key in summary
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_optional_jd_text_is_forwarded(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -348,7 +348,7 @@ class TestRoadmapGenerateEndpoint:
 
     # ---------- error handling ----------
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_api_timeout_returns_504(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -370,7 +370,7 @@ class TestRoadmapGenerateEndpoint:
         assert response.status_code == 504
         assert "timed out" in response.json()["detail"].lower()
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_api_error_returns_502(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -400,7 +400,7 @@ class TestRoadmapGenerateEndpoint:
         assert response.status_code == 502
         assert "claude" in response.json()["detail"].lower()
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_invalid_json_from_claude_returns_502(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
@@ -429,7 +429,7 @@ class TestRoadmapGenerateEndpoint:
             or "claude" in response.json()["detail"].lower()
         )
 
-    @patch("server.roadmap.services.AsyncAnthropic")
+    @patch("roadmap.services.AsyncAnthropic")
     def test_missing_api_key_returns_500(
         self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:

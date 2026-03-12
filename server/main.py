@@ -8,15 +8,15 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
-from server.auth import models
-from server.auth.router import router as auth_router
-from server.database import engine
-from server.extraction.router import router as extraction_router
-from server.history import models as history_models
-from server.history.router import router as history_router
-from server.profile.router import router as profile_router
-from server.roadmap.router import router as roadmap_router
-from server.core.config import settings
+from auth import models
+from auth.router import router as auth_router
+from core.config import settings
+from database import engine
+from extraction.router import router as extraction_router
+from history import models as history_models
+from history.router import router as history_router
+from profile.router import router as profile_router
+from roadmap.router import router as roadmap_router
 
 
 @asynccontextmanager
@@ -30,23 +30,27 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Yields:
         None
     """
-    models.Base.metadata.create_all(bind=engine)
-    history_models.Base.metadata.create_all(bind=engine)
-    # Fallback to add skills column explicitly since we don't use alembic for existing DBs.
-    # Only run on PostgreSQL — SQLite doesn't support IF NOT EXISTS in ALTER TABLE
-    # nor the VARCHAR[] array type.
-    if engine.dialect.name == "postgresql":
-        with engine.connect() as conn:
-            try:
-                conn.execute(
-                    text(
-                        "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
-                        "skills VARCHAR[] DEFAULT '{}'"
+    try:
+        models.Base.metadata.create_all(bind=engine)
+        history_models.Base.metadata.create_all(bind=engine)
+        # Fallback to add skills column explicitly since we don't use alembic for existing DBs.
+        # Only run on PostgreSQL — SQLite doesn't support IF NOT EXISTS in ALTER TABLE
+        # nor the VARCHAR[] array type.
+        if engine.dialect.name == "postgresql":
+            with engine.connect() as conn:
+                try:
+                    conn.execute(
+                        text(
+                            "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
+                            "skills VARCHAR[] DEFAULT '{}'"
+                        )
                     )
-                )
-                conn.commit()
-            except SQLAlchemyError:
-                conn.rollback()
+                    conn.commit()
+                except SQLAlchemyError:
+                    conn.rollback()
+    except Exception as e:
+        print(f"WARNING: DB init failed at startup (transient error?): {e}")
+        print("Server will start, but DB operations may fail until connection is restored.")
     yield
 
 
@@ -117,4 +121,4 @@ async def health_check() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    uvicorn.run("server.main:app", host=settings.host, port=settings.port, reload=True)
+    uvicorn.run("main:app", host=settings.host, port=settings.port, reload=True)

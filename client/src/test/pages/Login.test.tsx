@@ -33,7 +33,7 @@ describe("Login Page", () => {
     render(
       <BrowserRouter>
         <Login />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Welcome to SkillGap")).toBeDefined();
@@ -46,7 +46,7 @@ describe("Login Page", () => {
     render(
       <BrowserRouter>
         <Login />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
@@ -69,7 +69,7 @@ describe("Login Page", () => {
     render(
       <BrowserRouter>
         <Login />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByLabelText(/email/i), {
@@ -104,7 +104,7 @@ describe("Login Page", () => {
     render(
       <BrowserRouter>
         <Login />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByLabelText(/email/i), {
@@ -126,7 +126,7 @@ describe("Login Page", () => {
     render(
       <BrowserRouter>
         <Login />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByLabelText(/email/i), {

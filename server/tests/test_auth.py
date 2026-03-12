@@ -14,8 +14,9 @@ No external services are required.
 from __future__ import annotations
 
 from fastapi.testclient import TestClient
-from server.auth import models as auth_models
-from server.auth import utils as auth_utils
+
+from auth import models as auth_models
+from auth import utils as auth_utils
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 

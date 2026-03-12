@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../api/auth";
 import { historyApi } from "../api/history";
 import { useProfileStore } from "../store/profileStore";
 import { useAuthStore } from "../store/authStore";
@@ -102,7 +102,7 @@ export default function Dashboard() {
     setLastJdText(jobDescription);
 
     try {
-      const response = await axios.post<SkillResults>("http://localhost:8000/api/extract", {
+      const response = await apiClient.post<SkillResults>("/extract", {
         job_description: jobDescription,
         user_skills: userSkills,
       });
