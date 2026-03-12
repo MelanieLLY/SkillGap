@@ -21,7 +21,7 @@ env:
   # ── Python ──────────────────────────────────────────────────────────────
   PYTHON_VERSION: "3.11"
   # ── Node ────────────────────────────────────────────────────────────────
-  NODE_VERSION: "20"
+  NODE_VERSION: "22"
   # ── Paths ───────────────────────────────────────────────────────────────
   SERVER_DIR: server
   CLIENT_DIR: client
@@ -159,6 +159,10 @@ jobs:
         working-directory: ${{ env.CLIENT_DIR }}
         # tsc --noEmit checks all types without producing output files
         run: npx tsc --noEmit
+
+      - name: Frontend tests (Vitest)
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npm run test
 
 # ─────────────────────────────────────────────────────────────────────────────
 # JOB 3 · BUILD & COVERAGE REPORT  (Vite prod build + GHA Job Summary)

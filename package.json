@@ -13,6 +13,9 @@
     "install:server": "python3 -m pip install -r server/requirements.txt",
     "install:all": "npm install && npm run install:client && npm run install:server"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
