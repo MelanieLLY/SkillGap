@@ -60,6 +60,7 @@ const UserSkillsInput: React.FC<UserSkillsInputProps> = ({ skills, onSkillsChang
             <button
               onClick={() => removeSkill(skill)}
               className="hover:text-white transition-colors"
+              aria-label={`Remove ${skill}`}
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

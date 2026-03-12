@@ -24,17 +24,21 @@
 - **AI 接口**: Anthropic Claude API (`claude-sonnet-4-20250514`)
 - **测试框架**: **Pytest** + pytest-cov
 
-## 3. 测试覆盖率概览
+## 3. 测试覆盖率概览 (Coverage Overview)
 
 ### 前端 (Frontend)
-- **总覆盖率**: 约 21.42% (当前重点测试了核心 UI 交互与状态管理)
-- **通过情况**: **48** 个案例全部通过 (100% Pass)
-- **详细结果**: 见 [frontend_test_report.txt](./frontend_test_report.txt)
+- **Framework**: `Vitest` + `React Testing Library`
+- **Total Tests**: 84
+- **Status**: ✅ All Passing (100% Pass)
+- **Coverage**: **87.17% (Lines)**
+- **Report**: [frontend_test_report.txt](frontend_test_report.txt)
 
 ### 后端 (Backend)
-- **总覆盖率**: **92%** (具体为 91.76%，已显著超过 PRD 要求的 80%)
-- **通过情况**: **116** 个案例全部通过 (100% Pass)
-- **详细结果**: 见 [backend_test_report.txt](./backend_test_report.txt)
+- **Framework**: `pytest`
+- **Total Tests**: 116
+- **Status**: ✅ All Passing (100% Pass)
+- **Coverage**: **92%**
+- **Report**: [backend_test_report.txt](backend_test_report.txt)
 
 ## 4. AI Eval 测试
 - **评测功能**: 学习路线 (Roadmap) 生成质量。
