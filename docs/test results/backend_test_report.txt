@@ -1,137 +1,25 @@
-==================== BACKEND TEST RESULTS ====================
-elaniey@Melanies-MacBook-Pro SkillGap % export PYTHONPATH=$PYTHONPATH:$(pwd) && cd server && pytest tests/ --cov=. --cov-report=term-missing --cov-fail-under=80 -v
-========================================================================================== test session starts ==========================================================================================
-platform darwin -- Python 3.12.0, pytest-7.4.3, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.12/bin/python3
-cachedir: .pytest_cache
+============================= test session starts ==============================
+platform darwin -- Python 3.12.0, pytest-7.4.3, pluggy-1.6.0
 rootdir: /Users/melaniey/Github/SkillGap/server
 configfile: pyproject.toml
 plugins: cov-4.1.0, asyncio-0.21.1, anyio-3.7.1
 asyncio: mode=Mode.AUTO
-collected 117 items / 1 deselected / 116 selected                                                                                                                                                       
+collected 120 items / 1 deselected / 119 selected
 
-tests/test_auth.py::TestRegister::test_register_returns_201_and_user_data PASSED                                                                                                                  [  0%]
-tests/test_auth.py::TestRegister::test_register_returns_skills_as_empty_list PASSED                                                                                                               [  1%]
-tests/test_auth.py::TestRegister::test_register_duplicate_email_returns_400 PASSED                                                                                                                [  2%]
-tests/test_auth.py::TestRegister::test_register_invalid_email_returns_422 PASSED                                                                                                                  [  3%]
-tests/test_auth.py::TestRegister::test_register_missing_password_returns_422 PASSED                                                                                                               [  4%]
-tests/test_auth.py::TestRegister::test_register_empty_body_returns_422 PASSED                                                                                                                     [  5%]
-tests/test_auth.py::TestLogin::test_login_happy_path_returns_token PASSED                                                                                                                         [  6%]
-tests/test_auth.py::TestLogin::test_login_wrong_password_returns_401 PASSED                                                                                                                       [  6%]
-tests/test_auth.py::TestLogin::test_login_unknown_email_returns_401 PASSED                                                                                                                        [  7%]
-tests/test_auth.py::TestLogin::test_login_requires_form_data_not_json PASSED                                                                                                                      [  8%]
-tests/test_auth.py::TestLogin::test_login_inactive_user_returns_400 PASSED                                                                                                                        [  9%]
-tests/test_auth.py::TestReadMe::test_read_me_returns_current_user PASSED                                                                                                                          [ 10%]
-tests/test_auth.py::TestReadMe::test_read_me_without_token_returns_401 PASSED                                                                                                                     [ 11%]
-tests/test_auth.py::TestReadMe::test_read_me_with_invalid_token_returns_401 PASSED                                                                                                                [ 12%]
-tests/test_auth.py::TestReadMe::test_read_me_with_malformed_bearer_returns_401 PASSED                                                                                                             [ 12%]
-tests/test_auth.py::TestAuthUtils::test_password_hash_is_not_plaintext PASSED                                                                                                                     [ 13%]
-tests/test_auth.py::TestAuthUtils::test_verify_password_correct PASSED                                                                                                                            [ 14%]
-tests/test_auth.py::TestAuthUtils::test_verify_password_wrong PASSED                                                                                                                              [ 15%]
-tests/test_auth.py::TestAuthUtils::test_create_access_token_returns_string PASSED                                                                                                                 [ 16%]
-tests/test_auth.py::TestAuthUtils::test_create_access_token_with_custom_expiry PASSED                                                                                                             [ 17%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_returns_dict_with_roadmap_key PASSED                                                                                             [ 18%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_returns_non_empty_roadmap_list PASSED                                                                                            [ 18%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_roadmap_items_have_required_keys PASSED                                                                                          [ 19%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_resources_is_a_list PASSED                                                                                                       [ 20%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_returns_message_key PASSED                                                                                                       [ 21%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_accepts_arbitrary_kwargs PASSED                                                                                                  [ 22%]
-tests/test_claude_integration.py::TestGenerateRoadmapDummy::test_no_args_does_not_raise PASSED                                                                                                    [ 23%]
-tests/test_extraction.py::TestExtractSkills::test_empty_jd_returns_empty_categories PASSED                                                                                                        [ 24%]
-tests/test_extraction.py::TestExtractSkills::test_non_string_jd_returns_empty_categories PASSED                                                                                                   [ 25%]
-tests/test_extraction.py::TestExtractSkills::test_no_matches_returns_only_bonus PASSED                                                                                                            [ 25%]
-tests/test_extraction.py::TestExtractSkills::test_language_matching PASSED                                                                                                                        [ 26%]
-tests/test_extraction.py::TestExtractSkills::test_framework_matching PASSED                                                                                                                       [ 27%]
-tests/test_extraction.py::TestExtractSkills::test_database_skill_matching PASSED                                                                                                                  [ 28%]
-tests/test_extraction.py::TestExtractSkills::test_devops_and_ml_skills PASSED                                                                                                                     [ 29%]
-tests/test_extraction.py::TestExtractSkills::test_word_boundary_prevents_false_positive PASSED                                                                                                    [ 30%]
-tests/test_extraction.py::TestExtractSkills::test_special_characters_match PASSED                                                                                                                 [ 31%]
-tests/test_extraction.py::TestExtractSkills::test_case_insensitive_user_skills PASSED                                                                                                             [ 31%]
-tests/test_extraction.py::TestExtractSkills::test_empty_user_skills_yields_only_missing PASSED                                                                                                    [ 32%]
-tests/test_extraction.py::TestExtractSkills::test_all_user_skills_match_jd PASSED                                                                                                                 [ 33%]
-tests/test_extraction.py::TestExtractSkills::test_user_skill_not_in_curated_set_still_matched PASSED                                                                                              [ 34%]
-tests/test_extraction.py::TestExtractSkills::test_result_keys_always_present PASSED                                                                                                               [ 35%]
-tests/test_extraction.py::TestCalculateMatchScore::test_empty_inputs_return_zero PASSED                                                                                                           [ 36%]
-tests/test_extraction.py::TestCalculateMatchScore::test_full_match_returns_100 PASSED                                                                                                             [ 37%]
-tests/test_extraction.py::TestCalculateMatchScore::test_no_match_returns_zero PASSED                                                                                                              [ 37%]
-tests/test_extraction.py::TestCalculateMatchScore::test_partial_match_50_percent PASSED                                                                                                           [ 38%]
-tests/test_extraction.py::TestCalculateMatchScore::test_rounding_two_decimal_places PASSED                                                                                                        [ 39%]
-tests/test_extraction.py::TestCalculateMatchScore::test_single_skill_match PASSED                                                                                                                 [ 40%]
-tests/test_extraction.py::TestCalculateMatchScore::test_single_skill_miss PASSED                                                                                                                  [ 41%]
-tests/test_extraction.py::TestCalculateMatchScore::test_large_skill_list PASSED                                                                                                                   [ 42%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_both_company_and_role_found PASSED                                                                                                  [ 43%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_position_keyword_variants PASSED                                                                                                    [ 43%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_only_position_found PASSED                                                                                                          [ 44%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_neither_found_returns_none PASSED                                                                                                   [ 45%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_case_insensitive_company_field PASSED                                                                                               [ 46%]
-tests/test_extraction.py::TestExtractCompanyAndPosition::test_result_always_has_both_keys PASSED                                                                                                  [ 47%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_happy_path PASSED                                                                                                                     [ 48%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_empty_jd_returns_empty_categories PASSED                                                                                              [ 49%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_no_metadata_in_jd PASSED                                                                                                              [ 50%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_missing_job_description_field_returns_422 PASSED                                                                                      [ 50%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_missing_user_skills_field_returns_422 PASSED                                                                                          [ 51%]
-tests/test_extraction.py::TestExtractEndpoint::test_extract_empty_user_skills_is_valid PASSED                                                                                                     [ 52%]
-tests/test_extraction.py::TestCuratedSkillsSet::test_curated_skills_is_a_set PASSED                                                                                                               [ 53%]
-tests/test_extraction.py::TestCuratedSkillsSet::test_curated_skills_all_lowercase PASSED                                                                                                          [ 54%]
-tests/test_extraction.py::TestCuratedSkillsSet::test_core_skills_present PASSED                                                                                                                   [ 55%]
-tests/test_history.py::TestCreateHistory::test_create_history_returns_200 PASSED                                                                                                                  [ 56%]
-tests/test_history.py::TestCreateHistory::test_create_history_response_fields PASSED                                                                                                              [ 56%]
-tests/test_history.py::TestCreateHistory::test_create_history_match_score_computed_server_side PASSED                                                                                             [ 57%]
-tests/test_history.py::TestCreateHistory::test_create_history_full_match_score_100 PASSED                                                                                                         [ 58%]
-tests/test_history.py::TestCreateHistory::test_create_history_zero_match_score PASSED                                                                                                             [ 59%]
-tests/test_history.py::TestCreateHistory::test_create_history_without_company_or_position PASSED                                                                                                  [ 60%]
-tests/test_history.py::TestCreateHistory::test_create_history_missing_required_fields_returns_422 PASSED                                                                                          [ 61%]
-tests/test_history.py::TestCreateHistory::test_create_history_requires_authentication PASSED                                                                                                      [ 62%]
-tests/test_history.py::TestGetHistory::test_get_history_empty_for_new_user PASSED                                                                                                                 [ 62%]
-tests/test_history.py::TestGetHistory::test_get_history_returns_created_records PASSED                                                                                                            [ 63%]
-tests/test_history.py::TestGetHistory::test_get_history_multiple_records PASSED                                                                                                                   [ 64%]
-tests/test_history.py::TestGetHistory::test_get_history_without_auth_returns_401 PASSED                                                                                                           [ 65%]
-tests/test_history.py::TestGetHistory::test_get_history_response_has_required_fields PASSED                                                                                                       [ 66%]
-tests/test_history.py::TestUpdateHistory::test_update_company_name PASSED                                                                                                                         [ 67%]
-tests/test_history.py::TestUpdateHistory::test_update_position_name PASSED                                                                                                                        [ 68%]
-tests/test_history.py::TestUpdateHistory::test_update_both_fields PASSED                                                                                                                          [ 68%]
-tests/test_history.py::TestUpdateHistory::test_update_match_score_is_preserved PASSED                                                                                                             [ 69%]
-tests/test_history.py::TestUpdateHistory::test_update_non_existent_record_returns_404 PASSED                                                                                                      [ 70%]
-tests/test_history.py::TestUpdateHistory::test_update_another_users_record_returns_403 PASSED                                                                                                     [ 71%]
-tests/test_history.py::TestUpdateHistory::test_update_history_requires_authentication PASSED                                                                                                      [ 72%]
-tests/test_profile.py::TestGetSkills::test_get_skills_returns_empty_list_for_new_user PASSED                                                                                                      [ 73%]
-tests/test_profile.py::TestGetSkills::test_get_skills_returns_expected_skills PASSED                                                                                                              [ 74%]
-tests/test_profile.py::TestGetSkills::test_get_skills_requires_authentication PASSED                                                                                                              [ 75%]
-tests/test_profile.py::TestAddSkill::test_add_skill_returns_updated_list PASSED                                                                                                                   [ 75%]
-tests/test_profile.py::TestAddSkill::test_add_multiple_skills_accumulates PASSED                                                                                                                  [ 76%]
-tests/test_profile.py::TestAddSkill::test_add_duplicate_skill_is_idempotent PASSED                                                                                                                [ 77%]
-tests/test_profile.py::TestAddSkill::test_add_duplicate_case_insensitive PASSED                                                                                                                   [ 78%]
-tests/test_profile.py::TestAddSkill::test_add_empty_skill_returns_400 PASSED                                                                                                                      [ 79%]
-tests/test_profile.py::TestAddSkill::test_add_whitespace_only_skill_returns_400 PASSED                                                                                                            [ 80%]
-tests/test_profile.py::TestAddSkill::test_add_skill_requires_authentication PASSED                                                                                                                [ 81%]
-tests/test_profile.py::TestRemoveSkill::test_remove_existing_skill PASSED                                                                                                                         [ 81%]
-tests/test_profile.py::TestRemoveSkill::test_remove_skill_case_insensitive PASSED                                                                                                                 [ 82%]
-tests/test_profile.py::TestRemoveSkill::test_remove_non_existent_skill_returns_404 PASSED                                                                                                         [ 83%]
-tests/test_profile.py::TestRemoveSkill::test_remove_skill_requires_authentication PASSED                                                                                                          [ 84%]
-tests/test_profile.py::TestExtractResume::test_extract_curated_skills_from_resume PASSED                                                                                                          [ 85%]
-tests/test_profile.py::TestExtractResume::test_extract_resume_does_not_duplicate_existing_skills PASSED                                                                                           [ 86%]
-tests/test_profile.py::TestExtractResume::test_extract_resume_with_no_curated_skills PASSED                                                                                                       [ 87%]
-tests/test_profile.py::TestExtractResume::test_extract_resume_requires_authentication PASSED                                                                                                      [ 87%]
-tests/test_profile.py::TestExtractResume::test_extract_resume_missing_field_returns_422 PASSED                                                                                                    [ 88%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_generate_returns_valid_roadmap PASSED                                                                                                    [ 89%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_timeline_phase_structure PASSED                                                                                                          [ 90%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_course_recommendation_structure PASSED                                                                                                   [ 91%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_project_ideas_structure PASSED                                                                                                           [ 92%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_summary_statistics PASSED                                                                                                                [ 93%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_optional_jd_text_is_forwarded PASSED                                                                                                     [ 93%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_empty_missing_skills_returns_422 PASSED                                                                                                  [ 94%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_missing_field_returns_422 PASSED                                                                                                         [ 95%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_wrong_type_returns_422 PASSED                                                                                                            [ 96%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_api_timeout_returns_504 PASSED                                                                                                           [ 97%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_api_error_returns_502 PASSED                                                                                                             [ 98%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_invalid_json_from_claude_returns_502 PASSED                                                                                              [ 99%]
-tests/test_roadmap.py::TestRoadmapGenerateEndpoint::test_missing_api_key_returns_500 PASSED                                                                                                       [100%]
+server/tests/test_auth.py ....................                           [ 16%]
+server/tests/test_claude_integration.py .......                          [ 22%]
+server/tests/test_extraction.py .....................................    [ 53%]
+server/tests/test_history.py ....................                        [ 70%]
+server/tests/test_migrate_roadmap.py ...                                 [ 73%]
+server/tests/test_profile.py ...................                         [ 89%]
+server/tests/test_roadmap.py .............                               [100%]
 
-=========================================================================================== warnings summary ============================================================================================
-../../../../../Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+=============================== warnings summary ===============================
+../../../../Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/passlib/utils/__init__.py:854
   /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
     from crypt import crypt as _crypt
 
-../../../../../Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pydantic/_internal/_config.py:268
+../../../../Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pydantic/_internal/_config.py:268
   /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pydantic/_internal/_config.py:268: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.5/migration/
     warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
 
@@ -156,34 +44,41 @@ tests/test_auth.py::TestAuthUtils::test_create_access_token_returns_string
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 
 ---------- coverage: platform darwin, python 3.12.0-final-0 ----------
-Name                     Stmts   Miss  Cover   Missing
-------------------------------------------------------
-__init__.py                  0      0   100%
-auth/deps.py                25      2    92%   39, 45
-auth/models.py              11      0   100%
-auth/router.py              30      0   100%
-auth/schemas.py             14      0   100%
-auth/utils.py               17      0   100%
-core/config.py               9      0   100%
-database.py                 12      4    67%   21-25
-extraction/__init__.py       0      0   100%
-extraction/engine.py        34      0   100%
-extraction/router.py        19      0   100%
-extraction/services.py       5      0   100%
-history/models.py           18      0   100%
-history/router.py           34      0   100%
-history/schemas.py          21      0   100%
-main.py                     47     11    77%   38-48, 89-90, 104, 115, 119
-migrate_roadmap.py          21     21     0%   1-35
-profile/__init__.py          0      0   100%
-profile/router.py           51      0   100%
-profile/schemas.py           5      0   100%
-roadmap/__init__.py          0      0   100%
-roadmap/router.py           30      0   100%
-roadmap/schemas.py          51      0   100%
-roadmap/services.py         56      4    93%   232, 272-274
-------------------------------------------------------
-TOTAL                      510     42    92%
+Name                                      Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------
+server/__init__.py                            0      0   100%
+server/auth/deps.py                          25      2    92%   39, 45
+server/auth/models.py                        11      0   100%
+server/auth/router.py                        30      0   100%
+server/auth/schemas.py                       14      0   100%
+server/auth/utils.py                         17      0   100%
+server/core/config.py                         9      0   100%
+server/database.py                           12      4    67%   21-25
+server/extraction/__init__.py                 0      0   100%
+server/extraction/engine.py                  34      0   100%
+server/extraction/router.py                  19      0   100%
+server/extraction/services.py                 5      0   100%
+server/history/models.py                     18      0   100%
+server/history/router.py                     34      0   100%
+server/history/schemas.py                    21      0   100%
+server/main.py                               47     11    77%   38-48, 89-90, 104, 115, 119
+server/migrate_roadmap.py                    21      1    95%   35
+server/profile/__init__.py                    0      0   100%
+server/profile/router.py                     51      0   100%
+server/profile/schemas.py                     5      0   100%
+server/roadmap/__init__.py                    0      0   100%
+server/roadmap/router.py                     30      0   100%
+server/roadmap/schemas.py                    51      0   100%
+server/roadmap/services.py                   56      4    93%   232, 272-274
+server/tests/conftest.py                     84      7    92%   60, 64, 70, 78, 81-83
+server/tests/test_auth.py                   109      0   100%
+server/tests/test_claude_integration.py      54     12    78%   103-120
+server/tests/test_extraction.py             177      0   100%
+server/tests/test_history.py                109      0   100%
+server/tests/test_migrate_roadmap.py         28      0   100%
+server/tests/test_profile.py                 99      0   100%
+server/tests/test_roadmap.py                137      0   100%
+-----------------------------------------------------------------------
+TOTAL                                      1307     41    97%
 
-Required test coverage of 80% reached. Total coverage: 91.76%
-=========================================================================== 116 passed, 1 deselected, 119 warnings in 30.98s ============================================================================
+=============== 119 passed, 1 deselected, 119 warnings in 30.54s ===============
