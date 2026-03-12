@@ -102,8 +102,9 @@
 **预估时间：3 - 4 小时** | **推荐工具：Antigravity (Claude Sonnet)**
 
 - [ ] **Step 3.1 前端 UI 骨架屏与 Accessibility (Issue #10)**
-  - **Prompt (发给 Antigravity)**: *"Create a polished skeleton loading state for the roadmap timeline using Tailwind CSS. Also ensure full accessibility (aria-labels, keyboard nav) for all new components."*
+  - **Prompt (推荐)**: 针对 `client/src/components/LearningRoadmap.tsx` 实现一个平滑扫光效果 (Shimmer) 的骨架屏状态。要求：1. 结构与真实 Roadmap 一致；2. 数据加载完成后平滑淡入 (Fade-in)；3. 增加 `aria-busy` 等 A11y 细节；4. 组件需可复用且符合accessibility规范。
 - [ ] **Step 3.2 流程优化与 Wow-factor**
+  - **Prompt (推荐)**: 为 Dashboard 增加 Wow-factor 动画：1. 优化 `MatchRing` 使分数增长带弹簧跳动感；2. 实现 Have/Missing/Bonus 三列技能的交错入场 (Staggered Entrance)；3. 给卡片增加 Hover elevation 微交互；4. 如果需要，可引入 `framer-motion`。
   - **Action**: 优化动画过场，录制 90 秒黄金 Demo 素材。
 
 ---
