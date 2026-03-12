@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
 from server.database import Base
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
 
 class AnalysisHistory(Base):
     __tablename__ = "analysis_history"
@@ -12,7 +13,7 @@ class AnalysisHistory(Base):
     company_name = Column(String, nullable=True)
     position_name = Column(String, nullable=True)
     date_analyzed = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    
+
     match_score = Column(Float, nullable=False)
     have_skills = Column(ARRAY(String), nullable=False)
     missing_skills = Column(ARRAY(String), nullable=False)

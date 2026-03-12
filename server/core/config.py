@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     database_url: str = "postgresql://localhost/skillgap_db"
     secret_key: str = "secret"

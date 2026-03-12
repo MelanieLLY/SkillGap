@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from anthropic import (
     APIStatusError,
@@ -27,7 +27,7 @@ from anthropic import (
 from pydantic import ValidationError
 
 from server.core.config import settings
-from server.roadmap.schemas import Roadmap, RoadmapGenerateResponse
+from server.roadmap.schemas import RoadmapGenerateResponse
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ class ClaudeParseError(Exception):
 # ── Prompt builder ────────────────────────────────────────────────────────────
 
 
-def _build_prompt(missing_skills: List[str], jd_text: Optional[str] = None) -> str:
+def _build_prompt(missing_skills: list[str], jd_text: str | None = None) -> str:
     """
     Build the user prompt for Claude.
 
@@ -155,8 +155,8 @@ def _build_prompt(missing_skills: List[str], jd_text: Optional[str] = None) -> s
 
 
 async def generate_roadmap_with_claude(
-    missing_skills: List[str],
-    jd_text: Optional[str] = None,
+    missing_skills: list[str],
+    jd_text: str | None = None,
 ) -> RoadmapGenerateResponse:
     """
     Call the Anthropic Claude API to generate a structured learning roadmap.
@@ -232,7 +232,7 @@ def _extract_text(response: Any) -> str:
     raise ClaudeParseError("Claude response contained no text content block.")
 
 
-def _parse_json(raw_text: str) -> Dict[str, Any]:
+def _parse_json(raw_text: str) -> dict[str, Any]:
     """
     Parse a raw string as JSON.
 
@@ -254,7 +254,7 @@ def _parse_json(raw_text: str) -> Dict[str, Any]:
         ) from exc
 
 
-def _validate_roadmap(data: Dict[str, Any]) -> RoadmapGenerateResponse:
+def _validate_roadmap(data: dict[str, Any]) -> RoadmapGenerateResponse:
     """
     Validate parsed JSON against the ``RoadmapGenerateResponse`` Pydantic model.
 

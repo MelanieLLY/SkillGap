@@ -1,6 +1,7 @@
+from server.database import Base
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.dialects.postgresql import ARRAY
-from server.database import Base
+
 
 class User(Base):
     __tablename__ = "users"

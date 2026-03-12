@@ -1,7 +1,8 @@
 import asyncio
-from typing import Dict, Any
+from typing import Any
 
-async def generate_roadmap_with_claude(*args, **kwargs) -> Dict[str, Any]:
+
+async def generate_roadmap_with_claude(*args, **kwargs) -> dict[str, Any]:
     """
     Simulate generating a personalized learning roadmap using a LLM like Claude.
     Currently acts as a placeholder or dummy function for future integration.
@@ -15,7 +16,7 @@ async def generate_roadmap_with_claude(*args, **kwargs) -> Dict[str, Any]:
     """
     # Simulate API latency
     await asyncio.sleep(1)
-    
+
     return {
         "roadmap": [
             {

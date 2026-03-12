@@ -13,7 +13,6 @@ All tests use the SQLite in-memory fixtures from conftest.py for full isolation.
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
 # ─── Helper payload ────────────────────────────────────────────────────────────

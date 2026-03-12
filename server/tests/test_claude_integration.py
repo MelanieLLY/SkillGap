@@ -14,9 +14,7 @@ Coverage targets
 from __future__ import annotations
 
 import pytest
-
 from server.extraction.services import generate_roadmap_with_claude
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Placeholder / unit tests (always run in CI)
@@ -97,7 +95,6 @@ async def test_anthropic_api_key_is_valid_live() -> None:
         pytest -m integration server/tests/test_claude_integration.py
     """
     from anthropic import AsyncAnthropic, AuthenticationError
-
     from server.core.config import settings
 
     assert settings.anthropic_api_key, "ANTHROPIC_API_KEY is not configured"

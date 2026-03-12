@@ -1,21 +1,21 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List
 
-from . import schemas
-from . import models as history_models
-from server.database import get_db
-from server.auth.deps import get_current_active_user
+from fastapi import APIRouter, Depends, HTTPException, status
 from server.auth import models as auth_models
+from server.auth.deps import get_current_active_user
+from server.database import get_db
 from server.extraction.engine import calculate_match_score
+from sqlalchemy.orm import Session
+
+from . import models as history_models
+from . import schemas
 
 router = APIRouter()
 
-@router.get("/", response_model=List[schemas.HistoryResponse])
+@router.get("/", response_model=list[schemas.HistoryResponse])
 def get_user_history(
     db: Session = Depends(get_db),
     current_user: auth_models.User = Depends(get_current_active_user)
-) -> List[history_models.AnalysisHistory]:
+) -> list[history_models.AnalysisHistory]:
     """
     Retrieve all analysis history records for the current authenticated user.
 
@@ -85,20 +85,20 @@ def update_history(
         HTTPException: If the record is not found or the user is not authorized to edit it.
     """
     db_history = db.query(history_models.AnalysisHistory).filter(history_models.AnalysisHistory.id == history_id).first()
-    
+
     if not db_history:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="History record not found")
-        
+
     if db_history.user_id != current_user.id:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, 
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to update this history record"
         )
-        
+
     update_data = history_update.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(db_history, key, value)
-        
+
     db.commit()
     db.refresh(db_history)
     return db_history

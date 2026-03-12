@@ -18,16 +18,14 @@ Integration tests that hit the real Claude API are marked with
 from __future__ import annotations
 
 import json
-from typing import Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from fastapi.testclient import TestClient
 
 # ─── Fixtures ─────────────────────────────────────────────────────────────────
 
 # Sample roadmap payload that mirrors the reference JSON
-SAMPLE_ROADMAP_PAYLOAD: Dict = {
+SAMPLE_ROADMAP_PAYLOAD: dict = {
     "roadmap": {
         "generated_for": "user_test",
         "generated_at": "2026-03-11T10:30:00Z",
@@ -117,7 +115,7 @@ SAMPLE_ROADMAP_PAYLOAD: Dict = {
 }
 
 
-def _make_mock_claude_response(payload: Dict) -> MagicMock:
+def _make_mock_claude_response(payload: dict) -> MagicMock:
     """Build a fake ``anthropic.types.Message`` with the given JSON payload."""
     text_block = MagicMock()
     text_block.type = "text"

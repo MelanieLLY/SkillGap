@@ -13,7 +13,6 @@ All tests are fully isolated using the SQLite in-memory fixtures from conftest.p
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
 # ══════════════════════════════════════════════════════════════════════════════

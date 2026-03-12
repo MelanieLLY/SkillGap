@@ -30,16 +30,16 @@ ready ``JsonEncodedList()`` instance.
 from __future__ import annotations
 
 import json
-from typing import Generator, List
+from collections.abc import Generator
 
 import pytest
+
+# ─── Patch ARRAY columns BEFORE application modules are imported ───────────────
+import sqlalchemy.dialects.postgresql as pg_dialect
 from fastapi.testclient import TestClient
 from sqlalchemy import String, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.types import TypeDecorator
-
-# ─── Patch ARRAY columns BEFORE application modules are imported ───────────────
-import sqlalchemy.dialects.postgresql as pg_dialect
 
 
 class JsonEncodedList(TypeDecorator):  # type: ignore[type-arg]
@@ -61,7 +61,7 @@ class JsonEncodedList(TypeDecorator):  # type: ignore[type-arg]
         # Fallback: treat any other value as an already-serialised string
         return str(value)
 
-    def process_result_value(self, value: object, dialect: object) -> List[str]:  # noqa: ANN001
+    def process_result_value(self, value: object, dialect: object) -> list[str]:  # noqa: ANN001
         if value is None:
             return []
         # Handle the PostgreSQL `'{}'` server_default which SQLite stores as-is.
@@ -96,7 +96,7 @@ pg_dialect.ARRAY = _array_factory  # type: ignore[attr-defined]
 
 # ─── Now it is safe to import application modules ─────────────────────────────
 from server.auth import models as auth_models  # noqa: E402
-from server.database import Base, get_db  # noqa: E402
+from server.database import get_db  # noqa: E402
 from server.history import models as history_models  # noqa: E402
 from server.main import app  # noqa: E402
 

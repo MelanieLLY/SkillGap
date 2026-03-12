@@ -17,9 +17,7 @@ Endpoint (server/extraction/router.py)
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
-
 from server.extraction.engine import (
     CURATED_SKILLS,
     calculate_match_score,

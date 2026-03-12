@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-from typing import Any, Union
+from typing import Any
+
 from jose import jwt
 from passlib.context import CryptContext
 from server.core.config import settings
@@ -31,9 +32,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     return pwd_context.verify(plain_password, hashed_password)
 
-from typing import Any, Union, Optional
 
-def create_access_token(subject: Union[str, Any], expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(subject: str | Any, expires_delta: timedelta | None = None) -> str:
     """
     Create a JWT access token for authentication.
 
