@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     anthropic_api_key: str = ""
+    host: str = "127.0.0.1"
+    port: int = 8000
 
     model_config = SettingsConfigDict(
         env_file="server/.env", env_file_encoding="utf-8", extra="ignore"

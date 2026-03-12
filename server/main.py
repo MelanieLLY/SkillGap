@@ -16,6 +16,7 @@ from server.history import models as history_models
 from server.history.router import router as history_router
 from server.profile.router import router as profile_router
 from server.roadmap.router import router as roadmap_router
+from server.core.config import settings
 
 
 @asynccontextmanager
@@ -116,4 +117,4 @@ async def health_check() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    uvicorn.run("server.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("server.main:app", host=settings.host, port=settings.port, reload=True)

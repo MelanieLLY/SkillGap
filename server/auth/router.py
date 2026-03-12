@@ -69,7 +69,7 @@ def login(
     access_token = utils.create_access_token(
         subject=user.id, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}  # nosec B105
 
 
 @router.get("/me", response_model=schemas.UserOut)
