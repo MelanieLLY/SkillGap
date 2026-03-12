@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { roadmapApi, Roadmap } from "../api/roadmap";
+import { roadmapApi } from "../api/roadmap";
 import { useAuthStore } from "../store/authStore";
 
 interface LearningRoadmapProps {

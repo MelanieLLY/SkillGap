@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface JDInputProps {
   onAnalyze: (text: string, company_name?: string, position_name?: string) => void;

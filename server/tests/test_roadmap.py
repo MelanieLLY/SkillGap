@@ -140,7 +140,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_generate_returns_valid_roadmap(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """A valid request should return a 200 with the full roadmap structure."""
         mock_client = AsyncMock()
@@ -152,6 +152,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript", "Docker"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -166,7 +167,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_timeline_phase_structure(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """Each timeline phase must contain all required fields."""
         mock_client = AsyncMock()
@@ -178,6 +179,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -196,7 +198,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_course_recommendation_structure(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """Course recommendations must have skill + nested courses list."""
         mock_client = AsyncMock()
@@ -208,6 +210,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -228,7 +231,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_project_ideas_structure(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """Project ideas must contain all required fields."""
         mock_client = AsyncMock()
@@ -240,6 +243,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -258,7 +262,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_summary_statistics(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """Summary must contain aggregate stats."""
         mock_client = AsyncMock()
@@ -270,6 +274,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -285,7 +290,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_optional_jd_text_is_forwarded(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """When jd_text is provided it should be accepted without error."""
         mock_client = AsyncMock()
@@ -300,6 +305,7 @@ class TestRoadmapGenerateEndpoint:
                 "missing_skills": ["Docker"],
                 "jd_text": "We need a DevOps engineer familiar with Docker.",
             },
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
@@ -307,27 +313,32 @@ class TestRoadmapGenerateEndpoint:
 
     # ---------- validation errors ----------
 
-    def test_empty_missing_skills_returns_422(self, client: TestClient) -> None:
+    def test_empty_missing_skills_returns_422(
+        self, client: TestClient, auth_headers: dict
+    ) -> None:
         """An empty missing_skills list must be rejected."""
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": []},
+            headers=auth_headers,
         )
         assert response.status_code == 422
 
-    def test_missing_field_returns_422(self, client: TestClient) -> None:
+    def test_missing_field_returns_422(self, client: TestClient, auth_headers: dict) -> None:
         """Omitting the required missing_skills field must return 422."""
         response = client.post(
             "/api/roadmap/generate",
             json={},
+            headers=auth_headers,
         )
         assert response.status_code == 422
 
-    def test_wrong_type_returns_422(self, client: TestClient) -> None:
+    def test_wrong_type_returns_422(self, client: TestClient, auth_headers: dict) -> None:
         """Sending a non-list for missing_skills must return 422."""
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": "TypeScript"},
+            headers=auth_headers,
         )
         assert response.status_code == 422
 
@@ -335,7 +346,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_api_timeout_returns_504(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """An Anthropic API timeout must result in HTTP 504."""
         import anthropic
@@ -349,6 +360,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 504
@@ -356,7 +368,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_api_error_returns_502(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """A generic Anthropic API error should return HTTP 502."""
         import anthropic
@@ -378,6 +390,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 502
@@ -385,7 +398,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_invalid_json_from_claude_returns_502(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """If Claude returns non-JSON text, we should get a 502."""
         text_block = MagicMock()
@@ -403,6 +416,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 502
@@ -413,7 +427,7 @@ class TestRoadmapGenerateEndpoint:
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_missing_api_key_returns_500(
-        self, mock_anthropic_cls: MagicMock, client: TestClient
+        self, mock_anthropic_cls: MagicMock, client: TestClient, auth_headers: dict
     ) -> None:
         """If the API key is empty/missing the endpoint should return 500."""
         import anthropic
@@ -434,6 +448,7 @@ class TestRoadmapGenerateEndpoint:
         response = client.post(
             "/api/roadmap/generate",
             json={"missing_skills": ["TypeScript"]},
+            headers=auth_headers,
         )
 
         assert response.status_code == 500
