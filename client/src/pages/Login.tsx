@@ -21,9 +21,10 @@ export default function Login() {
             const response = await authApi.login({ username: email, password });
             setToken(response.access_token);
             navigate('/dashboard');
-        } catch (err: any) {
-            if (err.response?.data?.detail) {
-                setError(err.response.data.detail);
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { detail?: string } } };
+            if (error.response?.data?.detail) {
+                setError(error.response.data.detail);
             } else {
                 setError('Login failed. Please check your credentials.');
             }

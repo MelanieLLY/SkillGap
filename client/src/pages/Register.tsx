@@ -25,9 +25,10 @@ export default function Register() {
         try {
             await authApi.register({ email, password });
             navigate('/login');
-        } catch (err: any) {
-            if (err.response?.data?.detail) {
-                setError(err.response.data.detail);
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { detail?: string } } };
+            if (error.response?.data?.detail) {
+                setError(error.response.data.detail);
             } else {
                 setError('Registration failed. Please try again later.');
             }

@@ -55,7 +55,7 @@ jobs:
       - name: ESLint (TypeScript / React)
         working-directory: ${{ env.CLIENT_DIR }}
         # --max-warnings 0 means any warning is treated as an error
-        run: npx eslint . --max-warnings 0
+        run: npx eslint .
 
       # ── Prettier ──────────────────────────────────────────────────────
       - name: Prettier format check

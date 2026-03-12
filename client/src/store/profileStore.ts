@@ -21,8 +21,9 @@ export const useProfileStore = create<ProfileState>((set) => ({
         try {
             const skills = await fetchSkills();
             set({ skills, isLoading: false });
-        } catch (error: any) {
-            set({ error: error?.response?.data?.detail || 'Failed to load skills', isLoading: false });
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { detail?: string } } };
+            set({ error: err?.response?.data?.detail || 'Failed to load skills', isLoading: false });
         }
     },
 
@@ -31,8 +32,9 @@ export const useProfileStore = create<ProfileState>((set) => ({
         try {
             const skills = await apiAddSkill(skill);
             set({ skills, isLoading: false });
-        } catch (error: any) {
-            set({ error: error?.response?.data?.detail || 'Failed to add skill', isLoading: false });
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { detail?: string } } };
+            set({ error: err?.response?.data?.detail || 'Failed to add skill', isLoading: false });
         }
     },
 
@@ -41,8 +43,9 @@ export const useProfileStore = create<ProfileState>((set) => ({
         try {
             const skills = await apiRemoveSkill(skillName);
             set({ skills, isLoading: false });
-        } catch (error: any) {
-            set({ error: error?.response?.data?.detail || 'Failed to remove skill', isLoading: false });
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { detail?: string } } };
+            set({ error: err?.response?.data?.detail || 'Failed to remove skill', isLoading: false });
         }
     },
 
@@ -51,8 +54,9 @@ export const useProfileStore = create<ProfileState>((set) => ({
         try {
             const skills = await apiExtract(resumeText);
             set({ skills, isLoading: false });
-        } catch (error: any) {
-            set({ error: error?.response?.data?.detail || 'Failed to extract skills', isLoading: false });
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { detail?: string } } };
+            set({ error: err?.response?.data?.detail || 'Failed to extract skills', isLoading: false });
         }
     }
 }));
