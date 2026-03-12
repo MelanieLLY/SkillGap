@@ -38,6 +38,11 @@ Paste a JD, see your match score, and get an AI-generated learning roadmap.
 
 The user pastes a job description, our server compares it against their saved skill profile, calculates a match score, and asks Claude AI to generate a learning plan for the gap.
 
+### Frontend + Backend + Database + Claude API
+<img width="599" height="386" alt="Screenshot 2026-03-12 at 3 56 49 PM" src="https://github.com/user-attachments/assets/01f3be1e-8035-4615-aaba-2f65f700c1cd" />
+
+
+
 ## Project Structure
 ```
 SkillGap/
