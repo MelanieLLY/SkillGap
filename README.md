@@ -10,6 +10,9 @@ Paste a JD, see your match score, and get an AI-generated learning roadmap.
 - **Backend:** FastAPI, Python 3.11, SQLAlchemy, PostgreSQL
 - **AI:** Claude API (claude-sonnet-4-20250514)
 
+## Features
+<img width="600" alt="Screenshot 2026-03-12 at 4 28 16 PM" src="https://github.com/user-attachments/assets/a8bc11e0-ef4b-4c96-b46f-4b56c599619a" />
+
 ## Screenshots
 
 ### Login page
