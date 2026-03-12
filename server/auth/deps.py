@@ -8,7 +8,10 @@ from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> models.User:
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+) -> models.User:
     """
     Dependency to retrieve the current authenticated user from a JWT token.
 
@@ -28,7 +31,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         user_id: str = payload.get("sub")
         if user_id is None:
             raise credentials_exception
@@ -40,7 +45,10 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
     return user
 
-def get_current_active_user(current_user: models.User = Depends(get_current_user)) -> models.User:
+
+def get_current_active_user(
+    current_user: models.User = Depends(get_current_user),
+) -> models.User:
     """
     Dependency to retrieve the current active user.
 

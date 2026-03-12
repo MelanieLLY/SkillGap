@@ -10,12 +10,15 @@ class HistoryBase(BaseModel):
     missing_skills: list[str]
     bonus_skills: list[str]
 
+
 class HistoryCreate(HistoryBase):
     pass
+
 
 class HistoryUpdate(BaseModel):
     company_name: str | None = None
     position_name: str | None = None
+
 
 class HistoryResponse(HistoryBase):
     id: int

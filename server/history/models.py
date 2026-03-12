@@ -12,7 +12,9 @@ class AnalysisHistory(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     company_name = Column(String, nullable=True)
     position_name = Column(String, nullable=True)
-    date_analyzed = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    date_analyzed = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
 
     match_score = Column(Float, nullable=False)
     have_skills = Column(ARRAY(String), nullable=False)

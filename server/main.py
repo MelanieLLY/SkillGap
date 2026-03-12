@@ -33,9 +33,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     history_models.Base.metadata.create_all(bind=engine)
     # Fallback to add skills column explicitly since we don't use alembic for existing DBs
     with engine.connect() as conn:
-        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] DEFAULT '{}'"))
+        conn.execute(
+            text(
+                "ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] DEFAULT '{}'"
+            )
+        )
         conn.commit()
     yield
+
 
 app = FastAPI(title="SkillGap API", lifespan=lifespan)
 
@@ -55,8 +60,11 @@ app.include_router(profile_router, prefix="/api")
 app.include_router(history_router, prefix="/api/history", tags=["history"])
 app.include_router(roadmap_router, prefix="/api/roadmap", tags=["roadmap"])
 
+
 @app.exception_handler(SQLAlchemyError)
-async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError) -> JSONResponse:
+async def sqlalchemy_exception_handler(
+    request: Request, exc: SQLAlchemyError
+) -> JSONResponse:
     """
     Global exception handler for SQLAlchemyError.
 

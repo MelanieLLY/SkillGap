@@ -4,29 +4,106 @@ import re
 # In production, this would be loaded from a database or a more exhaustive config.
 CURATED_SKILLS: set[str] = {
     # Languages & Core
-    "python", "javascript", "typescript", "java", "c++", "cpp", "c#", "golang", "go",
-    "rust", "ruby", "php", "swift", "kotlin", "scala", "sql", "html", "css", "node.js", "nodejs",
-
+    "python",
+    "javascript",
+    "typescript",
+    "java",
+    "c++",
+    "cpp",
+    "c#",
+    "golang",
+    "go",
+    "rust",
+    "ruby",
+    "php",
+    "swift",
+    "kotlin",
+    "scala",
+    "sql",
+    "html",
+    "css",
+    "node.js",
+    "nodejs",
     # Databases & Storage
-    "postgresql", "mysql", "mongodb", "redis", "sqlite", "oracle", "mariadb",
-    "elasticsearch", "dynamodb", "cassandra", "firebase", "supabase", "sql server",
-
+    "postgresql",
+    "mysql",
+    "mongodb",
+    "redis",
+    "sqlite",
+    "oracle",
+    "mariadb",
+    "elasticsearch",
+    "dynamodb",
+    "cassandra",
+    "firebase",
+    "supabase",
+    "sql server",
     # Frameworks & Libraries
-    "react", "vue", "angular", "next.js", "nuxt", "svelte", "fastapi", "flask", "django",
-    "express", "spring boot", "spring", "laravel", "rails", "tailwind", "bootstrap", "sass",
-    "redux", "zustand", "pytorch", "tensorflow", "pandas", "numpy", "scikit-learn", "langchain",
+    "react",
+    "vue",
+    "angular",
+    "next.js",
+    "nuxt",
+    "svelte",
+    "fastapi",
+    "flask",
+    "django",
+    "express",
+    "spring boot",
+    "spring",
+    "laravel",
+    "rails",
+    "tailwind",
+    "bootstrap",
+    "sass",
+    "redux",
+    "zustand",
+    "pytorch",
+    "tensorflow",
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "langchain",
     "uiautomator",
-
     # DevOps & Infrastructure
-    "docker", "kubernetes", "aws", "azure", "gcp", "google cloud", "terraform", "ansible",
-    "jenkins", "github actions", "ci/cd", "nginx", "linux", "ubuntu",
-
+    "docker",
+    "kubernetes",
+    "aws",
+    "azure",
+    "gcp",
+    "google cloud",
+    "terraform",
+    "ansible",
+    "jenkins",
+    "github actions",
+    "ci/cd",
+    "nginx",
+    "linux",
+    "ubuntu",
     # Tools & Concepts
-    "git", "github", "gitlab", "jira", "figma", "postman", "rest api", "graphql", "grpc",
-    "microservices", "unit testing", "agile", "scrum", "webpack", "vite", "npm", "yarn"
+    "git",
+    "github",
+    "gitlab",
+    "jira",
+    "figma",
+    "postman",
+    "rest api",
+    "graphql",
+    "grpc",
+    "microservices",
+    "unit testing",
+    "agile",
+    "scrum",
+    "webpack",
+    "vite",
+    "npm",
+    "yarn",
 }
 
-def extract_skills(job_description: str, user_skills: list[str]) -> dict[str, list[str]]:
+
+def extract_skills(
+    job_description: str, user_skills: list[str]
+) -> dict[str, list[str]]:
     """
     Extracts skills from a job description and compares them against user's skills.
 
@@ -63,11 +140,8 @@ def extract_skills(job_description: str, user_skills: list[str]) -> dict[str, li
     missing = sorted(list(jd_skills.difference(user_skills_normalized)))
     bonus = sorted(list(user_skills_normalized.difference(jd_skills)))
 
-    return {
-        "have": have,
-        "missing": missing,
-        "bonus": bonus
-    }
+    return {"have": have, "missing": missing, "bonus": bonus}
+
 
 def calculate_match_score(have: list[str], missing: list[str]) -> float:
     """
@@ -87,6 +161,7 @@ def calculate_match_score(have: list[str], missing: list[str]) -> float:
     score = (len(have) / total_required) * 100
     return round(score, 2)
 
+
 def extract_company_and_position(job_description: str) -> dict[str, str | None]:
     """
     Attempts to extract the company name and position name from a job description using heuristic patterns.
@@ -102,17 +177,15 @@ def extract_company_and_position(job_description: str) -> dict[str, str | None]:
     position_name = None
 
     # Simple heuristic to find company name: "Company: Acme Corp"
-    company_match = re.search(r'(?i)\bcompany\s*:\s*([^\n]+)', job_description)
+    company_match = re.search(r"(?i)\bcompany\s*:\s*([^\n]+)", job_description)
     if company_match:
         company_name = company_match.group(1).strip()
 
     # Simple heuristic to find position name: "Role: Frontend Developer", "Title: ...", "Position: ..."
-    position_match = re.search(r'(?i)\b(?:role|title|position|job)\s*:\s*([^\n]+)', job_description)
+    position_match = re.search(
+        r"(?i)\b(?:role|title|position|job)\s*:\s*([^\n]+)", job_description
+    )
     if position_match:
         position_name = position_match.group(1).strip()
 
-    return {
-        "company_name": company_name,
-        "position_name": position_name
-    }
-
+    return {"company_name": company_name, "position_name": position_name}

@@ -29,6 +29,7 @@ from server.extraction.engine import (
 # Pure-unit: extract_skills
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestExtractSkills:
     """Tests for the core keyword-extraction logic."""
 
@@ -79,7 +80,9 @@ class TestExtractSkills:
     def test_devops_and_ml_skills(self) -> None:
         """Cloud, container, and ML framework skills must match."""
         jd = "Deploy with Docker, Kubernetes on AWS. ML experience with PyTorch, scikit-learn, LangChain."
-        result = extract_skills(jd, ["Docker", "Git", "AWS", "TensorFlow", "scikit-learn"])
+        result = extract_skills(
+            jd, ["Docker", "Git", "AWS", "TensorFlow", "scikit-learn"]
+        )
         assert {"docker", "aws", "scikit-learn"}.issubset(set(result["have"]))
         assert {"kubernetes", "pytorch", "langchain"}.issubset(set(result["missing"]))
         assert "git" in result["bonus"]
@@ -142,6 +145,7 @@ class TestExtractSkills:
 # Pure-unit: calculate_match_score
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestCalculateMatchScore:
     """Tests for the match-score computation function."""
 
@@ -156,7 +160,9 @@ class TestCalculateMatchScore:
 
     def test_partial_match_50_percent(self) -> None:
         """2 have out of 4 total → 50.0."""
-        assert calculate_match_score(["python", "react"], ["django", "postgres"]) == 50.0
+        assert (
+            calculate_match_score(["python", "react"], ["django", "postgres"]) == 50.0
+        )
 
     def test_rounding_two_decimal_places(self) -> None:
         """2 / 3 = 66.666… → rounds to 66.67."""
@@ -181,6 +187,7 @@ class TestCalculateMatchScore:
 # Pure-unit: extract_company_and_position
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestExtractCompanyAndPosition:
     """Tests for the heuristic company/position extraction."""
 
@@ -195,7 +202,9 @@ class TestExtractCompanyAndPosition:
         for keyword in ("Title", "Position", "Job"):
             jd = f"{keyword}: Software Engineer"
             result = extract_company_and_position(jd)
-            assert result["position_name"] == "Software Engineer", f"Failed for keyword: {keyword}"
+            assert result["position_name"] == "Software Engineer", (
+                f"Failed for keyword: {keyword}"
+            )
 
     def test_only_position_found(self) -> None:
         jd = "We are hiring! Position: Software Engineer"
@@ -225,6 +234,7 @@ class TestExtractCompanyAndPosition:
 # Integration: POST /api/extract endpoint
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestExtractEndpoint:
     """HTTP-level tests for the extraction endpoint (no auth required)."""
 
@@ -246,7 +256,9 @@ class TestExtractEndpoint:
         assert body["company_name"] == "Acme Corp."
         assert body["position_name"] == "Backend Dev."
 
-    def test_extract_empty_jd_returns_empty_categories(self, client: TestClient) -> None:
+    def test_extract_empty_jd_returns_empty_categories(
+        self, client: TestClient
+    ) -> None:
         """Empty JD string → all skill lists empty."""
         r = client.post("/api/extract", json={"job_description": "", "user_skills": []})
         assert r.status_code == 200
@@ -266,12 +278,16 @@ class TestExtractEndpoint:
         assert body["company_name"] is None
         assert body["position_name"] is None
 
-    def test_extract_missing_job_description_field_returns_422(self, client: TestClient) -> None:
+    def test_extract_missing_job_description_field_returns_422(
+        self, client: TestClient
+    ) -> None:
         """Missing required field → 422 Unprocessable Entity."""
         r = client.post("/api/extract", json={"user_skills": ["python"]})
         assert r.status_code == 422
 
-    def test_extract_missing_user_skills_field_returns_422(self, client: TestClient) -> None:
+    def test_extract_missing_user_skills_field_returns_422(
+        self, client: TestClient
+    ) -> None:
         """Missing user_skills → 422 Unprocessable Entity."""
         r = client.post("/api/extract", json={"job_description": "Need python."})
         assert r.status_code == 422
@@ -290,6 +306,7 @@ class TestExtractEndpoint:
 # ══════════════════════════════════════════════════════════════════════════════
 # Sanity check: CURATED_SKILLS set
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestCuratedSkillsSet:
     """Validate the curated skills constant itself."""

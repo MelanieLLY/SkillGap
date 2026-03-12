@@ -11,6 +11,7 @@ from server.profile.schemas import ResumeExtractRequest, SkillAddRequest
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 
+
 @router.get("/skills", response_model=list[str])
 def get_skills(current_user: User = Depends(get_current_active_user)) -> list[str]:
     """
@@ -24,11 +25,12 @@ def get_skills(current_user: User = Depends(get_current_active_user)) -> list[st
     """
     return current_user.skills if current_user.skills else []
 
+
 @router.post("/skills", response_model=list[str])
 def add_skill(
     request: SkillAddRequest,
     current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ) -> list[str]:
     """
     Add a single skill to the current user's profile.
@@ -59,11 +61,12 @@ def add_skill(
     db.commit()
     return current_skills
 
+
 @router.delete("/skills/{skill_name}", response_model=list[str])
 def remove_skill(
     skill_name: str,
     current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ) -> list[str]:
     """
     Remove a specific skill from the user's profile.
@@ -91,11 +94,12 @@ def remove_skill(
     db.commit()
     return new_skills
 
+
 @router.post("/extract-resume", response_model=list[str])
 def extract_from_resume(
     request: ResumeExtractRequest,
     current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ) -> list[str]:
     """
     Extract skills from a provided resume text and save them to the user's profile.

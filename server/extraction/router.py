@@ -10,12 +10,14 @@ router = APIRouter()
 
 class ExtractRequest(BaseModel):
     """Request body for the skill extraction endpoint."""
+
     job_description: str
     user_skills: list[str]
 
 
 class ExtractResponse(BaseModel):
     """Response body with categorized skills."""
+
     have: list[str]
     missing: list[str]
     bonus: list[str]
@@ -46,5 +48,5 @@ async def extract_endpoint(request: ExtractRequest) -> dict[str, Any]:
     return {
         **result,
         "company_name": extracted_info.get("company_name"),
-        "position_name": extracted_info.get("position_name")
+        "position_name": extracted_info.get("position_name"),
     }

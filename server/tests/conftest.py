@@ -79,7 +79,6 @@ class JsonEncodedList(TypeDecorator):  # type: ignore[type-arg]
             return []
 
 
-
 def _array_factory(*args: object, **kwargs: object) -> JsonEncodedList:
     """
     Drop-in replacement for ``pg_dialect.ARRAY``.
@@ -107,6 +106,7 @@ engine = create_engine(
     SQLALCHEMY_TEST_DATABASE_URL,
     connect_args={"check_same_thread": False},
 )
+
 
 # SQLite doesn't enforce foreign keys by default — enable them so our FK
 # constraints are actually tested.

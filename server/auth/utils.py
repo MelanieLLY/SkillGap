@@ -7,6 +7,7 @@ from server.core.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 def get_password_hash(password: str) -> str:
     """
     Hash a plaintext password using bcrypt.
@@ -18,6 +19,7 @@ def get_password_hash(password: str) -> str:
         str: The hashed password.
     """
     return pwd_context.hash(password)
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
@@ -33,7 +35,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_access_token(subject: str | Any, expires_delta: timedelta | None = None) -> str:
+def create_access_token(
+    subject: str | Any, expires_delta: timedelta | None = None
+) -> str:
     """
     Create a JWT access token for authentication.
 
@@ -52,5 +56,7 @@ def create_access_token(subject: str | Any, expires_delta: timedelta | None = No
             minutes=settings.access_token_expire_minutes
         )
     to_encode = {"exp": expire, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    encoded_jwt = jwt.encode(
+        to_encode, settings.secret_key, algorithm=settings.algorithm
+    )
     return encoded_jwt

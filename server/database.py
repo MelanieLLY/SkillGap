@@ -10,6 +10,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 def get_db() -> Generator[Session, None, None]:
     """
     Get a synchronous database session.

@@ -9,7 +9,10 @@ from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/register", response_model=schemas.UserOut, status_code=status.HTTP_201_CREATED)
+
+@router.post(
+    "/register", response_model=schemas.UserOut, status_code=status.HTTP_201_CREATED
+)
 def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)) -> models.User:
     """
     Register a new user in the system.
@@ -37,8 +40,11 @@ def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)) -> mode
     db.refresh(db_user)
     return db_user
 
+
 @router.post("/login", response_model=schemas.Token)
-def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()) -> dict:
+def login(
+    db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+) -> dict:
     """
     Authenticate a user and return an access token.
 
@@ -65,8 +71,11 @@ def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = 
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 @router.get("/me", response_model=schemas.UserOut)
-def read_users_me(current_user: models.User = Depends(deps.get_current_active_user)) -> models.User:
+def read_users_me(
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> models.User:
     """
     Retrieve the current authenticated user's profile information.
 

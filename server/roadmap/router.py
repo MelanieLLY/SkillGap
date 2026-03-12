@@ -68,7 +68,7 @@ async def generate_roadmap(
         raise HTTPException(
             status_code=500,
             detail="Claude API key authentication failed. "
-                   "Please verify ANTHROPIC_API_KEY is configured.",
+            "Please verify ANTHROPIC_API_KEY is configured.",
         ) from exc
     except ClaudeAPIError as exc:
         logger.error("Roadmap generation API error: %s", exc)

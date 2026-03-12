@@ -22,13 +22,13 @@ async def generate_roadmap_with_claude(*args, **kwargs) -> dict[str, Any]:
             {
                 "timeline": "Week 1",
                 "focus": "Core conceptual learning",
-                "resources": ["Resource A", "Resource B"]
+                "resources": ["Resource A", "Resource B"],
             },
             {
                 "timeline": "Week 2",
                 "focus": "Hands-on project work",
-                "resources": ["Project X"]
-            }
+                "resources": ["Project X"],
+            },
         ],
-        "message": "This is a dummy roadmap."
+        "message": "This is a dummy roadmap.",
     }

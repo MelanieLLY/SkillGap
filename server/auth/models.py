@@ -10,4 +10,4 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    skills = Column(ARRAY(String), server_default='{}')
+    skills = Column(ARRAY(String), server_default="{}")

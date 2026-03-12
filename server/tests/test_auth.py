@@ -23,20 +23,27 @@ VALID_EMAIL = "auth_test@example.com"
 VALID_PASSWORD = "secure_password_XY9!"
 
 
-def _register(client: TestClient, email: str = VALID_EMAIL, password: str = VALID_PASSWORD) -> dict:
+def _register(
+    client: TestClient, email: str = VALID_EMAIL, password: str = VALID_PASSWORD
+) -> dict:
     """Convenience: register a user and return the JSON body."""
     r = client.post("/api/auth/register", json={"email": email, "password": password})
     return r
 
 
-def _login(client: TestClient, email: str = VALID_EMAIL, password: str = VALID_PASSWORD):
+def _login(
+    client: TestClient, email: str = VALID_EMAIL, password: str = VALID_PASSWORD
+):
     """Convenience: perform a form-encoded login."""
-    return client.post("/api/auth/login", data={"username": email, "password": password})
+    return client.post(
+        "/api/auth/login", data={"username": email, "password": password}
+    )
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # POST /api/auth/register
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestRegister:
     """Unit tests for the user registration endpoint."""
@@ -68,7 +75,9 @@ class TestRegister:
 
     def test_register_invalid_email_returns_422(self, client: TestClient) -> None:
         """Sending a non-email string should fail Pydantic validation → 422."""
-        r = client.post("/api/auth/register", json={"email": "not-an-email", "password": "pw"})
+        r = client.post(
+            "/api/auth/register", json={"email": "not-an-email", "password": "pw"}
+        )
         assert r.status_code == 422
 
     def test_register_missing_password_returns_422(self, client: TestClient) -> None:
@@ -85,6 +94,7 @@ class TestRegister:
 # ══════════════════════════════════════════════════════════════════════════════
 # POST /api/auth/login
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestLogin:
     """Unit tests for the login endpoint."""
@@ -115,10 +125,15 @@ class TestLogin:
     def test_login_requires_form_data_not_json(self, client: TestClient) -> None:
         """Login endpoint expects OAuth2 form-data, not JSON → 422 for JSON body."""
         _register(client)
-        r = client.post("/api/auth/login", json={"username": VALID_EMAIL, "password": VALID_PASSWORD})
+        r = client.post(
+            "/api/auth/login",
+            json={"username": VALID_EMAIL, "password": VALID_PASSWORD},
+        )
         assert r.status_code == 422
 
-    def test_login_inactive_user_returns_400(self, client: TestClient, db_session) -> None:
+    def test_login_inactive_user_returns_400(
+        self, client: TestClient, db_session
+    ) -> None:
         """Inactive users should not be able to authenticate via /me."""
         # Register a normal user first
         _register(client)
@@ -141,10 +156,13 @@ class TestLogin:
 # GET /api/auth/me
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class TestReadMe:
     """Tests for the authenticated /me endpoint."""
 
-    def test_read_me_returns_current_user(self, client: TestClient, auth_headers: dict) -> None:
+    def test_read_me_returns_current_user(
+        self, client: TestClient, auth_headers: dict
+    ) -> None:
         """Authenticated request must return the logged-in user's data."""
         r = client.get("/api/auth/me", headers=auth_headers)
         assert r.status_code == 200
@@ -161,10 +179,14 @@ class TestReadMe:
 
     def test_read_me_with_invalid_token_returns_401(self, client: TestClient) -> None:
         """A garbage token string → 401."""
-        r = client.get("/api/auth/me", headers={"Authorization": "Bearer garbage.token.here"})
+        r = client.get(
+            "/api/auth/me", headers={"Authorization": "Bearer garbage.token.here"}
+        )
         assert r.status_code == 401
 
-    def test_read_me_with_malformed_bearer_returns_401(self, client: TestClient) -> None:
+    def test_read_me_with_malformed_bearer_returns_401(
+        self, client: TestClient
+    ) -> None:
         """Bearer prefix missing → 401."""
         r = client.get("/api/auth/me", headers={"Authorization": "Token somevalue"})
         assert r.status_code == 401
@@ -173,6 +195,7 @@ class TestReadMe:
 # ══════════════════════════════════════════════════════════════════════════════
 # Unit tests for auth utility functions (no HTTP layer)
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TestAuthUtils:
     """Pure-unit tests for password hashing and JWT utilities."""
@@ -205,5 +228,7 @@ class TestAuthUtils:
         """Token created with custom expiry should still be a valid JWT."""
         from datetime import timedelta
 
-        token = auth_utils.create_access_token(subject=1, expires_delta=timedelta(minutes=5))
+        token = auth_utils.create_access_token(
+            subject=1, expires_delta=timedelta(minutes=5)
+        )
         assert token.count(".") == 2

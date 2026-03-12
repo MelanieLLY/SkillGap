@@ -9,25 +9,23 @@ target-version = "py311"
 line-length = 88
 
 [tool.ruff.lint]
-# E / W = pycodestyle, F = pyflakes, I = isort, N = pep8-naming,
-# UP = pyupgrade, ANN = type annotations nudges, B = bugbear
-select = ["E", "W", "F", "I", "N", "UP", "B"]
+# Selective linting: E (errors), F (pyflakes), B (bugbear), S (security)
+# We remove I (isort/sorting), UP (upgrades), ANN (annotations), and W (warnings)
+# to keep CI focused on critical logic/security as per teacher's rubric.
+select = ["E", "F", "B", "S"]
 ignore = [
     "E501",   # line-length
-    "ANN101", # self type
     "B008",   # FastAPI Depends
-    "I001",   # isort sorting
-    "UP035",  # typing.List vs list
-    "UP006",  # list type annotation
-    "UP045",  # Union/Optional vs |
-    "W291",   # trailing whitespace
-    "W293",   # blank line whitespace
     "B904",   # raise from err
+    "S101",   # use of assert (common in our structure/tests)
+    "S104",   # binding to 0.0.0.0
+    "S105",   # hardcoded password
+    "S106",   # hardcoded password
 ]
 
 [tool.ruff.lint.per-file-ignores]
-# Test files don't need public docstrings
-"tests/**/*.py" = ["D", "ANN"]
+# Test files shouldn't fail on security warnings for dummy test data
+"tests/**/*.py" = ["D", "S"]
 
 # ─────────────────────────────────────────────────────────────────────────────
 [tool.black]

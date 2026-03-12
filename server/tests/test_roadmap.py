@@ -183,8 +183,14 @@ class TestRoadmapGenerateEndpoint:
         assert response.status_code == 200
         phase = response.json()["roadmap"]["timeline"][0]
         required_keys = {
-            "phase", "title", "duration_weeks", "start_week",
-            "end_week", "focus_skills", "weekly_commitment_hours", "milestones",
+            "phase",
+            "title",
+            "duration_weeks",
+            "start_week",
+            "end_week",
+            "focus_skills",
+            "weekly_commitment_hours",
+            "milestones",
         }
         assert required_keys.issubset(phase.keys())
 
@@ -209,8 +215,15 @@ class TestRoadmapGenerateEndpoint:
         assert "skill" in rec
         assert isinstance(rec["courses"], list)
         course = rec["courses"][0]
-        for key in ("title", "platform", "instructor", "level",
-                     "duration_hours", "url", "priority"):
+        for key in (
+            "title",
+            "platform",
+            "instructor",
+            "level",
+            "duration_hours",
+            "url",
+            "priority",
+        ):
             assert key in course
 
     @patch("server.roadmap.services.AsyncAnthropic")
@@ -232,8 +245,14 @@ class TestRoadmapGenerateEndpoint:
         assert response.status_code == 200
         project = response.json()["roadmap"]["project_ideas"][0]
         required_keys = {
-            "id", "title", "description", "skills_practiced",
-            "difficulty", "estimated_hours", "phase", "deliverables",
+            "id",
+            "title",
+            "description",
+            "skills_practiced",
+            "difficulty",
+            "estimated_hours",
+            "phase",
+            "deliverables",
         }
         assert required_keys.issubset(project.keys())
 
@@ -255,9 +274,13 @@ class TestRoadmapGenerateEndpoint:
 
         assert response.status_code == 200
         summary = response.json()["roadmap"]["summary"]
-        for key in ("total_courses", "total_projects",
-                     "total_learning_hours", "recommended_weekly_pace",
-                     "completion_target"):
+        for key in (
+            "total_courses",
+            "total_projects",
+            "total_learning_hours",
+            "recommended_weekly_pace",
+            "completion_target",
+        ):
             assert key in summary
 
     @patch("server.roadmap.services.AsyncAnthropic")
@@ -383,8 +406,10 @@ class TestRoadmapGenerateEndpoint:
         )
 
         assert response.status_code == 502
-        assert "parse" in response.json()["detail"].lower() or \
-               "claude" in response.json()["detail"].lower()
+        assert (
+            "parse" in response.json()["detail"].lower()
+            or "claude" in response.json()["detail"].lower()
+        )
 
     @patch("server.roadmap.services.AsyncAnthropic")
     def test_missing_api_key_returns_500(
@@ -412,5 +437,7 @@ class TestRoadmapGenerateEndpoint:
         )
 
         assert response.status_code == 500
-        assert "api key" in response.json()["detail"].lower() or \
-               "authentication" in response.json()["detail"].lower()
+        assert (
+            "api key" in response.json()["detail"].lower()
+            or "authentication" in response.json()["detail"].lower()
+        )
