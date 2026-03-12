@@ -1,6 +1,6 @@
 # PROJECT2_MASTER_PLAN (Ultimate Guide)
 
-这是一份极其详细的操作指南，包含了时间预估、使用的 AI 模型推荐、具体的 Prompt 模版、测试驱动开发（TDD）流程、CI/CD 与自动化部署的详细步骤。请**一步一步**打勾执行。
+这是一份由Liuyi和AI助手共同写的,极其详细的操作指南，包含了时间预估、使用的 AI 模型推荐、具体的 Prompt 模版、测试驱动开发（TDD）流程、CI/CD 与自动化部署的详细步骤。请**一步一步**打勾执行。
 
 ---
 
@@ -154,6 +154,175 @@
      - **使用 Claude 3.5/3.7 Sonnet**: 强代码逻辑，负责改 Bug、写 `pytest` 测试、处理架构、写代码组件。
      - **使用 Gemini 1.5/3.1 Pro**: 大上下文窗口，当你需要扔进海量 Evaluation 测试数据/日志分析时使用。
    - **Claude Web**: 前期用来发散探索架构思路、生成思维导图/流程图 (Mermaid)、生成最初的 Demo JSON 结构、写偏向叙事性质的长篇英文 Blog 等。
+
+---
+
+## ✅ Final 要交的文件与材料清单
+
+- [x] **GitHub 仓库链接** (预计: 0.5 小时 / Est: 0.5h): https://github.com/MelanieLLY/SkillGap 
+- [x] **已部署前端应用 URL**(生产环境, 如 Vercel) (预计: 3–4 小时 / Est: 3–4h)  
+  - `https://skillgapweb.netlify.app`
+- [x] **已部署后端 API 基础 URL**(如 Render/Railway) (预计: 4–6 小时 / Est: 4–6h)  
+  - `https://skillgap-api-hrsc.onrender.com`
+
+- [x] **Eval Dashboard 文档本体** (预计: 已完成, 如需补充 PDF 再花 0.5–1 小时 / Est: done; extra 0.5–1h for PDF)  
+  - [x] 一份面向老师/TA 的测试结果文档(目前为 HTML `docs/skillgap_eval_dashboard.html`, 推荐后续再导出/补充 PDF 版本), 内容包括:
+    - [x] 测试套件运行结果说明(哪些测试、通过多少、分类情况)
+    - [x] 覆盖率数据与截图/报告摘录
+    - [ ] 如有 Cypress/Playwright 等 HTML 报告, 在文档中附链接或截图说明
+
+- [△] **项目根目录主 `README` 文件** (预计: 2–3 小时 / Est: 2–3h)  
+  - [△] 项目简介与主要功能说明(当前 `README.md` 只有安装/运行说明, 需要补全简介和功能)
+  - [△] Tech stack 说明(前端/后端/数据库/部署)
+  - [x] 本地运行与部署步骤(安装 & 本地运行命令已存在, 但还可更详细)
+  - [ ] 测试运行方式(`pytest`、前端测试命令等)
+  - [ ] CI/CD 简要说明(使用了什么 workflow、覆盖率门槛等)
+  - [ ] 指向其他文档的链接(博客、视频、API docs、Eval dashboard 等)
+
+- [ ] **API 文档** (预计: 2–3 小时 / Est: 2–3h)  
+  - [ ] 人类可读的 API 文档文件(例如 `docs/api-docs.md` 或 `api-documentation.pdf`)  
+  - [ ] 如有 OpenAPI/Swagger:
+    - [ ] 在线 Swagger UI 链接, 或
+    - [ ] 导出的 OpenAPI JSON/YAML 文件路径
+
+- [△] **Documentation Package 相关文档** (预计: 4–6 小时 / Est: 4–6h)  
+  - [ ] Sprint planning 文档(例如 `docs/sprint-planning-sprint1.md`, `...sprint2.md` 或合并在一个文件中清晰分段)  
+  - [ ] 两个 sprint 的 retrospectives 文档(可以与 planning 区分小节或分文件)  
+  - [ ] AI modalities 使用说明文档(例如 `docs/ai-modalities-usage.md`, 说明 Claude Web / IDE 等如何在项目中使用、什么时候用、用来做什么)  
+  - [△] AI reflections 文档(已有内部规划类文档和 AI 对话记录, 但尚未整理成正式 `docs/ai-reflection.md`)  
+  - [△] 整个代码的文档化文件(已有较完整的 PRD `docs/skillgap_prd.md` 和 `docs/user_story.txt`, 但仍需一份专门面向代码结构/模块的数据流的总结文档, 如 `docs/code-architecture.md`)
+
+- [△] **1500 字 technical / quality blog post** (预计: 4–6 小时(含 AI 辅助与人工润色) / Est: 4–6h incl. AI + editing)  
+  - [△] Blog 正文本身(目前有 internal outline `internal_working_planning_note/final_delivery/blog_post_outline.md`, 但尚未整理成对外成稿)  
+  - [ ] 内容面向公众、product-oriented、user-facing, 展示产品和团队能力(区别于课程反思)
+
+- [△] **10 分钟公开视频** (预计: 4–6 小时(准备脚本+录制+剪辑) / Est: 4–6h for script + recording + editing)  
+  - [ ] 公共可访问的视频 URL(YouTube 等)  
+  - [ ] 视频中包含:
+    - [ ] 项目简介 / short summary / intro  
+    - [ ] 应用 walkthrough 与功能展示  
+    - [ ] 技术/架构/开发方法讲解  
+    - [ ] 开发过程中遇到的挑战与解决方式  
+    - [ ] AI 如何参与开发  
+    - [ ] 团队分工与协作方式  
+    - [ ] 主要 deliverables 的总体讲解  
+    - [ ] 两位组员都出镜  
+
+- [△] **Agile / 团队协作相关证据** (预计: 2–3 小时 / Est: 2–3h)  
+  - [△] 描述每个成员具体贡献与分工的文档(目前有 `internal_working_planning_note/GitHub project board.md` 等内部记录, 但尚未提炼成对老师的正式 summary, 如 `docs/team-contributions.md`)  
+  - [△] 若 GitHub commit 记录不均衡, 提供额外佐证(你已有大量 AI chat history 和 planning note, 但需要挑出代表性片段整理到正式文档中)
+
+- [x] **测试与质量相关原始/辅助文件** (预计: 已完成, 如需统一整理摘要再花 1–2 小时 / Est: done; 1–2h for consolidated summary)  
+  - [x] 后端测试代码目录(如 `server/tests/`)  
+  - [x] 用于 AI 质量评估的脚本及结果(已根据 `docs/eval_roadmaps/ai_eval_results.md` 和 Eval Dashboard 生成评估结果)  
+  - [x] 覆盖率报告原始文件/输出(已有 `docs/test_results/backend_test_report.txt` 与 `docs/test_results/frontend_test_report.txt`, 以及 `docs/test_results/test_summary.md`)  
+  - [ ] 代码质量/安全扫描结果摘要(如 `docs/quality-and-security-report.md`, 目前仅有运行记录, 尚未写成统一总结文档)
+
+- [ ] **CI/CD 相关文件与说明** (预计: 2–3 小时 / Est: 2–3h)  
+  - [ ] GitHub Actions workflow 文件(如 `.github/workflows/ci.yml`)  
+  - [ ] 若有部署 pipeline / preview 配置, 在 README 或 `docs/ci-cd.md` 中简单说明其行为  
+
+- [ ] **提交到 Canvas 用的总索引说明文档** (预计: 1–2 小时 / Est: 1–2h)  
+  - [ ] 在 GitHub 仓库中创建一份汇总所有关键链接和仓库内路径的短文档(例如仓库根目录或 `docs/` 下的 `submission-index.md`)  
+  - [ ] 文档内容至少包括:
+    - [ ] GitHub 仓库链接  
+    - [ ] 前端生产环境 URL  
+    - [ ] (可选) 后端 API base URL  
+    - [ ] Eval Dashboard 文档链接或在仓库中的路径  
+    - [ ] Blog post 链接  
+    - [ ] 视频链接  
+    - [ ] Documentation package 中 README / API docs / Scrum / AI reflections / code docs 等关键文档的相对路径列表  
+  - [ ] 提交 Canvas 时, 选择其一:
+    - [ ] 方式 A: 将 `submission-index.md` 的内容复制到 Canvas 的文本框中  
+    - [ ] 方式 B: 将 `submission-index.md` 导出为 PDF 或下载后上传到 Canvas  
+
+
+---
+
+## 📝 Appendix: Final Deliverables Checklist (English Mirror)
+
+> This section is a **1:1 English mirror** of the Chinese checklist above.  
+> The structure, items, and check/triangle states are intentionally kept **identical** for team alignment.
+
+### ✅ Final Deliverables & Artifacts
+
+- [x] **GitHub Repository Link** (Estimated: 0.5h): https://github.com/MelanieLLY/SkillGap 
+- [x] **Deployed Frontend App URL** (production, e.g. Vercel) (Estimated: 3–4h)  
+  - `https://skillgapweb.netlify.app`
+- [x] **Deployed Backend API Base URL** (e.g. Render/Railway) (Estimated: 4–6h)  
+  - `https://skillgap-api-hrsc.onrender.com`
+
+- [x] **Eval Dashboard Document** (Estimated: done; if exporting/adding PDF, extra 0.5–1h)  
+  - [x] A test-results document for instructor/TA (currently HTML `docs/skillgap_eval_dashboard.html`; recommended to later export/add a PDF version) including:
+    - [x] Explanation of full test suite runs (which tests, how many, by category)
+    - [x] Coverage numbers with screenshots / report excerpts
+    - [ ] If Cypress/Playwright HTML reports exist, add links or screenshots in this doc
+
+- [△] **Root-Level Project `README`** (Estimated: 2–3h)  
+  - [△] Project overview & main feature description (current `README.md` only has install/run instructions; needs a fuller intro and feature list)
+  - [△] Tech stack overview (frontend / backend / DB / deployment)
+  - [x] Local run & setup steps (install & dev commands already exist, could still be expanded)
+  - [ ] Test commands (`pytest`, frontend test commands, etc.)
+  - [ ] CI/CD summary (which workflows, coverage gate, etc.)
+  - [ ] Links to other docs (blog, video, API docs, eval dashboard, etc.)
+
+- [ ] **API Documentation** (Estimated: 2–3h)  
+  - [ ] Human-readable API docs file (e.g. `docs/api-docs.md` or `api-documentation.pdf`)  
+  - [ ] If using OpenAPI/Swagger:
+    - [ ] Online Swagger UI link, or
+    - [ ] Exported OpenAPI JSON/YAML file path
+
+- [△] **Documentation Package Artifacts** (Estimated: 4–6h)  
+  - [ ] Sprint planning docs (e.g. `docs/sprint-planning-sprint1.md`, `...sprint2.md`, or a single file with clearly separated sections)  
+  - [ ] Two sprint retrospective docs (may be separate files or sections distinct from planning)  
+  - [ ] AI modalities usage document (e.g. `docs/ai-modalities-usage.md`, explaining how Claude Web / IDE, etc. are used, when, and for what)  
+  - [△] AI reflections document (you already have rich internal planning notes and AI chat logs, but they have not been curated into a formal `docs/ai-reflection.md`)  
+  - [△] Full-code documentation file (you have a solid PRD `docs/skillgap_prd.md` and `docs/user_story.txt`, but still need a code-structure/data-flow–focused summary such as `docs/code-architecture.md`)
+
+- [△] **1500-word Technical / Quality Blog Post** (Estimated: 4–6h incl. AI assistance + human editing)  
+  - [△] Blog body itself (currently you have an internal outline `internal_working_planning_note/final_delivery/blog_post_outline.md`, but not a polished external-facing article)  
+  - [ ] Content must be public-facing, product-oriented, and user-oriented, showcasing product and team capabilities (distinct from course reflection)
+
+- [△] **10-Minute Public Video** (Estimated: 4–6h for script + recording + editing)  
+  - [ ] Publicly accessible video URL (YouTube, etc.)  
+  - [ ] Video should include:
+    - [ ] Project intro / short summary  
+    - [ ] Application walkthrough and feature demo  
+    - [ ] Explanation of key techniques / architecture / approaches  
+    - [ ] Development challenges and how you solved them  
+    - [ ] How AI participated in development  
+    - [ ] Team roles and collaboration  
+    - [ ] High-level overview of major deliverables  
+    - [ ] Both teammates appearing on camera  
+
+- [△] **Agile / Team Collaboration Evidence** (Estimated: 2–3h)  
+  - [△] Document describing each member’s concrete contributions and responsibilities (you currently have internal records like `internal_working_planning_note/GitHub project board.md`, but not yet a polished summary doc like `docs/team-contributions.md`)  
+  - [△] If GitHub commit history is imbalanced, provide supporting evidence (you already have extensive AI chat history and planning notes, but need to extract representative snippets into a formal document)
+
+- [x] **Testing & Quality-Related Raw/Supporting Files** (Estimated: done; 1–2h if writing a consolidated summary doc)  
+  - [x] Backend test directory (e.g. `server/tests/`)  
+  - [x] AI evaluation scripts and results (based on `docs/eval_roadmaps/ai_eval_results.md` and the Eval Dashboard)  
+  - [x] Raw coverage outputs (e.g. `docs/test_results/backend_test_report.txt`, `docs/test_results/frontend_test_report.txt`, and `docs/test_results/test_summary.md`)  
+  - [ ] Consolidated code-quality / security summary doc (e.g. `docs/quality-and-security-report.md`; currently you have run results but not a unified written summary)
+
+- [ ] **CI/CD Files & Explanations** (Estimated: 2–3h)  
+  - [ ] GitHub Actions workflow files (e.g. `.github/workflows/ci.yml`)  
+  - [ ] If you have deploy pipelines / preview configs, briefly describe them in `README` or `docs/ci-cd.md`  
+
+- [ ] **Canvas Submission Index Document** (Estimated: 1–2h)  
+  - [ ] Create a short index document in the GitHub repo that aggregates all key links and repo paths (e.g. `submission-index.md` at repo root or under `docs/`)  
+  - [ ] The document should at least contain:
+    - [ ] GitHub repository link  
+    - [ ] Frontend production URL  
+    - [ ] (Optional) Backend API base URL  
+    - [ ] Eval Dashboard document link or repo path  
+    - [ ] Blog post link  
+    - [ ] Video link  
+    - [ ] Relative paths for key Documentation Package artifacts (README / API docs / Scrum docs / AI reflections / code docs, etc.)  
+  - [ ] When submitting on Canvas, choose one:
+    - [ ] Option A: Copy the content of `submission-index.md` into the Canvas text entry box  
+    - [ ] Option B: Export `submission-index.md` as PDF or download it and upload to Canvas  
+
 
 ---
 
