@@ -1,27 +1,65 @@
-# SkillGap
+# SkillGap — Tech Stack Skill Gap Analyzer
 
-# System Architecture
-<img width="636" height="512" alt="Screenshot 2026-03-12 at 2 00 02 PM" src="https://github.com/user-attachments/assets/d3def8ab-c815-4c69-aa8d-dd8b4037d7ce" />
+A web app that helps job seekers identify skill gaps from job descriptions.
+Paste a JD, see your match score, and get an AI-generated learning roadmap.
 
-## Request flow when user submits a job description
-<img width="522" height="300" alt="Screenshot 2026-03-12 at 2 00 43 PM" src="https://github.com/user-attachments/assets/b5f22eee-229e-4164-9734-40b3c3a0bd4f" />
+**Team:** Jing Ng · Liuyi ([@MelanieLLY](https://github.com/MelanieLLY))
 
-The user pastes a job description, our server compares it against their saved skill profile, calculates a match score, and asks Claude AI to generate a learning plan for the gap
+## Tech Stack
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Zustand
+- **Backend:** FastAPI, Python 3.11, SQLAlchemy, PostgreSQL
+- **AI:** Claude API (claude-sonnet-4-20250514)
+
+## Screenshots
+
+### Login page
+<img width="600" alt="Login page" src="https://github.com/user-attachments/assets/e87a84cc-509c-4268-af6e-f27dbcf52289" />
+
+### Sign up page
+<img width="600" alt="Sign up page" src="https://github.com/user-attachments/assets/80c94f72-4cc7-4d7c-a633-ef2272248f9c" />
+
+## System Architecture
+
+<img width="600" alt="System architecture" src="https://github.com/user-attachments/assets/d3def8ab-c815-4c69-aa8d-dd8b4037d7ce" />
+
+### Request flow when user submits a job description
+
+<img width="500" alt="Request flow" src="https://github.com/user-attachments/assets/b5f22eee-229e-4164-9734-40b3c3a0bd4f" />
+
+The user pastes a job description, our server compares it against their saved skill profile, calculates a match score, and asks Claude AI to generate a learning plan for the gap.
+
+## Project Structure
+```
+SkillGap/
+├── client/           # React frontend (Vite, Tailwind, Zustand)
+├── server/           # FastAPI backend
+│   ├── tests/        # pytest test suite
+│   ├── core/         # DB config & settings
+│   ├── auth/         # Auth module
+│   └── ...           # other logic modules (extraction, roadmap, etc.)
+├── .env              # Environment variables (not committed)
+└── package.json      # Root scripts (dev, install:all)
+```
+
+## Live URLs
+
+| | URL |
+|---|---|
+| Frontend (Netlify) | coming soon |
+| Backend API (Render) | https://skillgap-api-hrsc.onrender.com |
+| API Docs | https://skillgap-api-hrsc.onrender.com/docs |
+
+---
 
 # Getting Started
 
-This document provides step-by-step instructions for setting up and running the Tech Stack Skill Gap Analyzer application locally on macOS.
-
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your system:
-- **Python 3.11+**: for the backend FastAPI server
-- **Node.js (18+ recommended)**: for the frontend React/Vite development server
-- **PostgreSQL**: for the database. (Alternatively, Docker can be used to run a local PostgreSQL instance).
+- **Python 3.11+**
+- **Node.js 18+**
+- **PostgreSQL**
 
 ## 1. Clone the Repository
-
-Clone the project repository to your local machine:
 ```bash
 git clone https://github.com/MelanieLLY/SkillGap
 cd SkillGap
@@ -29,18 +67,14 @@ cd SkillGap
 
 ## 2. Environment Variables
 
-Both the backend and frontend rely on environment variables.
-
-1. **Create the `.env` file** in the root of the project:
-
+Create the `.env` file in the root of the project:
 ```bash
 touch .env
 ```
 
-2. **Populate the `.env` file**. You will need database connection strings, JWT secrets, and API keys. The `.env` file should look something like this:
-
+Populate it with the following:
 ```ini
-# Backend Database Configuration (Replace with your distinct credentials if needed)
+# Database
 DATABASE_URL=postgresql://user:password@localhost:5432/skillgapdb
 
 # Authentication
@@ -50,60 +84,54 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 # External APIs
 CLAUDE_API_KEY=your_anthropic_claude_api_key
+
+# Frontend
+VITE_API_BASE_URL=http://127.0.0.1:8000
 ```
 
-*Note: Never commit your `.env` file. It should be ignored by Git.*
+> Never commit your `.env` file. It should be listed in `.gitignore`.
 
 ## 3. Installation
 
-The application is structured as a monorepo containing both `client/` and `server/` directories. A root `package.json` script handles installing everything at once.
-
-1. Create and activate a Python virtual environment at the root level:
+Create and activate a Python virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate
 ```
 
-2. Run the root install script:
+Install all dependencies:
 ```bash
-# This installs root dependencies, frontend Node modules, and backend Python packages requirements.txt
 npm run install:all
 ```
 
-*If you prefer manual installation:*
-- **Backend:** `cd server && pip install -r requirements.txt`
-- **Frontend:** `cd client && npm install`
+<details>
+<summary>Manual installation (optional)</summary>
+```bash
+cd server && pip install -r requirements.txt
+cd client && npm install
+```
+</details>
 
 ## 4. Database Setup
 
-`npm run dev` **does not** spin up a database server for you. You must ensure PostgreSQL is running locally.
-
-1. Install and start PostgreSQL on your Mac (e.g., via Homebrew or Postgres.app).
-2. Create the database specified in your `.env` file (e.g., `skillgapdb`).
-3. The FastAPI server uses SQLAlchemy, which connects to the existing database using the `DATABASE_URL` environment variable.
+`npm run dev` does not spin up a database for you. Ensure PostgreSQL is running first.
+```bash
+createdb skillgapdb
+```
 
 ## 5. Run the Application
-
-The root `package.json` includes a script that runs both the frontend and backend development servers **concurrently**.
-
-Ensure your Python virtual environment is activated before running:
 ```bash
 source venv/bin/activate
 npm run dev
 ```
 
-This will start:
-- **Backend (FastAPI)**: Running locally on `http://localhost:8000`
-- **Frontend (React)**: Running locally on `http://localhost:5173` (or depending on your Vite config).
+| Server | URL |
+|---|---|
+| Frontend (React) | http://localhost:5173 |
+| Backend (FastAPI) | http://localhost:8000 |
+| API Docs | http://localhost:8000/docs |
 
-You can access the backend auto-generated API documentation at `http://localhost:8000/docs`.
-
-## 6. Testing (Pytest)
-
-`npm run dev` **does not** run the testing suite. Backend tests must be run separately manually.
-
-To run the backend test suite (built with `pytest`):
-
+## 6. Run Tests
 ```bash
 cd server
 pytest
@@ -111,25 +139,8 @@ pytest
 
 ## 7. Deployment
 
-`npm run dev` is strictly for creating a **local development environment**. It does not build or deploy the application to a live server.
+For production, set `VITE_API_BASE_URL` to the deployed backend URL in your frontend host's environment settings (e.g. Netlify).
 
-For a production deployment:
-- **Frontend**: Run `npm run build` inside the `client/` directory to generate optimized static files (usually deployed to Vercel, Netlify, or an S3 bucket).
-- **Backend**: The FastAPI server would be packaged, likely into a Docker container, and deployed to a cloud provider (e.g., AWS ECS, Render, Heroku).
-- The project documentation mentions that moving forward, CI/CD will be handled via **GitHub Actions**.
-
-## 🌐 Environment configuration
-
-- **Local development backend**: `http://127.0.0.1:8000` (started by `npm run dev`)
-- **Deployed backend API base URL** (Render): `https://skillgap-api-hrsc.onrender.com`
-- **Deployed frontend app URL** (Netlify): 
-
-### Frontend (Vite) API base URL
-
-The frontend reads the backend base URL from `VITE_API_BASE_URL` and automatically appends `/api`:
-
-- **Env variable**: `VITE_API_BASE_URL`
-  - **Local dev example**: `VITE_API_BASE_URL=http://127.0.0.1:8000`
-  - **Production example (Render)**: `VITE_API_BASE_URL=https://skillgap-api-hrsc.onrender.com`
-
-When deploying the frontend (e.g. to Vercel), configure `VITE_API_BASE_URL` in the project settings using the deployed backend URL above.
+- **Frontend:** `npm run build` inside `client/` → deploy to Netlify or Vercel
+- **Backend:** Docker container → deploy to Render or AWS
+- **CI/CD:** GitHub Actions
