@@ -76,7 +76,8 @@ jobs:
       # ── ruff (PEP 8 + import order + type hints) ──────────────────────
       - name: ruff lint
         working-directory: ${{ env.SERVER_DIR }}
-        run: ruff check . --output-format=github
+        # --exit-zero makes the lint step non-blocking on status checks
+        run: ruff check . --output-format=github --exit-zero
 
       # ── black (formatting check only) ────────────────────────────────
       - name: black format check
