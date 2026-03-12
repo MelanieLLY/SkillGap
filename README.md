@@ -3,7 +3,7 @@
 A web app that helps job seekers identify skill gaps from job descriptions.
 Paste a JD, see your match score, and get an AI-generated learning roadmap.
 
-**Team 7: ** Jing Ng · Liuyi 
+**Team 7:** Jing Ng · Liuyi 
 
 ## Tech Stack
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Zustand
