@@ -53,7 +53,9 @@ class JsonEncodedList(TypeDecorator):  # type: ignore[type-arg]
     impl = String
     cache_ok = True
 
-    def process_bind_param(self, value: object, dialect: object) -> str | None:  # noqa: ANN001
+    def process_bind_param(
+        self, value: object, dialect: object
+    ) -> str | None:  # noqa: ANN001
         if value is None:
             return "[]"
         if isinstance(value, (list, tuple, set)):
@@ -61,7 +63,9 @@ class JsonEncodedList(TypeDecorator):  # type: ignore[type-arg]
         # Fallback: treat any other value as an already-serialised string
         return str(value)
 
-    def process_result_value(self, value: object, dialect: object) -> list[str]:  # noqa: ANN001
+    def process_result_value(
+        self, value: object, dialect: object
+    ) -> list[str]:  # noqa: ANN001
         if value is None:
             return []
         # Handle the PostgreSQL `'{}'` server_default which SQLite stores as-is.

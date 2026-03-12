@@ -9,10 +9,7 @@ interface SkeletonProps {
 const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
   return (
     <div
-      className={cn(
-        "relative overflow-hidden bg-[#2a2f3e] rounded-lg",
-        className
-      )}
+      className={cn("relative overflow-hidden bg-[#2a2f3e] rounded-lg", className)}
       aria-hidden="true"
     >
       <motion.div

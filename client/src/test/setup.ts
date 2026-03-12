@@ -35,9 +35,8 @@ vi.mock("framer-motion", () => {
           style,
           ...rest
         }: MotionProps & { style?: React.CSSProperties },
-        ref: React.Ref<unknown>
-      ) =>
-        React.createElement(tag, { ...rest, style, ref }, children)
+        ref: React.Ref<unknown>,
+      ) => React.createElement(tag, { ...rest, style, ref }, children),
     );
 
   // useSpring: return a plain object with set / on methods
@@ -61,11 +60,7 @@ vi.mock("framer-motion", () => {
   };
 
   // useTransform: return a MotionValue-like object whose value is derived
-  const useTransform = (
-    _source: unknown,
-    _input: number[],
-    output: number[]
-  ) => ({
+  const useTransform = (_source: unknown, _input: number[], output: number[]) => ({
     get: () => output[0],
   });
 

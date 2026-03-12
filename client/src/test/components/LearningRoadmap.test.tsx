@@ -103,25 +103,21 @@ describe("LearningRoadmap", () => {
     it("renders 'Generate Roadmap' button", () => {
       render(<LearningRoadmap missingSkills={["Docker"]} />);
       expect(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
+        screen.getByRole("button", { name: /generate learning roadmap/i }),
       ).toBeInTheDocument();
     });
 
     it("shows prompt when no missing skills and no roadmap", () => {
       render(<LearningRoadmap missingSkills={[]} />);
       expect(
-        screen.getByText(
-          "Analyze a job description first to see your missing skills."
-        )
+        screen.getByText("Analyze a job description first to see your missing skills."),
       ).toBeInTheDocument();
     });
 
     it("shows generate prompt when there are missing skills but no roadmap", () => {
       render(<LearningRoadmap missingSkills={["Docker"]} />);
       expect(
-        screen.getByText(
-          'Click "Generate Roadmap" to create your personalised learning plan.'
-        )
+        screen.getByText('Click "Generate Roadmap" to create your personalised learning plan.'),
       ).toBeInTheDocument();
     });
 
@@ -146,7 +142,7 @@ describe("LearningRoadmap", () => {
       vi.mocked(roadmapApi.generate).mockReturnValue(
         new Promise((res) => {
           resolveGenerate = res;
-        })
+        }),
       );
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
@@ -155,9 +151,7 @@ describe("LearningRoadmap", () => {
 
       // While loading, skeleton container should appear
       await waitFor(() =>
-        expect(
-          screen.getByLabelText("Loading learning roadmap")
-        ).toBeInTheDocument()
+        expect(screen.getByLabelText("Loading learning roadmap")).toBeInTheDocument(),
       );
 
       // Clean up
@@ -170,17 +164,13 @@ describe("LearningRoadmap", () => {
       vi.mocked(roadmapApi.generate).mockReturnValue(
         new Promise((res) => {
           resolveGenerate = res;
-        })
+        }),
       );
 
       render(<LearningRoadmap missingSkills={["React"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
-      await waitFor(() =>
-        expect(screen.getByText(/generating/i)).toBeInTheDocument()
-      );
+      await waitFor(() => expect(screen.getByText(/generating/i)).toBeInTheDocument());
       resolveGenerate({ roadmap: mockRoadmap });
     });
   });
@@ -199,12 +189,8 @@ describe("LearningRoadmap", () => {
         roadmap: null,
       };
 
-      render(
-        <LearningRoadmap missingSkills={["Docker"]} jdText="We need Docker" />
-      );
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      render(<LearningRoadmap missingSkills={["Docker"]} jdText="We need Docker" />);
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
         expect(roadmapApi.generate).toHaveBeenCalledWith({
@@ -228,14 +214,10 @@ describe("LearningRoadmap", () => {
       };
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
-        expect(mockSetUser).toHaveBeenCalledWith(
-          expect.objectContaining({ roadmap: mockRoadmap })
-        );
+        expect(mockSetUser).toHaveBeenCalledWith(expect.objectContaining({ roadmap: mockRoadmap }));
       });
     });
   });
@@ -278,9 +260,7 @@ describe("LearningRoadmap", () => {
 
     it("phase button is accessible", () => {
       render(<LearningRoadmap missingSkills={[]} />);
-      expect(
-        screen.getByRole("button", { name: /Phase 1: Foundation/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Phase 1: Foundation/i })).toBeInTheDocument();
     });
 
     it("phase is collapsed by default (aria-expanded=false)", () => {
@@ -334,9 +314,7 @@ describe("LearningRoadmap", () => {
         name: /Phase 1: Foundation/i,
       });
       fireEvent.click(phaseBtn);
-      expect(
-        screen.getByText("Build a containerized web application")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Build a containerized web application")).toBeInTheDocument();
     });
   });
 
@@ -346,15 +324,11 @@ describe("LearningRoadmap", () => {
       vi.mocked(roadmapApi.generate).mockRejectedValue(new Error("Network error"));
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
         expect(
-          screen.getByText(
-            "Failed to generate roadmap. Please ensure the backend is running."
-          )
+          screen.getByText("Failed to generate roadmap. Please ensure the backend is running."),
         ).toBeInTheDocument();
       });
     });
@@ -366,15 +340,11 @@ describe("LearningRoadmap", () => {
       });
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
         expect(
-          screen.getByText(
-            "Claude AI took too long to respond. Please try again."
-          )
+          screen.getByText("Claude AI took too long to respond. Please try again."),
         ).toBeInTheDocument();
       });
     });
@@ -386,15 +356,11 @@ describe("LearningRoadmap", () => {
       });
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
         expect(
-          screen.getByText(
-            "Failed to get a valid response from Claude AI. Please try again."
-          )
+          screen.getByText("Failed to get a valid response from Claude AI. Please try again."),
         ).toBeInTheDocument();
       });
     });
@@ -404,9 +370,7 @@ describe("LearningRoadmap", () => {
       vi.mocked(roadmapApi.generate).mockRejectedValue(new Error("fail"));
 
       render(<LearningRoadmap missingSkills={["Docker"]} />);
-      fireEvent.click(
-        screen.getByRole("button", { name: /generate learning roadmap/i })
-      );
+      fireEvent.click(screen.getByRole("button", { name: /generate learning roadmap/i }));
 
       await waitFor(() => {
         const btn = screen.getByRole("button", { name: /generate learning roadmap/i });
