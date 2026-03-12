@@ -123,8 +123,11 @@ jobs:
       # ── Backend tests + coverage gate ─────────────────────────────────
       - name: Run pytest with coverage
         working-directory: ${{ env.SERVER_DIR }}
+        env:
+          # server/ modules use absolute imports like `from server.auth import …`
+          # so the repo root (parent of server/) must be on PYTHONPATH.
+          PYTHONPATH: ${{ github.workspace }}
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/..
           pytest tests/ \
             --cov=. \
             --cov-report=xml:coverage.xml \

@@ -31,14 +31,21 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """
     models.Base.metadata.create_all(bind=engine)
     history_models.Base.metadata.create_all(bind=engine)
-    # Fallback to add skills column explicitly since we don't use alembic for existing DBs
-    with engine.connect() as conn:
-        conn.execute(
-            text(
-                "ALTER TABLE users ADD COLUMN IF NOT EXISTS skills VARCHAR[] DEFAULT '{}'"
-            )
-        )
-        conn.commit()
+    # Fallback to add skills column explicitly since we don't use alembic for existing DBs.
+    # Only run on PostgreSQL — SQLite doesn't support IF NOT EXISTS in ALTER TABLE
+    # nor the VARCHAR[] array type.
+    if engine.dialect.name == "postgresql":
+        with engine.connect() as conn:
+            try:
+                conn.execute(
+                    text(
+                        "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
+                        "skills VARCHAR[] DEFAULT '{}'"
+                    )
+                )
+                conn.commit()
+            except SQLAlchemyError:
+                conn.rollback()
     yield
 
 
