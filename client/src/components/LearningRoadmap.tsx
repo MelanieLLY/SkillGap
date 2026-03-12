@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { roadmapApi } from "../api/roadmap";
 import { useAuthStore } from "../store/authStore";
+import RoadmapSkeleton from "./RoadmapSkeleton";
 
 interface LearningRoadmapProps {
   /** Skills the user is missing — drives the "Generate" call. */
@@ -69,7 +71,11 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
   };
 
   return (
-    <div className="glass-card-accent p-6">
+    <div
+      className="glass-card-accent p-6"
+      aria-busy={isLoading}
+      aria-live="polite"
+    >
       {/* ── Section Header ── */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
@@ -172,242 +178,257 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ missingSkills, jdText
         </div>
       )}
 
-      {/* ── Loading Skeleton ── */}
-      {isLoading && (
-        <div className="space-y-3 animate-pulse" aria-label="Loading roadmap">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="flex items-center gap-4">
-              <div className="w-9 h-9 rounded-full bg-[#2a2f3e] flex-shrink-0" />
-              <div className="flex-grow bg-[#1a1f2e] border border-white/5 rounded-xl px-5 py-4">
-                <div className="h-3 bg-[#2a2f3e] rounded w-1/3 mb-2" />
-                <div className="h-2 bg-[#2a2f3e] rounded w-2/3" />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ── Empty state (before generation) ── */}
-      {!isLoading && !roadmap && !error && (
-        <div className="text-center py-8 text-[#5f6573]">
-          <svg
-            className="w-10 h-10 mx-auto mb-3 opacity-40"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-            />
-          </svg>
-          <p className="text-sm">
-            {canGenerate
-              ? 'Click "Generate Roadmap" to create your personalised learning plan.'
-              : "Analyze a job description first to see your missing skills."}
-          </p>
-        </div>
-      )}
+            <RoadmapSkeleton />
+          </motion.div>
+        ) : !roadmap && !error ? (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center py-8 text-[#5f6573]"
+          >
+            <svg
+              className="w-10 h-10 mx-auto mb-3 opacity-40"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
+            </svg>
+            <p className="text-sm">
+              {canGenerate
+                ? 'Click "Generate Roadmap" to create your personalised learning plan.'
+                : "Analyze a job description first to see your missing skills."}
+            </p>
+          </motion.div>
+        ) : (
+          roadmap && (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              {/* Summary bar */}
+              <div className="flex flex-wrap gap-3 text-xs">
+                <SummaryBadge icon="📅" label={`${roadmap.total_estimated_duration_weeks} weeks`} />
+                <SummaryBadge icon="📚" label={`${roadmap.summary.total_courses} courses`} />
+                <SummaryBadge icon="🛠" label={`${roadmap.summary.total_projects} projects`} />
+                <SummaryBadge icon="⏱" label={`${roadmap.summary.total_learning_hours}h total`} />
+                <SummaryBadge icon="🎯" label={roadmap.summary.recommended_weekly_pace} />
+              </div>
 
-      {/* ── Roadmap Content ── */}
-      {!isLoading && roadmap && (
-        <div className="space-y-6">
-          {/* Summary bar */}
-          <div className="flex flex-wrap gap-3 text-xs">
-            <SummaryBadge icon="📅" label={`${roadmap.total_estimated_duration_weeks} weeks`} />
-            <SummaryBadge icon="📚" label={`${roadmap.summary.total_courses} courses`} />
-            <SummaryBadge icon="🛠" label={`${roadmap.summary.total_projects} projects`} />
-            <SummaryBadge icon="⏱" label={`${roadmap.summary.total_learning_hours}h total`} />
-            <SummaryBadge icon="🎯" label={roadmap.summary.recommended_weekly_pace} />
-          </div>
+              {/* Timeline */}
+              <div className="relative">
+                {/* Vertical connector line */}
+                <div className="absolute left-[18px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-[#38e5b1] via-[#22c55e] to-[#5f6573]" />
 
-          {/* Timeline */}
-          <div className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute left-[18px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-[#38e5b1] via-[#22c55e] to-[#5f6573]" />
-
-            <div className="space-y-3">
-              {roadmap.timeline.map((phase) => {
-                const isExpanded = expandedPhases.has(phase.phase);
-                return (
-                  <div key={phase.phase} className="relative">
-                    {/* Phase header row */}
-                    <button
-                      type="button"
-                      onClick={() => togglePhase(phase.phase)}
-                      aria-expanded={isExpanded}
-                      aria-label={`Phase ${phase.phase}: ${phase.title}`}
-                      className="w-full flex items-center gap-4 group text-left"
-                    >
-                      {/* Number circle */}
-                      <div className="z-10 w-9 h-9 rounded-full bg-[#1a1f2e] border-2 border-[#38e5b1]/40 flex items-center justify-center flex-shrink-0 group-hover:border-[#38e5b1] transition-colors">
-                        <span className="text-xs font-bold text-[#38e5b1]">{phase.phase}</span>
-                      </div>
-
-                      {/* Phase card */}
-                      <div className="flex-grow flex items-center justify-between bg-[#1a1f2e] hover:bg-[#1f2538] border border-white/5 rounded-xl px-5 py-3.5 transition-all group-hover:border-[#38e5b1]/20">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                          <span className="text-sm font-bold text-white">{phase.title}</span>
-                          <span className="text-xs text-[#9aa0ac]">
-                            Weeks {phase.start_week}–{phase.end_week} ·{" "}
-                            {phase.weekly_commitment_hours}h/week
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {/* Skill pills (compact) */}
-                          <div className="hidden sm:flex gap-1">
-                            {phase.focus_skills.map((skill) => (
-                              <span
-                                key={skill}
-                                className="text-[10px] px-2 py-0.5 rounded-full bg-[#38e5b1]/10 text-[#38e5b1] font-medium"
-                              >
-                                {skill}
-                              </span>
-                            ))}
+                <div className="space-y-3">
+                  {roadmap.timeline.map((phase) => {
+                    const isExpanded = expandedPhases.has(phase.phase);
+                    return (
+                      <div key={phase.phase} className="relative">
+                        {/* Phase header row */}
+                        <button
+                          type="button"
+                          onClick={() => togglePhase(phase.phase)}
+                          aria-expanded={isExpanded}
+                          aria-label={`Phase ${phase.phase}: ${phase.title}`}
+                          className="w-full flex items-center gap-4 group text-left"
+                        >
+                          {/* Number circle */}
+                          <div className="z-10 w-9 h-9 rounded-full bg-[#1a1f2e] border-2 border-[#38e5b1]/40 flex items-center justify-center flex-shrink-0 group-hover:border-[#38e5b1] transition-colors">
+                            <span className="text-xs font-bold text-[#38e5b1]">{phase.phase}</span>
                           </div>
-                          {/* Chevron */}
-                          <svg
-                            className={`w-4 h-4 text-[#5f6573] group-hover:text-[#38e5b1] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </button>
 
-                    {/* Expanded detail */}
-                    {isExpanded && (
-                      <div className="ml-[52px] mt-2 space-y-3 animate-fadeIn">
-                        {/* Milestones */}
-                        <div className="bg-[#161a25] border border-white/5 rounded-xl p-4">
-                          <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
-                            Milestones
-                          </h4>
-                          <ul className="space-y-1.5">
-                            {phase.milestones.map((m, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-[#e8eaed]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#38e5b1] mt-1.5 flex-shrink-0" />
-                                {m}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Courses for this phase's skills */}
-                        {roadmap.course_recommendations
-                          .filter((cr) =>
-                            phase.focus_skills.some(
-                              (fs) => fs.toLowerCase() === cr.skill.toLowerCase(),
-                            ),
-                          )
-                          .map((cr) => (
-                            <div
-                              key={cr.skill}
-                              className="bg-[#161a25] border border-white/5 rounded-xl p-4"
-                            >
-                              <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
-                                📚 Courses — {cr.skill}
-                              </h4>
-                              <div className="space-y-2">
-                                {cr.courses.map((course, ci) => (
-                                  <a
-                                    key={ci}
-                                    href={course.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block bg-[#1a1f2e] hover:bg-[#1f2538] border border-white/5 hover:border-[#38e5b1]/20 rounded-lg p-3 transition-all"
+                          {/* Phase card */}
+                          <div className="flex-grow flex items-center justify-between bg-[#1a1f2e] hover:bg-[#1f2538] border border-white/5 rounded-xl px-5 py-3.5 transition-all group-hover:border-[#38e5b1]/20 group-hover:translate-x-1 group-hover:shadow-[0_0_20px_rgba(56,229,177,0.05)]">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                              <span className="text-sm font-bold text-white">{phase.title}</span>
+                              <span className="text-xs text-[#9aa0ac]">
+                                Weeks {phase.start_week}–{phase.end_week} ·{" "}
+                                {phase.weekly_commitment_hours}h/week
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {/* Skill pills (compact) */}
+                              <div className="hidden sm:flex gap-1">
+                                {phase.focus_skills.map((skill) => (
+                                  <span
+                                    key={skill}
+                                    className="text-[10px] px-2 py-0.5 rounded-full bg-[#38e5b1]/10 text-[#38e5b1] font-medium"
                                   >
-                                    <div className="flex items-center justify-between">
-                                      <span className="text-sm font-medium text-white">
-                                        {course.title}
-                                      </span>
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                              {/* Chevron */}
+                              <svg
+                                className={`w-4 h-4 text-[#5f6573] group-hover:text-[#38e5b1] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        </button>
+
+                        {/* Expanded detail */}
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="ml-[52px] mt-2 space-y-3 overflow-hidden"
+                            >
+                              {/* Milestones */}
+                              <div className="bg-[#161a25] border border-white/5 rounded-xl p-4">
+                                <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
+                                  Milestones
+                                </h4>
+                                <ul className="space-y-1.5">
+                                  {phase.milestones.map((m, i) => (
+                                    <li key={i} className="flex items-start gap-2 text-sm text-[#e8eaed]">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#38e5b1] mt-1.5 flex-shrink-0" />
+                                      {m}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              {/* Courses for this phase's skills */}
+                              {roadmap.course_recommendations
+                                .filter((cr) =>
+                                  phase.focus_skills.some(
+                                    (fs) => fs.toLowerCase() === cr.skill.toLowerCase(),
+                                  ),
+                                )
+                                .map((cr) => (
+                                  <div
+                                    key={cr.skill}
+                                    className="bg-[#161a25] border border-white/5 rounded-xl p-4"
+                                  >
+                                    <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
+                                      📚 Courses — {cr.skill}
+                                    </h4>
+                                    <div className="space-y-2">
+                                      {cr.courses.map((course, ci) => (
+                                        <a
+                                          key={ci}
+                                          href={course.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="block bg-[#1a1f2e] hover:bg-[#1f2538] border border-white/5 hover:border-[#38e5b1]/20 rounded-lg p-3 transition-all"
+                                        >
+                                          <div className="flex items-center justify-between">
+                                            <span className="text-sm font-medium text-white">
+                                              {course.title}
+                                            </span>
+                                            <span
+                                              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                                                course.priority === "primary"
+                                                  ? "bg-[#38e5b1]/15 text-[#38e5b1]"
+                                                  : "bg-[#a78bfa]/15 text-[#a78bfa]"
+                                              }`}
+                                            >
+                                              {course.priority}
+                                            </span>
+                                          </div>
+                                          <div className="flex items-center gap-3 mt-1 text-xs text-[#9aa0ac]">
+                                            <span>{course.platform}</span>
+                                            <span>·</span>
+                                            <span>{course.instructor}</span>
+                                            <span>·</span>
+                                            <span>{course.duration_hours}h</span>
+                                            <span>·</span>
+                                            <span>{course.level}</span>
+                                          </div>
+                                        </a>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+
+                              {/* Project ideas for this phase */}
+                              {roadmap.project_ideas
+                                .filter((p) => p.phase === phase.phase)
+                                .map((project) => (
+                                  <div
+                                    key={project.id}
+                                    className="bg-[#161a25] border border-white/5 rounded-xl p-4"
+                                  >
+                                    <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
+                                      🛠 Project — {project.title}
+                                    </h4>
+                                    <p className="text-sm text-[#e8eaed] mb-2">{project.description}</p>
+                                    <div className="flex flex-wrap gap-2 mb-2">
                                       <span
                                         className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                                          course.priority === "primary"
-                                            ? "bg-[#38e5b1]/15 text-[#38e5b1]"
-                                            : "bg-[#a78bfa]/15 text-[#a78bfa]"
+                                          project.difficulty === "Beginner"
+                                            ? "bg-green-500/10 text-green-400"
+                                            : project.difficulty === "Intermediate"
+                                              ? "bg-yellow-500/10 text-yellow-400"
+                                              : "bg-red-500/10 text-red-400"
                                         }`}
                                       >
-                                        {course.priority}
+                                        {project.difficulty}
+                                      </span>
+                                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#60a5fa]/10 text-[#60a5fa] font-semibold">
+                                        ~{project.estimated_hours}h
                                       </span>
                                     </div>
-                                    <div className="flex items-center gap-3 mt-1 text-xs text-[#9aa0ac]">
-                                      <span>{course.platform}</span>
-                                      <span>·</span>
-                                      <span>{course.instructor}</span>
-                                      <span>·</span>
-                                      <span>{course.duration_hours}h</span>
-                                      <span>·</span>
-                                      <span>{course.level}</span>
-                                    </div>
-                                  </a>
+                                    <ul className="space-y-1">
+                                      {project.deliverables.map((d, di) => (
+                                        <li
+                                          key={di}
+                                          className="flex items-start gap-2 text-xs text-[#9aa0ac]"
+                                        >
+                                          <span className="text-[#38e5b1]">✓</span>
+                                          {d}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
                                 ))}
-                              </div>
-                            </div>
-                          ))}
-
-                        {/* Project ideas for this phase */}
-                        {roadmap.project_ideas
-                          .filter((p) => p.phase === phase.phase)
-                          .map((project) => (
-                            <div
-                              key={project.id}
-                              className="bg-[#161a25] border border-white/5 rounded-xl p-4"
-                            >
-                              <h4 className="text-xs font-semibold text-[#9aa0ac] uppercase tracking-wider mb-2">
-                                🛠 Project — {project.title}
-                              </h4>
-                              <p className="text-sm text-[#e8eaed] mb-2">{project.description}</p>
-                              <div className="flex flex-wrap gap-2 mb-2">
-                                <span
-                                  className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                                    project.difficulty === "Beginner"
-                                      ? "bg-green-500/10 text-green-400"
-                                      : project.difficulty === "Intermediate"
-                                        ? "bg-yellow-500/10 text-yellow-400"
-                                        : "bg-red-500/10 text-red-400"
-                                  }`}
-                                >
-                                  {project.difficulty}
-                                </span>
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#60a5fa]/10 text-[#60a5fa] font-semibold">
-                                  ~{project.estimated_hours}h
-                                </span>
-                              </div>
-                              <ul className="space-y-1">
-                                {project.deliverables.map((d, di) => (
-                                  <li
-                                    key={di}
-                                    className="flex items-start gap-2 text-xs text-[#9aa0ac]"
-                                  >
-                                    <span className="text-[#38e5b1]">✓</span>
-                                    {d}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )
+        )}
+      </AnimatePresence>
     </div>
   );
 };
