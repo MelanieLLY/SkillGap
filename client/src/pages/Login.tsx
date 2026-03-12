@@ -51,7 +51,7 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
               <div className="mt-1">
                 <input
                   id="email"
@@ -68,7 +68,7 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
               <div className="mt-1">
                 <input
                   id="password"

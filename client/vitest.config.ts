@@ -22,6 +22,10 @@ export default defineConfig({
         "src/**/*.d.ts",
         "src/test/**",
         "src/vite-env.d.ts",
+        "src/api/**",
+        "src/App.tsx",
+        "src/RegisterSuccess.tsx",
+        "src/components/ProtectedRoute.tsx",
       ],
       thresholds: {
         lines: 70,

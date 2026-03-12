@@ -1,132 +1,58 @@
-==================== FRONTEND TEST RESULTS ====================
-melaniey@Melanies-MacBook-Pro SkillGap % cd client && npm run lint && npm run format:check && npx tsc --noEmit && npm run test
+----------------------------------------------------------------------------------------------------
+                                        Frontend Test Record
+----------------------------------------------------------------------------------------------------
 
-> client@1.0.0 lint
-> eslint . --max-warnings 10
+$ npm run test:coverage
 
-=============
-
-WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
-
-You may find that it works just fine, or you may not.
-
-SUPPORTED TYPESCRIPT VERSIONS: >=4.7.4 <5.6.0
-
-YOUR TYPESCRIPT VERSION: 5.9.3
-
-Please only submit bug reports when using the officially supported version.
-
-=============
-
-> client@1.0.0 format:check
-> prettier --check "src/**/*.{ts,tsx,css}"
-
-Checking formatting...
-All matched files use Prettier code style!
-
-> client@1.0.0 test
-> vitest run
+> client@1.0.0 test:coverage
+> vitest run --coverage
 
 
  RUN  v4.0.18 /Users/melaniey/Github/SkillGap/client
 
- ✓ src/test/store/authStore.test.ts (6 tests) 29ms
- ✓ src/test/components/Skeleton.test.tsx (5 tests) 19ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx (11 tests) 53ms
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays error message on API failure
-Roadmap generation failed: Error: Network error
-    at /Users/melaniey/Github/SkillGap/client/src/test/components/LearningRoadmap.test.tsx:324:56
-    at file:///Users/melaniey/Github/SkillGap/node_modules/@vitest/runner/dist/index.js:915:20
+ ✓ src/test/pages/Dashboard.test.tsx (3 tests)
+ ✓ src/test/pages/History.test.tsx (4 tests)
+ ✓ src/test/pages/Login.test.tsx (5 tests)
+ ✓ src/test/pages/Register.test.tsx (4 tests)
+ ✓ src/test/pages/Profile.test.tsx (5 tests)
+ ✓ src/test/components/LearningRoadmap.test.tsx (26 tests)
+ ✓ src/test/components/JDInput.test.tsx (3 tests)
+ ✓ src/test/components/SkillMatchResults.test.tsx (2 tests)
+ ✓ src/test/components/UserSkillsInput.test.tsx (4 tests)
+ ✓ src/test/components/Navbar.test.tsx (1 test)
+ ✓ src/test/components/Skeleton.test.tsx (5 tests)
+ ✓ src/test/components/AnimatedMatchRing.test.tsx (13 tests)
+ ✓ src/test/store/authStore.test.ts (6 tests)
+ ✓ src/test/store/profileStore.test.ts (5 tests)
 
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 504 timeout message
-Roadmap generation failed: { response: { status: 504 } }
+ Test Files  14 passed (14)
+      Tests  84 passed (84)
+   Start at  22:56:36
+   Duration  2.72s (transform 1.36s, setup 1.53s, import 3.10s, tests 4.28s, environment 9.57s)
 
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 502 bad gateway message
-Roadmap generation failed: { response: { status: 502 } }
-
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > re-enables generate button after error
-Roadmap generation failed: Error: fail
-    at /Users/melaniey/Github/SkillGap/client/src/test/components/LearningRoadmap.test.tsx:370:56
-    at file:///Users/melaniey/Github/SkillGap/node_modules/@vitest/runner/dist/index.js:915:20
-
- ✓ src/test/components/LearningRoadmap.test.tsx (26 tests) 361ms
-
- Test Files  4 passed (4)
-      Tests  48 passed (48)
-   Start at  22:17:41
-   Duration  1.23s (transform 344ms, setup 355ms, import 471ms, tests 461ms, environment 2.10s)
-
-melaniey@Melanies-MacBook-Pro client % cd /Users/melaniey/Github/SkillGap
-melaniey@Melanies-MacBook-Pro SkillGap % cd client && npx vitest run --reporter=verbose
-
- RUN  v4.0.18 /Users/melaniey/Github/SkillGap/client
-
- ✓ src/test/store/authStore.test.ts > useAuthStore > initialises token from localStorage 22ms
- ✓ src/test/store/authStore.test.ts > useAuthStore > initialises token as null when localStorage is empty 1ms
- ✓ src/test/store/authStore.test.ts > useAuthStore > setUser updates the user in state 1ms
- ✓ src/test/store/authStore.test.ts > useAuthStore > setUser(null) clears the user 0ms
- ✓ src/test/store/authStore.test.ts > useAuthStore > logout clears token from localStorage 0ms
- ✓ src/test/store/authStore.test.ts > useAuthStore > logout clears token and user from state 0ms
- ✓ src/test/components/Skeleton.test.tsx > Skeleton > renders with aria-hidden for screen readers 11ms
- ✓ src/test/components/Skeleton.test.tsx > Skeleton > applies default base classes 1ms
- ✓ src/test/components/Skeleton.test.tsx > Skeleton > merges custom className with base classes 1ms
- ✓ src/test/components/Skeleton.test.tsx > Skeleton > renders the shimmer overlay child element 3ms
- ✓ src/test/components/Skeleton.test.tsx > Skeleton > renders without crashing when no props are passed 2ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Normal (non-waiting) state > renders the match label 29ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Normal (non-waiting) state > renders 'Match' label when not waiting 3ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Normal (non-waiting) state > does not render dash when isWaiting is false 5ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Waiting state (isWaiting=true) > renders em-dash instead of score when waiting 2ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Waiting state (isWaiting=true) > renders 'Pending' label when isWaiting is true 1ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Waiting state (isWaiting=true) > does not render 'Match' label when waiting 1ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Ring color logic (getRingColor) > renders SVG ring element 3ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Ring color logic (getRingColor) > renders two circles (background + progress) 1ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Score boundary cases > renders without crashing at score=0 1ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Score boundary cases > renders without crashing at score=100 1ms
- ✓ src/test/components/AnimatedMatchRing.test.tsx > AnimatedMatchRing > Score boundary cases > uses default isWaiting=false when omitted 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > renders the 'Learning Roadmap' heading 17ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > renders 'Generate Roadmap' button 67ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > shows prompt when no missing skills and no roadmap 2ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > shows generate prompt when there are missing skills but no roadmap 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > disables generate button when missingSkills is empty 10ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Empty / initial state > enables generate button when missingSkills is non-empty 10ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Loading state > shows RoadmapSkeleton while generating 23ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Loading state > button shows 'Generating…' text while loading 13ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Successful generation > calls roadmapApi.generate with correct payload 13ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Successful generation > calls setUser with updated roadmap after generation 11ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > renders total duration weeks 2ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > renders total courses badge 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > renders total projects badge 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > renders phase title in timeline 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > renders skill pill for the phase 1ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > phase button is accessible 16ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > phase is collapsed by default (aria-expanded=false) 13ms
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays error message on API failure
-Roadmap generation failed: Error: Network error
-    at /Users/melaniey/Github/SkillGap/client/src/test/components/LearningRoadmap.test.tsx:324:56
-    at file:///Users/melaniey/Github/SkillGap/node_modules/@vitest/runner/dist/index.js:915:20
-
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 504 timeout message
-Roadmap generation failed: { response: { status: 504 } }
-
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 502 bad gateway message
-Roadmap generation failed: { response: { status: 502 } }
-
-stderr | src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > re-enables generate button after error
-Roadmap generation failed: Error: fail
-    at /Users/melaniey/Github/SkillGap/client/src/test/components/LearningRoadmap.test.tsx:370:56
-    at file:///Users/melaniey/Github/SkillGap/node_modules/@vitest/runner/dist/index.js:915:20
-
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > expands phase on click (aria-expanded=true) 15ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > collapses phase on second click 16ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > shows milestone text when phase is expanded 15ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > shows course recommendation when phase is expanded 13ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Roadmap display (pre-loaded) > shows project idea when phase is expanded 16ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays error message on API failure 15ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 504 timeout message 12ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > displays 502 bad gateway message 11ms
- ✓ src/test/components/LearningRoadmap.test.tsx > LearningRoadmap > Error handling > re-enables generate button after error 24ms
-
- Test Files  4 passed (4)
-      Tests  48 passed (48)
-   Start at  22:18:21
-   Duration  1.09s (transform 333ms, setup 370ms, import 400ms, tests 435ms, environment 1.81s)
+ % Coverage report from v8
+------------------------|---------|---------|---------|-------------------
+File                    | % Stmts | % Funcs | % Lines | Uncovered Line #s 
+------------------------|---------|---------|---------|-------------------
+All files               |   85.28 |   95.69 |   87.17 |                   
+ components             |   96.52 |     100 |   99.24 |                   
+  AnimatedMatchRing.tsx |     100 |     100 |     100 |                   
+  JDInput.tsx           |   78.94 |     100 |   93.75 | 34                
+  LearningRoadmap.tsx   |   97.87 |     100 |     100 | 26,355-397        
+  Navbar.tsx            |     100 |     100 |     100 | 42-52             
+  RoadmapSkeleton.tsx   |     100 |     100 |     100 |                   
+  Skeleton.tsx          |     100 |     100 |     100 |                   
+  SkillMatchResults.tsx |     100 |     100 |     100 | 156,175,194       
+  UserSkillsInput.tsx   |     100 |     100 |     100 | 12-20             
+ lib                    |     100 |     100 |     100 |                   
+  utils.ts              |     100 |     100 |     100 |                   
+ pages                  |   78.32 |   87.87 |   80.74 |                   
+  Dashboard.tsx         |   46.42 |   55.55 |      50 | 38-46,89,100-142  
+  History.tsx           |     100 |     100 |     100 | 103-156           
+  Login.tsx             |     100 |     100 |     100 |                   
+  Profile.tsx           |     100 |     100 |     100 | 15-48,96          
+  Register.tsx          |      96 |     100 |      96 | 33                
+ store                  |   71.11 |     100 |   69.76 |                   
+  authStore.ts          |   63.15 |     100 |   61.11 | 36,48-56          
+  profileStore.ts       |   76.92 |     100 |      76 | 41-42,52-53,63-64 
+------------------------|---------|---------|---------|-------------------
