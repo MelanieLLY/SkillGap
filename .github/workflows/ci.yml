@@ -52,11 +52,10 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      # ── ESLint ────────────────────────────────────────────────────────
       - name: ESLint (TypeScript / React)
         working-directory: ${{ env.CLIENT_DIR }}
         # --max-warnings 0 means any warning is treated as an error
-        run: npx eslint . --ext .ts,.tsx --max-warnings 0
+        run: npx eslint . --max-warnings 0
 
       # ── Prettier ──────────────────────────────────────────────────────
       - name: Prettier format check
