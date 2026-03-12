@@ -18,6 +18,16 @@ Paste a JD, see your match score, and get an AI-generated learning roadmap.
 ### Sign up page
 <img width="600" alt="Sign up page" src="https://github.com/user-attachments/assets/80c94f72-4cc7-4d7c-a633-ef2272248f9c" />
 
+### Main Dashboard
+<img width="1000" alt="Screenshot 2026-03-12 at 2 34 27 PM" src="https://github.com/user-attachments/assets/feed4cb7-fe63-4ec8-826e-c52d9be6dc3e" />
+
+### Profile Setup Page
+<img width="1000" alt="Screenshot 2026-03-12 at 2 44 13 PM" src="https://github.com/user-attachments/assets/3a92c5ea-fade-4b8b-9baa-9a702f9cbda9" />
+
+### Skill Match Analysis
+<img width="1000" height="1123" alt="Screenshot 2026-03-12 at 2 45 52 PM" src="https://github.com/user-attachments/assets/e433e3e5-441d-4729-9898-be4fd5e98ff0" />
+
+
 ## System Architecture
 
 <img width="600" alt="System architecture" src="https://github.com/user-attachments/assets/d3def8ab-c815-4c69-aa8d-dd8b4037d7ce" />
