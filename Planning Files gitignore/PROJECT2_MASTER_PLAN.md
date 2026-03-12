@@ -89,10 +89,10 @@
 
 - [x] **Step 2.1 接入 Claude API 生成 Roadmap (Issue #7)**
   - **Prompt (发给 Claude Web 原型设计)**: *"Design a structured learning roadmap JSON for a developer missing [Skill A, Skill B]. Include timeline, courses, and projects."*
-- [ ] **Step 2.2 接入后端 Claude API (Issue #7)**
+- [x] **Step 2.2 接入后端 Claude API (Issue #7)**
   - **Prompt (发给 Antigravity)**: *"I have designed the JSON schema for our learning roadmap (refer to Step 2.1). Now, please implement the `generate_roadmap_with_claude` function in the backend service. **System Prompt for Claude**: 'You are an expert career coach and technical architect. Your job is to take a list of [MISSING SKILLS] and current [JOB DESCRIPTION] to generate a hyper-realistic 12-week learning roadmap. You MUST ONLY respond in the following JSON format: [粘贴你在 2.1 得到的 JSON 样本]。Do not include any talk or explanation before or after the JSON.' **Requirements**: 1. Use the `anthropic` Python client with `claude-3-5-sonnet-20241022`. 2. Implement a new FastAPI route `/api/roadmap/generate` that uses the missing skills from the user profile. 3. Ensure the function is `async` and includes a 15-second timeout protection."*
   - **Action**: 测试 API，确保后端能稳定返回符合结构的 JSON 数据。
-- [ ] **Step 2.3 前端呈现 Roadmap 核心数据**
+- [x] **Step 2.3 前端呈现 Roadmap 核心数据**
   - **Prompt (发给 Antigravity)**: *"Now that the backend API is ready, please update the Dashboard or Result page. 1. Add a 'Generate Learning Roadmap' button. 2. When clicked, it calls `/api/roadmap/generate`. 3. 复用现有React 组件 RoadmapCard.tsx，接收该 JSON 数据，并使用 Tailwind CSS 将其展示为一个纵向时间线或卡片列表。 We will polish the aesthetics in the next phase."*
   - **Action**: 点击按钮，确认前端能正确接收并初步循环渲染出 Roadmap 的内容。
 

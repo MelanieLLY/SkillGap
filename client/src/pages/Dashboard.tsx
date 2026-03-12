@@ -54,6 +54,44 @@ export default function Dashboard() {
   // Track the last analyzed JD text so we can pass it to the roadmap generator
   const [lastJdText, setLastJdText] = useState<string>("");
 
+  // Track initial values for the JD input (from most recent history)
+  const [initialJD, setInitialJD] = useState({
+    text: "",
+    company: "",
+    position: "",
+  });
+
+  useEffect(() => {
+    const fetchLatestHistory = async () => {
+      if (!user) return;
+      try {
+        const history = await historyApi.getHistory();
+        if (history && history.length > 0) {
+          const latest = history[0];
+          // Populate the results area
+          setResults({
+            have: latest.have_skills,
+            missing: latest.missing_skills,
+            bonus: latest.bonus_skills,
+            company_name: latest.company_name,
+            position_name: latest.position_name,
+          });
+          // Populate the JD input area
+          setInitialJD({
+            text: latest.jd_text || "",
+            company: latest.company_name || "",
+            position: latest.position_name || "",
+          });
+          // Store the JD text for the roadmap
+          setLastJdText(latest.jd_text || "");
+        }
+      } catch (err) {
+        console.error("Failed to fetch history:", err);
+      }
+    };
+    fetchLatestHistory();
+  }, [user]);
+
   const handleAnalyze = async (
     jobDescription: string,
     companyName?: string,
@@ -89,6 +127,7 @@ export default function Dashboard() {
           have_skills: response.data.have,
           missing_skills: response.data.missing,
           bonus_skills: response.data.bonus,
+          jd_text: jobDescription,
         });
       } catch (historyErr) {
         console.error("Failed to auto-save history:", historyErr);
@@ -138,7 +177,13 @@ export default function Dashboard() {
           {/* Left Column — User Skills + JD Input */}
           <div className="flex flex-col gap-6">
             <UserSkillsInput skills={userSkills} onSkillsChange={handleSkillsChange} />
-            <JDInput onAnalyze={handleAnalyze} isLoading={isLoading || isLoadingSkills} />
+            <JDInput
+              onAnalyze={handleAnalyze}
+              isLoading={isLoading || isLoadingSkills}
+              initialText={initialJD.text}
+              initialCompanyName={initialJD.company}
+              initialPositionName={initialJD.position}
+            />
           </div>
 
           {/* Right Column — Results + Roadmap */}
