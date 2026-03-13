@@ -59,9 +59,23 @@ SkillGap/
 
 | | URL |
 |---|---|
-| Frontend (Netlify) | coming soon |
+| Frontend (Netlify) | https://skillgapweb.netlify.app |
 | Backend API (Render) | https://skillgap-api-hrsc.onrender.com |
 | API Docs | https://skillgap-api-hrsc.onrender.com/docs |
+
+### Environment configuration (deployed vs local)
+
+- **Local development backend**: `http://127.0.0.1:8000` (started by `npm run dev`)
+- **Deployed backend API base URL** (Render): `https://skillgap-api-hrsc.onrender.com`
+- **Deployed frontend app URL** (Netlify): `https://skillgapweb.netlify.app`
+
+The frontend reads the backend base URL from `VITE_API_BASE_URL` and appends `/api` automatically:
+
+- **Env variable**: `VITE_API_BASE_URL`
+  - **Local dev**: `VITE_API_BASE_URL=http://127.0.0.1:8000`
+  - **Production (Render)**: `VITE_API_BASE_URL=https://skillgap-api-hrsc.onrender.com`
+
+When deploying the frontend (e.g. Netlify or Vercel), set `VITE_API_BASE_URL` in the project settings to the deployed backend URL above.
 
 ---
 
@@ -145,16 +159,36 @@ npm run dev
 | Backend (FastAPI) | http://localhost:8000 |
 | API Docs | http://localhost:8000/docs |
 
-## 6. Run Tests
+## 6. Sample test accounts
+
+For reviewers who want to explore the app without creating an account, two sample users are available:
+
+- `alice@example.com`
+- `bob@example.com`
+
+Passwords are not stored in this repository. They are in a 1Password shared item (link valid until **2026-04-10**; after that, contact `liuyyang07@gmail.com` for a refreshed link):
+
+- 1Password shared item: `https://share.1password.com/s#8DvZd2OfKOUsNgBEWJWydtwPS6u8fWgIQRJdEK1DYhA`
+
+## 7. Run Tests
 ```bash
 cd server
 pytest
 ```
 
-## 7. Deployment
+## 8. Deployment
+
+**Deployment roots:** Frontend `client/`, Backend `server/`.
 
 For production, set `VITE_API_BASE_URL` to the deployed backend URL in your frontend host's environment settings (e.g. Netlify).
 
 - **Frontend:** `npm run build` inside `client/` → deploy to Netlify or Vercel
 - **Backend:** Docker container → deploy to Render or AWS
 - **CI/CD:** GitHub Actions
+
+### Auto-deploy (current setup)
+
+Frontend and backend deploy automatically when the repo is updated:
+
+- **Render (backend):** Auto-deploy on commit. Disable in the Render dashboard if you want manual deploys. [Docs](https://render.com/docs/configure-repo-sync).
+- **Netlify (frontend):** Builds and deploys on push to the connected branch (e.g. `main`). Disable in Netlify site settings for manual deploys.
