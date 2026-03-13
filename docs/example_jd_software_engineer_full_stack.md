@@ -1,13 +1,34 @@
-# 1.short version
 
-### Software Engineer (Full Stack)
+
+# Software Engineer (Full Stack) short
 
 We are hiring a Full Stack Software Engineer to build and maintain modern web applications. The role involves developing frontend interfaces using **React and TypeScript**, building backend services with **Node.js or Python (FastAPI)**, and working with **REST APIs, PostgreSQL, and cloud platforms such as AWS**. Experience with **Git, Docker, and CI/CD pipelines** is a plus.
 
+# Full Stack Software Engineer short
 
-# 2. long version
+We are looking for a Full Stack Software Engineer to help build and maintain modern web applications used by thousands of users. You will work closely with designers and product managers to translate product ideas into reliable and scalable features.
 
-## Software Engineer (Full Stack)
+In this role, you will develop interactive frontend interfaces using React and TypeScript, while also building backend services with Node.js. You will design REST APIs, integrate databases, and ensure smooth communication between the client and server.
+
+You should be comfortable working with HTML, CSS, and modern JavaScript, as well as collaborating through Git-based workflows. Experience with SQL databases, Docker, and automated testing is a plus, especially in environments that use CI/CD pipelines for continuous delivery.
+
+# Backend Software Engineer short
+
+We are seeking a Backend Software Engineer to design and implement scalable services that power our platform. You will work on core infrastructure and APIs that support both internal systems and customer-facing applications.
+
+The role involves building backend services using Python, particularly with frameworks such as FastAPI, and designing reliable RESTful APIs. You will also manage and optimize data stored in PostgreSQL and integrate caching layers like Redis to improve performance.
+
+A strong candidate should be comfortable working in containerized environments using Docker, collaborating with teams through Git, and writing well-tested, maintainable code. Familiarity with distributed systems and system design principles will help you succeed in this role.
+
+# AI / Machine Learning Engineer short
+
+We are hiring an AI Engineer to develop machine learning capabilities that enhance our intelligent products. You will work with both engineering and data teams to design systems that transform raw data into useful insights and automated decisions.
+
+Your work will involve building data processing pipelines and training models using Python-based machine learning frameworks such as PyTorch or TensorFlow. You will also help integrate models into production systems through APIs and backend services.
+
+The ideal candidate is comfortable working with large datasets, writing queries with SQL, and deploying model services using tools such as Docker and cloud platforms. Experience with version control through Git and monitoring model performance in production is highly valued.
+
+# Software Engineer (Full Stack) - Long
 
 ## Location
 San Francisco, CA / Remote (U.S.)

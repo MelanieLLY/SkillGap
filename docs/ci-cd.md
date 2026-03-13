@@ -5,7 +5,7 @@ Our pipeline (defined in `.github/workflows/ci.yml`) ensures that every update p
 
 | Stage | Tooling | Requirement |
 |---|---|---|
-| **Code Quality** | Ruff, ESLint, Prettier | 100% Pass (No warnings) |
+| **Code Quality** | Ruff, ESLint, Prettier | 100% Pass |
 | **Testing** | Pytest-cov, Vitest | **80%+ Coverage required** |
 | **Integrity** | GitHub Actions | Build artifacts verification |
 

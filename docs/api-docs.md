@@ -1,30 +1,30 @@
-## SkillGap API 文档（人类可读版本）
+## SkillGap API Reference
 
-本项目后端基于 **FastAPI** 构建，部署地址为：
+The backend is built on **FastAPI** and deployed at:
 
-- **生产环境 Backend Base URL**：`https://skillgap-api-hrsc.onrender.com`
-- **本地开发 Backend Base URL**：`http://127.0.0.1:8000`
+- **Production Backend Base URL**: `https://skillgap-api-hrsc.onrender.com`
+- **Local Development Backend Base URL**: `http://127.0.0.1:8000`
 
-前端通过 `VITE_API_BASE_URL` 访问后端，并自动拼接 `/api` 前缀。
+The frontend accesses the backend via `VITE_API_BASE_URL` and automatically prepends the `/api` prefix to all API calls.
 
 ### OpenAPI / Swagger
 
-- **在线 OpenAPI JSON**：`https://skillgap-api-hrsc.onrender.com/openapi.json`
-- **Swagger UI（交互式调试界面）**：`https://skillgap-api-hrsc.onrender.com/docs`
+- **Live OpenAPI JSON**: `https://skillgap-api-hrsc.onrender.com/openapi.json`
+- **Swagger UI (interactive)**: `https://skillgap-api-hrsc.onrender.com/docs`
 
-> 所有下文带有「需要认证」的接口，都使用 JWT Bearer Token（`Authorization: Bearer <access_token>`）进行鉴权，`access_token` 通过登录接口获取。
+> All endpoints marked as "requires authentication" use JWT Bearer Token (`Authorization: Bearer <access_token>`). The `access_token` is obtained via the login endpoint.
 
 ---
 
-## 1. 核心基础接口
+## 1. Core Endpoints
 
-### 1.1 根路径
+### 1.1 Root
 
 - **Method**: `GET`
 - **Path**: `/`
-- **Auth**: 不需要
-- **说明**: 健康欢迎信息，用于快速确认服务存活。
-- **Response 示例**:
+- **Auth**: None
+- **Description**: Health welcome message; used to quickly confirm the service is running.
+- **Response example**:
 
 ```json
 {
@@ -32,13 +32,13 @@
 }
 ```
 
-### 1.2 健康检查
+### 1.2 Health Check
 
 - **Method**: `GET`
 - **Path**: `/health`
-- **Auth**: 不需要
-- **说明**: 用于监控 / CI / 部署检查，返回应用健康状态。
-- **Response 示例**:
+- **Auth**: None
+- **Description**: Used for monitoring / CI / deployment checks; returns application health status.
+- **Response example**:
 
 ```json
 {
@@ -48,17 +48,17 @@
 
 ---
 
-## 2. 认证与用户信息（Auth）
+## 2. Authentication & User Info (Auth)
 
-路由前缀：`/api/auth`
+Route prefix: `/api/auth`
 
-### 2.1 注册新用户
+### 2.1 Register a New User
 
 - **Method**: `POST`
 - **Path**: `/api/auth/register`
-- **Auth**: 不需要
-- **说明**: 使用邮箱和密码注册新用户。
-- **Request Body（JSON）**：
+- **Auth**: None
+- **Description**: Registers a new user with email and password.
+- **Request Body (JSON)**:
 
 ```json
 {
@@ -67,7 +67,7 @@
 }
 ```
 
-- **Response 201（`UserOut`）示例**：
+- **Response 201 (`UserOut`) example**:
 
 ```json
 {
@@ -78,20 +78,20 @@
 }
 ```
 
-- **错误情况**：
-  - `400 Bad Request`：邮箱已被注册（`"Email already registered"`）。
+- **Error cases**:
+  - `400 Bad Request`: Email already registered (`"Email already registered"`).
 
-### 2.2 登录获取 Token
+### 2.2 Login and Obtain Token
 
 - **Method**: `POST`
 - **Path**: `/api/auth/login`
-- **Auth**: 不需要
-- **说明**: 使用邮箱 + 密码登录，返回 JWT 访问令牌。
-- **Request（`application/x-www-form-urlencoded`）**：
-  - `username`: 邮箱（email）
-  - `password`: 密码
+- **Auth**: None
+- **Description**: Authenticates with email and password; returns a JWT access token.
+- **Request (`application/x-www-form-urlencoded`)**:
+  - `username`: email address
+  - `password`: password
 
-示例：
+Example:
 
 ```bash
 curl -X POST https://skillgap-api-hrsc.onrender.com/api/auth/login \
@@ -99,7 +99,7 @@ curl -X POST https://skillgap-api-hrsc.onrender.com/api/auth/login \
   -d "username=user@example.com&password=yourStrongPassword"
 ```
 
-- **Response 200（`Token`）示例**：
+- **Response 200 (`Token`) example**:
 
 ```json
 {
@@ -108,22 +108,22 @@ curl -X POST https://skillgap-api-hrsc.onrender.com/api/auth/login \
 }
 ```
 
-- **错误情况**：
-  - `401 Unauthorized`：邮箱或密码错误。
+- **Error cases**:
+  - `401 Unauthorized`: Incorrect email or password.
 
-### 2.3 获取当前用户信息
+### 2.3 Get Current User Info
 
 - **Method**: `GET`
 - **Path**: `/api/auth/me`
-- **Auth**: 需要（Bearer Token）
-- **说明**: 返回当前登录用户的基础信息。
-- **Headers**：
+- **Auth**: Required (Bearer Token)
+- **Description**: Returns the currently authenticated user's basic profile.
+- **Headers**:
 
 ```http
 Authorization: Bearer <access_token>
 ```
 
-- **Response 示例**：
+- **Response example**:
 
 ```json
 {
@@ -136,31 +136,31 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 3. 个人技能档案（Profile）
+## 3. Skill Profile (Profile)
 
-路由前缀：`/api/profile`  
-所有接口都需要登录（Bearer Token）。
+Route prefix: `/api/profile`
+All endpoints require authentication (Bearer Token).
 
-### 3.1 获取当前用户技能列表
+### 3.1 Get Current User's Skills
 
 - **Method**: `GET`
 - **Path**: `/api/profile/skills`
-- **Auth**: 需要
-- **说明**: 返回当前用户保存的技能数组，如未设置则为空列表。
+- **Auth**: Required
+- **Description**: Returns the current user's saved skill list; returns an empty array if none are set.
 
-- **Response 示例**：
+- **Response example**:
 
 ```json
 ["Python", "FastAPI", "React"]
 ```
 
-### 3.2 添加单个技能
+### 3.2 Add a Skill
 
 - **Method**: `POST`
 - **Path**: `/api/profile/skills`
-- **Auth**: 需要
-- **说明**: 为当前用户添加一个技能（忽略大小写去重）。
-- **Request Body（JSON）**：
+- **Auth**: Required
+- **Description**: Adds a single skill to the current user's profile (case-insensitive deduplication applied).
+- **Request Body (JSON)**:
 
 ```json
 {
@@ -168,41 +168,41 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response 示例**：
+- **Response example**:
 
 ```json
 ["Python", "FastAPI", "React"]
 ```
 
-- **错误情况**：
-  - `400 Bad Request`：`skill` 为空字符串。
+- **Error cases**:
+  - `400 Bad Request`: `skill` is an empty string.
 
-### 3.3 删除指定技能
+### 3.3 Remove a Skill
 
 - **Method**: `DELETE`
 - **Path**: `/api/profile/skills/{skill_name}`
-- **Auth**: 需要
-- **说明**: 从当前用户技能列表中删除指定技能（大小写不敏感）。
-- **Path 参数**：
-  - `skill_name`: 要删除的技能名。
+- **Auth**: Required
+- **Description**: Removes the specified skill from the current user's profile (case-insensitive match).
+- **Path parameter**:
+  - `skill_name`: Name of the skill to remove.
 
-- **Response 示例**：
+- **Response example**:
 
 ```json
 ["Python", "React"]
 ```
 
-- **错误情况**：
-  - `404 Not Found`：技能不存在于当前用户的技能列表中。
+- **Error cases**:
+  - `404 Not Found`: Skill does not exist in the current user's skill list.
 
-### 3.4 从简历文本自动提取技能
+### 3.4 Extract Skills from Resume Text
 
 - **Method**: `POST`
 - **Path**: `/api/profile/extract-resume`
-- **Auth**: 需要
-- **说明**: 从一段简历文本中，基于内置的 `CURATED_SKILLS` 表扫描关键词，提取技能并合并到当前用户技能列表。
+- **Auth**: Required
+- **Description**: Scans a block of resume text for keywords against the built-in `CURATED_SKILLS` list, then merges any matched skills into the current user's profile.
 
-- **Request Body（JSON）**：
+- **Request Body (JSON)**:
 
 ```json
 {
@@ -210,29 +210,29 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response 示例**：
+- **Response example**:
 
 ```json
 ["Python", "Django", "React", "PostgreSQL"]
 ```
 
-> 若未找到新的技能，返回的仍然是当前技能列表。
+> If no new skills are found, the response returns the existing skill list unchanged.
 
 ---
 
-## 4. JD 技能提取（Extraction）
+## 4. JD Skill Extraction (Extraction)
 
-路由前缀：`/api`  
-核心接口用于对「职位描述 + 用户技能」进行技能分类。
+Route prefix: `/api`
+Core endpoint for classifying skills against a job description.
 
-### 4.1 提取并分类技能
+### 4.1 Extract and Classify Skills
 
 - **Method**: `POST`
 - **Path**: `/api/extract`
-- **Auth**: 不需要（前端通常在登录后使用，但后端本身未强制要求）
-- **说明**: 传入职位描述和当前用户技能，返回「已有技能 / 缺失技能 / 加分项」，并尝试从 JD 中提取公司名、职位名称。
+- **Auth**: Not required (frontend typically calls this while authenticated, but the backend does not enforce it)
+- **Description**: Accepts a job description and the current user's skill list; returns skills classified as "have / missing / bonus" and attempts to extract company name and job title from the JD text.
 
-- **Request Body（JSON，`ExtractRequest`）**：
+- **Request Body (JSON, `ExtractRequest`)**:
 
 ```json
 {
@@ -241,7 +241,7 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response Body（`ExtractResponse`）示例**：
+- **Response Body (`ExtractResponse`) example**:
 
 ```json
 {
@@ -253,28 +253,28 @@ Authorization: Bearer <access_token>
 }
 ```
 
-字段含义：
+Field descriptions:
 
-- `have`: 用户技能中，在 JD 中也出现的技能。
-- `missing`: JD 要求中出现，但用户技能列表中缺失的技能。
-- `bonus`: 属于用户技能但 JD 中未提及的「额外加分项」。
-- `company_name` / `position_name`: 基于 JD 文本的简单规则提取结果（可能为 `null`）。
+- `have`: Skills from the user's profile that appear in the JD.
+- `missing`: Skills required by the JD that are absent from the user's profile.
+- `bonus`: Skills the user has that are not explicitly mentioned in the JD.
+- `company_name` / `position_name`: Extracted from the JD text via heuristics (may be `null`).
 
 ---
 
-## 5. 分析历史记录（History）
+## 5. Analysis History (History)
 
-路由前缀（在 `main.py` 中注册）：`/api/history`  
-所有接口都需要登录。
+Route prefix (registered in `main.py`): `/api/history`
+All endpoints require authentication.
 
-### 5.1 获取当前用户的全部历史记录
+### 5.1 Get All History Records
 
 - **Method**: `GET`
 - **Path**: `/api/history/`
-- **Auth**: 需要
-- **说明**: 按时间倒序返回当前用户的所有分析历史记录。
+- **Auth**: Required
+- **Description**: Returns all analysis history records for the current user, sorted by most recent first.
 
-- **Response 示例（`HistoryResponse[]`）**：
+- **Response example (`HistoryResponse[]`)**:
 
 ```json
 [
@@ -293,16 +293,16 @@ Authorization: Bearer <access_token>
 ]
 ```
 
-> 具体字段请以 `/openapi.json` 为准，这里给出典型示例。
+> Refer to `/openapi.json` for the full schema; the above shows a representative example.
 
-### 5.2 创建一条新的历史记录
+### 5.2 Create a History Record
 
 - **Method**: `POST`
 - **Path**: `/api/history/`
-- **Auth**: 需要
-- **说明**: 为当前用户创建新的分析记录；后端会基于 `have_skills` 和 `missing_skills` 自动计算 `match_score`，不会信任客户端传入的分数。
+- **Auth**: Required
+- **Description**: Creates a new analysis record for the current user. The backend calculates `match_score` from `have_skills` and `missing_skills` server-side — client-supplied scores are not trusted.
 
-- **Request Body（`HistoryCreate`，示例）**：
+- **Request Body (`HistoryCreate`, example)**:
 
 ```json
 {
@@ -315,7 +315,7 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response 200（`HistoryResponse`）示例**：
+- **Response 200 (`HistoryResponse`) example**:
 
 ```json
 {
@@ -332,17 +332,17 @@ Authorization: Bearer <access_token>
 }
 ```
 
-### 5.3 更新已有历史记录（例如修改职位名称）
+### 5.3 Update an Existing History Record
 
 - **Method**: `PUT`
 - **Path**: `/api/history/{history_id}`
-- **Auth**: 需要
-- **说明**: 局部更新一条历史记录（如修改 `job_title`、`company_name` 等）。后端会检查该记录是否属于当前用户。
+- **Auth**: Required
+- **Description**: Partially updates an existing history record (e.g., correcting `job_title` or `company_name`). The backend verifies record ownership before applying changes.
 
-- **Path 参数**：
-  - `history_id`: 要更新的历史记录主键 ID。
+- **Path parameter**:
+  - `history_id`: Primary key of the history record to update.
 
-- **Request Body（`HistoryUpdate`，仅需提供要修改的字段）**：
+- **Request Body (`HistoryUpdate`, only include fields to change)**:
 
 ```json
 {
@@ -350,27 +350,27 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response 200**：返回更新后的完整历史记录对象。
+- **Response 200**: Returns the fully updated history record object.
 
-- **错误情况**：
-  - `404 Not Found`：记录不存在。
-  - `403 Forbidden`：尝试修改不属于当前用户的记录。
+- **Error cases**:
+  - `404 Not Found`: Record does not exist.
+  - `403 Forbidden`: Attempting to modify a record belonging to another user.
 
 ---
 
-## 6. AI 学习路线（Roadmap）
+## 6. AI Learning Roadmap (Roadmap)
 
-路由前缀：`/api/roadmap`  
-所有接口都需要登录。
+Route prefix: `/api/roadmap`
+All endpoints require authentication.
 
-### 6.1 生成学习路线
+### 6.1 Generate a Learning Roadmap
 
 - **Method**: `POST`
 - **Path**: `/api/roadmap/generate`
-- **Auth**: 需要
-- **说明**: 调用 Anthropic Claude API，根据缺失技能（以及可选 JD 文本）生成个性化学习路线，并将最新路线持久化到当前用户的 `roadmap` 字段。
+- **Auth**: Required
+- **Description**: Calls the Anthropic Claude API to generate a personalized learning roadmap based on the user's missing skills (and optionally the JD text), then persists the latest roadmap to the current user's `roadmap` field.
 
-- **Request Body（`RoadmapGenerateRequest`）**：
+- **Request Body (`RoadmapGenerateRequest`)**:
 
 ```json
 {
@@ -379,7 +379,7 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- **Response Body（`RoadmapGenerateResponse`，结构化 JSON）**：
+- **Response Body (`RoadmapGenerateResponse`, structured JSON)**:
 
 ```json
 {
@@ -412,20 +412,20 @@ Authorization: Bearer <access_token>
 }
 ```
 
-> 实际字段以 `roadmap/schemas.py` 和 OpenAPI 为准，这里给的是典型结构示例，前端使用这些字段渲染学习路线时间线。
+> Refer to `roadmap/schemas.py` and the OpenAPI spec for the authoritative field definitions; the above is a representative structural example used by the frontend to render the roadmap timeline.
 
-- **错误情况（HTTPException）**：
-  - `504 Gateway Timeout`：Claude API 调用超时。
-  - `502 Bad Gateway`：Claude API 返回错误或无法解析的响应。
-  - `500 Internal Server Error`：API Key 认证失败或配置缺失。
+- **Error cases (HTTPException)**:
+  - `504 Gateway Timeout`: Claude API call timed out.
+  - `502 Bad Gateway`: Claude API returned an error or an unparseable response.
+  - `500 Internal Server Error`: API key authentication failed or configuration is missing.
 
 ---
 
-## 7. 全局数据库错误处理
+## 7. Global Database Error Handling
 
-应用层面定义了一个全局的 SQLAlchemy 异常处理器：
+The application defines a global SQLAlchemy exception handler at the app level:
 
-- 任何路由内发生的 `SQLAlchemyError`，都会被捕获，并返回：
+- Any `SQLAlchemyError` raised within a route is caught and returns:
 
 ```json
 {
@@ -433,19 +433,18 @@ Authorization: Bearer <access_token>
 }
 ```
 
-- 同时在服务器日志中打印具体错误，便于调试。
+- The specific error is also logged to the server console for debugging.
 
-这保证了在数据库暂时不可用或出现异常时，API 仍然能以一致的 JSON 形式失败，而不会直接崩溃。
+This ensures that when the database is temporarily unavailable or encounters an unexpected condition, the API fails consistently with a well-formed JSON response rather than crashing with an unhandled 500.
 
 ---
 
-## 8. 快速测试清单（给助教 / 自己验证）
+## 8. Quick Validation Checklist (for TAs / self-verification)
 
-1. 打开 `https://skillgap-api-hrsc.onrender.com/health`，确认返回 `{"status": "healthy"}`。
-2. 打开 `https://skillgap-api-hrsc.onrender.com/docs`，浏览自动生成的 Swagger UI 与 OpenAPI schema。
-3. 在 Swagger UI 中按顺序调用：
-   - `POST /api/auth/register` → 创建测试账号。
-   - `POST /api/auth/login` → 复制 `access_token`。
-   - 带上 `Authorization: Bearer <token>` 访问 Profile/History/Roadmap 系列接口。
-4. 在前端应用中，从「粘贴 JD → 查看匹配结果 → 生成学习路线 → 在 History 页查看记录」完整跑一遍，验证前后端接口链路是否打通。
-
+1. Open `https://skillgap-api-hrsc.onrender.com/health` and confirm the response is `{"status": "healthy"}`.
+2. Open `https://skillgap-api-hrsc.onrender.com/docs` to browse the auto-generated Swagger UI and OpenAPI schema.
+3. In Swagger UI, call the following endpoints in order:
+   - `POST /api/auth/register` → create a test account.
+   - `POST /api/auth/login` → copy the `access_token`.
+   - Use `Authorization: Bearer <token>` to access the Profile / History / Roadmap endpoints.
+4. In the frontend application, run through the full user journey: paste a JD → view skill match results → generate a learning roadmap → verify the record appears in the History page. This confirms the entire frontend-to-backend call chain is working end-to-end.

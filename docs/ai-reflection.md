@@ -1,139 +1,137 @@
-## AI Reflections（项目级 AI 使用反思）
+## AI Reflections (Project-Level)
 
-本文件从反思角度总结本项目中对多种 AI 模态的使用情况：哪些地方帮助最大、哪些地方踩坑、以及下一次会如何调整使用方式。
-
----
-
-## 1. 从「人工 + AI」的协作视角看本项目
-
-在 SkillGap 项目中，我们刻意把 AI 放在「高级助手」的位置，而不是无条件替代人工决策：
-
-- 在 **需求与规划阶段**，AI 帮助我们快速从课程 rubric 反向推导出 PRD、Sprint 计划和 deliverables 清单。  
-- 在 **编码与测试阶段**，AI 主要承担「高强度重复劳动」：生成样板代码、补充测试、跑 CI 并给出修复建议。  
-- 在 **评估与文档阶段**，我们则利用 LLM 作为评审者，帮助分析路线质量与整理文字材料。
-
-整体体验是：AI 极大地提高了「产出初稿」的速度，但「决定采用什么方案、如何落地」仍然需要团队人工做出判断。
+This document reflects on how we used multiple AI modalities throughout the project: where they added the most value, what limitations we encountered and how we resolved them, and what we would do differently next time.
 
 ---
 
-## 2. 三类典型场景中的 AI 表现
+## 1. The Human + AI Collaboration Model
 
-### 2.1 架构设计与规划（Claude Web）
+In SkillGap, we intentionally positioned AI as a "senior assistant" rather than an autonomous decision-maker:
 
-**使用方式**：
+- During the **requirements and planning phase**, AI helped us quickly reverse-engineer the PRD, Sprint plans, and deliverables checklist from the course rubric.
+- During the **coding and testing phase**, AI primarily handled high-intensity, repetitive work: generating boilerplate, filling out tests, running CI, and suggesting fixes.
+- During the **evaluation and documentation phase**, we used LLMs as reviewers to analyze roadmap quality and organize written materials.
 
-- 让 Claude Web 阅读课程要求与初始想法，协助产出 `docs/skillgap_prd.md` 和 `internal_working_planning_note/PROJECT2_MASTER_PLAN.md`。  
-- 让它把老师对 CI、AI Mastery、Scrum、Documentation 的所有打分点拆解为可执行任务，并按 Sprint 分配。
-
-**效果评价**：
-
-- **优点**：
-  - 极大减少了「翻阅要求、手动列 checklist」的时间。  
-  - 生成的计划相当细致（包含估时、推荐工具、建议 Prompt），后续执行时几乎可以直接照单操作。
-- **不足**：
-  - 有时会「过于理想化」，给出远超时间预算的计划（例如在初期就规划非常复杂的 CI/CD）。  
-  - 对团队实际熟练程度不了解，需要人工删减与排序。
-
-**反思**：
-
-- 未来会继续使用 Claude Web 做「第一版计划草稿」，但在定稿前会先人为地做一次「减法」：  
-  - 只保留与评分 Rubric 强相关的部分。  
-  - 把「nice to have」单独放在 Stretch Goals，不挤占主线精力。
-
-### 2.2 代码实现与重构（IDE Agent）
-
-**使用方式**：
-
-- 在 IDE 里直接让 Agent 改动真实项目代码：  
-  - 为 FastAPI 路由添加类型标注和 Docstring。  
-  - 给 `auth/profile/history` 的写库逻辑加上事务和异常处理。  
-  - 生成 `server/tests/` 中的 Pytest 测试。  
-  - 配置 `.github/workflows/ci.yml` 等重复性 YAML。
-
-**效果评价**：
-
-- **优点**：
-  - 在「读代码 + 改代码 + 运行测试」这种微循环中极其高效，适合迭代性重构。  
-  - 能够根据 `.antigravityrules` 等项目规则自动做出较规范的实现（PEP8、类型、安全建议等）。
-- **不足 / 踩坑**：
-  - 偶尔会因为对上下文理解不完整而引入轻微回归（例如对测试数据库配置的假设与现实不符）。  
-  - 对于跨文件的大重构，如果一次对话中要求过多，容易遗漏边缘路径，需要多次小批次执行。
-
-**反思**：
-
-- 最好的用法是在**一个具体目标**上使用 IDE Agent，例如「只改 `history/router.py` 的安全逻辑」或「只写 Roadmap 的测试」，而不是一次性要求它重构半个项目。  
-- 在关键路径（认证、安全、数据库）上的改动，必须结合测试和人工 code review，不能只依赖 AI 的自我检查。
-
-### 2.3 AI Eval 与质量评估（Judge 模型）
-
-**使用方式**：
-
-- 在 `server/tests/ai_eval.py` 中，让一个 LLM 以「评审员」身份评价 Claude 输出的学习路线（Relevance / Specificity / Completeness）。  
-- 将结果汇总成 `docs/eval_roadmaps/ai_eval_results.md` 和 Eval Dashboard，作为课程的 AI Mastery 证据。
-
-**效果评价**：
-
-- **优点**：
-  - 让我们可以在有限时间内对多份路线做系统性打分，而不需要人工一条条阅读。  
-  - 帮助我们发现了一些 Prompt 设计上的模式性问题（比如对 Bonus 技能过多展开导致路线过长）。
-- **不足**：
-  - 本质上是「AI 评 AI」，如果 Prompt 设计不慎，可能会产生某种「自嗨式」高分。  
-  - 某些在 Eval 中高分的路线，人工读起来仍然略显重复。
-
-**反思**：
-
-- AI Eval 非常适合作为「第一轮筛选」工具，但不能替代人工的 Spot Check。  
-- 未来在类似项目中，会提前规划少量真实用户或同学进行可用性反馈，将「人类打分」纳入 Eval Dashboard。
+The overall experience: AI dramatically accelerated the production of initial drafts, but deciding *which approach to adopt and how to execute it* still required deliberate human judgment at every stage.
 
 ---
 
-## 3. 对多模态协同的整体评价
+## 2. AI Performance Across Three Key Scenarios
 
-综合来看，多种 AI 模态在本项目中的协同带来的收益主要体现在：
+### 2.1 Architecture Design & Planning (Claude Web)
 
-- **速度与覆盖率**：  
-  - 若完全手工实现同样规模的 PRD + 文档 + 测试 + Eval，我们几乎不可能在课程时间内完成。  
-  - 借助 AI，我们在有限时间内既完成了功能，也完成了详尽的文档与质量证据。
+**How we used it**:
 
-- **质量与可维护性**：  
-  - AI 在类型标注、Docstring、测试覆盖率等方面给出了明显帮助，使代码更易读、更易扩展。  
-  - 通过 Eval Suite，我们对 AI 生成内容有了定量的质量感知，而不仅是主观「看上去还行」。
+- Had Claude Web read course requirements and initial ideas, producing `docs/skillgap_prd.md` and `internal_working_planning_note/PROJECT2_MASTER_PLAN.md`.
+- Asked it to decompose all grading criteria (CI, AI Mastery, Scrum, Documentation) into actionable tasks organized by Sprint.
 
-同时，我们也清醒地看到一些边界：
+**Assessment**:
 
-- AI 无法自动理解「课程评分标准下最优的取舍」，需要人来做 trade-off。  
-- AI 在遇到不完整上下文或模糊需求时，容易给出「看似合理但不完全贴合项目」的方案。  
+- **Strengths**:
+  - Significantly reduced the time spent cross-referencing requirements and manually building checklists.
+  - The generated plan was detailed enough (with time estimates, recommended tools, and suggested prompts) that execution could proceed almost directly from it.
+- **Limitations**:
+  - Occasionally produced overly ambitious plans that exceeded available time budgets (e.g., proposing complex CI/CD setups from day one).
+  - The model had no awareness of the team's actual familiarity with certain tools, requiring manual pruning and reprioritization.
+
+**Reflection**:
+
+- We will continue using Claude Web for "first-draft planning," but will perform a deliberate scoping pass before finalizing:
+  - Retain only items strongly tied to rubric scoring criteria.
+  - Move "nice-to-have" items into a Stretch Goals section to protect the critical path.
+
+### 2.2 Code Implementation & Refactoring (IDE Agent)
+
+**How we used it**:
+
+- Invoked the Agent directly in the IDE to make targeted changes to real project files:
+  - Added type annotations and docstrings to FastAPI routes.
+  - Wrapped database writes in `auth/profile/history` with transactions and exception handling.
+  - Generated Pytest tests in `server/tests/`.
+  - Configured repetitive YAML files like `.github/workflows/ci.yml`.
+
+**Assessment**:
+
+- **Strengths**:
+  - Extremely efficient in the "read → change → test" micro-loop, well-suited for iterative refactoring.
+  - Produced reasonably idiomatic implementations (PEP 8, type annotations, security recommendations) when given a project rules file.
+- **Limitations & How We Addressed Them**:
+  - Occasionally introduced minor regressions due to incomplete context (e.g., incorrect assumptions about test database configuration). These were caught immediately by the test suite and corrected in follow-up iterations.
+  - For large cross-file refactors, requesting too much in a single session risked missing edge cases. We addressed this by breaking work into small, focused batches with explicit scope boundaries.
+
+**Reflection**:
+
+- The best approach is to scope each IDE Agent session to **one specific objective** — e.g., "only update the security logic in `history/router.py`" or "only write tests for the Roadmap module" — rather than asking for a half-project refactor at once.
+- For changes touching critical paths (authentication, security, database), human code review combined with test coverage is non-negotiable and should not rely solely on the AI's self-verification.
+
+### 2.3 AI Eval & Quality Assessment (Judge Model)
+
+**How we used it**:
+
+- In `server/tests/ai_eval.py`, a second LLM acted as a "reviewer" evaluating Claude-generated learning roadmaps across Relevance / Specificity / Completeness.
+- Results were aggregated into `docs/eval_roadmaps/ai_eval_results.md` and the Eval Dashboard as AI Mastery evidence.
+
+**Assessment**:
+
+- **Strengths**:
+  - Enabled systematic, rubric-based scoring of multiple roadmaps within limited time, without reading each one manually.
+  - Surfaced pattern-level issues in prompt design (e.g., over-expanding bonus skills leading to bloated roadmaps).
+- **Limitations**:
+  - Fundamentally "AI evaluating AI" — poorly designed prompts could produce inflated scores.
+  - Some high-scoring roadmaps, when read by a human, still felt slightly repetitive.
+
+**Reflection**:
+
+- AI Eval works best as a **first-pass filtering tool**, not a replacement for human judgment.
+- In future projects, we would plan ahead for a small number of real users or peers to provide usability feedback, incorporating "human scoring" as an additional signal in the Eval Dashboard.
 
 ---
 
-## 4. 下一次项目中会如何调整 AI 使用方式
+## 3. Overall Assessment of Multi-Modal Collaboration
 
-1. **更早、更系统地记录 Prompt 与决策过程**  
-   - 本次项目中，很多高质量对话保留在聊天记录和少量 note 中。  
-   - 若提前规划一个专门的 `ai_prompt_logs.md` / `ai-decisions.md`，可以在做 AI Reflection、写 Blog 或演讲时大幅减轻整理负担。
+Across all three modalities, the collaboration delivered measurable gains in two dimensions:
 
-2. **在规划阶段就预留「人类评审时间」**  
-   - 未来会在 PROJECT PLAN 中显式插入一两个「人工 review AI 输出」的时间盒，比如专门读 5 条路线、对 Eval Dashboard 做 sanity check。  
+- **Speed and coverage**:
+  - Delivering the same scope of PRD + documentation + tests + Eval entirely by hand would have been infeasible within the course timeline.
+  - With AI, we completed both the functional requirements and comprehensive documentation and quality evidence within budget.
 
-3. **为「离线开发」设计更完备的 Mock 策略**  
-   - 这次在 Claude API 出现限流或网络问题时，我们是临时加入 Mock。  
-   - 下一次会在一开始就设计「真实调用」与「Mock 调用」两套路径，并在 CI 中默认使用 Mock，减少环境依赖。
+- **Quality and maintainability**:
+  - AI contributed meaningfully to type annotations, docstrings, and test coverage, making the codebase more readable and extensible.
+  - The Eval Suite gave us a quantitative signal on AI-generated content quality, replacing purely subjective "looks fine" assessments.
+
+We also maintained a clear-eyed view of the boundaries:
+
+- AI cannot automatically determine the optimal trade-off under a specific course grading rubric — that requires human judgment.
+- When faced with incomplete context or ambiguous requirements, AI tends to produce solutions that are plausible but not fully tailored to the project. These cases were caught through human review and iterative correction.
 
 ---
 
-## 5. 结论：AI 在本项目中的角色
+## 4. What We Would Do Differently Next Time
 
-在 SkillGap 项目中，AI 更像是一位「**速度极快的资深 Pair Programmer + 文档秘书 + QA 助理**」：
+1. **Document prompts and decision rationale earlier and more systematically**
+   - Many high-quality conversations from this project were only partially preserved in notes and chat history.
+   - Maintaining a dedicated `ai_prompt_logs.md` / `ai-decisions.md` from the start would significantly reduce the effort of writing AI reflections, blog posts, or presentations later.
 
-- 它可以非常快速地给出初版实现、测试和文档。  
-- 它可以帮忙解释错误日志、找出架构上的潜在问题。  
-- 它可以协助我们用统一的 rubric 评估自身 AI 功能的质量。
+2. **Explicitly budget time for human review of AI output during planning**
+   - We would insert one or two time-boxed "human review of AI output" sessions into the project plan — for example, reading 5 roadmaps and performing a sanity check on the Eval Dashboard.
 
-但它**不**是：
+3. **Design the Mock strategy as a first-class architectural choice from day one**
+   - This project adopted an iterative Mock strategy for the Claude API — introduced deliberately as our CI and offline testing pattern matured — rather than treating real API calls as the only path.
+   - Going forward, we would define both "live API" and "mock" execution paths from the outset, defaulting to mock in CI to eliminate external API dependencies and make test runs fully deterministic.
 
-- 项目负责人（Owner）——项目的边界、取舍和最终质量都必须由人来负责。  
-- 唯一的真相来源——任何 AI 的建议都需要结合测试、文档和人类经验来判断。
+---
 
-这份反思本身也是在 AI 协助下完成，但核心观点和取舍来自于我们在整个开发周期中的真实体验。  
-我们认为，这是对「如何在工程项目中专业地使用 AI」的一次成功实践。
+## 5. Conclusion: AI's Role in This Project
 
+In SkillGap, AI functioned as a **fast, senior Pair Programmer + documentation assistant + QA aide**:
+
+- It produced initial implementations, tests, and documentation with remarkable speed.
+- It helped interpret error logs and surface potential architectural issues.
+- It enabled us to assess the quality of our own AI-generated features against a consistent rubric.
+
+But it was **not**:
+
+- The project owner — scope, trade-offs, and final quality were always human responsibilities.
+- The single source of truth — every AI recommendation was validated against tests, documentation, and engineering experience before being adopted.
+
+This reflection was itself completed with AI assistance, but the core judgments and trade-off decisions came from real experience accumulated across the full development cycle. We consider this a successful demonstration of how to use AI professionally in an engineering project.

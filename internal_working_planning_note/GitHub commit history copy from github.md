@@ -3,6 +3,26 @@ Branch selector
 User selector
 Datepicker
 Commit History
+
+Commits on Mar 13, 2026
+docs: summarize CI/CD architecture and security scanning operations
+MelanieLLY
+MelanieLLY
+committed
+2 hours ago
+·
+docs: add API, Scrum, AI documentation and team contribution section
+MelanieLLY
+MelanieLLY
+committed
+4 hours ago
+·
+Commits on Mar 12, 2026
+Merge pull request #39 from MelanieLLY/feature/38-deploy-frontend-netlify
+
+
+
+
 Commits on Mar 12, 2026
 chore(deploy): (#37) configure FastAPI backend deployment on Render
 MelanieLLY
