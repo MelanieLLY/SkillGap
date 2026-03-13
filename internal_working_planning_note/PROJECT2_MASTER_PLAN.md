@@ -220,7 +220,7 @@
 
 - [ ] **CI/CD 相关文件与说明** (预计: 2–3 小时 / Est: 2–3h)  
   - [ ] GitHub Actions workflow 文件(如 `.github/workflows/ci.yml`)  
-  - [ ] 若有部署 pipeline / preview 配置, 在 README 或 `docs/ci-cd.md` 中简单说明其行为  
+  - [x] 若有部署 pipeline / preview 配置, 在 README 或 `docs/ci-cd.md` 中简单说明其行为：已在 **README §8 Deployment** 中说明 GitHub Actions（Lint / Test / Build）、Netlify Deploy Preview 及 Netlify 规则检查（Header / Pages changed / Redirect），并附 PR 检查截图链接。  
 
 - [ ] **提交到 Canvas 用的总索引说明文档** (预计: 1–2 小时 / Est: 1–2h)  
   - [ ] 在 GitHub 仓库中创建一份汇总所有关键链接和仓库内路径的短文档(例如仓库根目录或 `docs/` 下的 `submission-index.md`)  

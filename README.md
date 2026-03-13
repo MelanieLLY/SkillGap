@@ -192,3 +192,12 @@ Frontend and backend deploy automatically when the repo is updated:
 
 - **Render (backend):** Auto-deploy on commit. Disable in the Render dashboard if you want manual deploys. [Docs](https://render.com/docs/configure-repo-sync).
 - **Netlify (frontend):** Builds and deploys on push to the connected branch (e.g. `main`). Disable in Netlify site settings for manual deploys.
+
+### Automated checks on each Pull Request
+
+Every PR runs:
+
+- **GitHub Actions (CI):** Job 1 — Lint (ESLint, Prettier, ruff); Job 2 — Test (pytest + coverage ≥ 80%); Job 3 — Build. See [Actions](https://github.com/MelanieLLY/SkillGap/actions) and [ci.yml](.github/workflows/ci.yml).
+- **Netlify:** Deploy Preview is built for the PR; the Netlify bot comments with a preview URL (e.g. `https://deploy-preview-39--skillgapweb.netlify.app`). Netlify also runs checks such as **Header rules**, **Pages changed**, and **Redirect rules** for the `skillgapweb` site.
+
+Screenshot of a PR with all checks (CI + Netlify): [每次PR的自动化检测CI和部署平台.png](internal_working_planning_note/screenshot%20during%20dev/每次PR的自动化检测CI和部署平台.png).
