@@ -9,7 +9,9 @@ Paste a JD, see your match score, and get an AI-generated learning roadmap.
 - GitHub repository link: https://github.com/MelanieLLY/SkillGap  
 - Frontend production URL: https://skillgapweb.netlify.app
 - Backend API base URL (optional): https://skillgap-api-hrsc.onrender.com
-- Eval Dashboard document link or repo path: [docs/skillgap_eval_dashboard.html](docs/skillgap_eval_dashboard.html)
+- Eval Dashboard document link or repo path: 
+  - [docs/skillgap_eval_dashboard.html](docs/skillgap_eval_dashboard.html) or [docs/skillgap_eval_dashboard.pdf](docs/skillgap_eval_dashboard.pdf) if prefer pdf.
+  - [docs/eval_roadmaps/ai_eval_results.pdf](docs/eval_roadmaps/ai_eval_results.pdf)
 - Blog post link: 
     - Jing: https://dev.to/jing_2026/skillgap-building-an-ai-powered-career-assistant-2985
     - Liuyi: https://www.melanieyang.info/post/skillgap-building-an-ai-powered-career-assistant
