@@ -30,6 +30,7 @@ env:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # JOB 1 · LINT  (ESLint + Prettier for frontend; ruff + black for backend)
+#               + security scans: Bandit (backend) and npm audit (frontend)
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
   lint:
@@ -73,7 +74,7 @@ jobs:
           cache-dependency-path: ${{ env.SERVER_DIR }}/requirements.txt
 
       - name: Install Python linting tools
-        run: pip install ruff black
+        run: pip install ruff black bandit
 
       # ── ruff (PEP 8 + import order + type hints) ──────────────────────
       - name: ruff lint
@@ -85,6 +86,19 @@ jobs:
       - name: black format check
         working-directory: ${{ env.SERVER_DIR }}
         run: black --check . || true
+
+      # ── Security scans (blocking) ─────────────────────────────────────
+      # Bandit uses the repo-root bandit.yaml (excludes server/tests, skips
+      # B101). It runs from the repo root so the 'server/tests' exclude path
+      # matches. -ll fails the job on MEDIUM or HIGH severity findings.
+      - name: Bandit security scan
+        run: bandit -c bandit.yaml -r ${{ env.SERVER_DIR }} -ll
+
+      # npm audit fails the job on HIGH or CRITICAL advisories in the client
+      # lockfile; moderate/low advisories are still printed in the log.
+      - name: npm audit (high / critical)
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: npm audit --audit-level=high
 
 # ─────────────────────────────────────────────────────────────────────────────
 # JOB 2 · TEST  (backend pytest + coverage; frontend type-check)
